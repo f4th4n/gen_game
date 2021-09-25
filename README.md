@@ -1,5 +1,20 @@
 # Jumpa
 
+## Up
+
+```
+# for dev:
+elixir --sname jumpa -S mix phx.server
+
+# for dev:
+PORT=4001 MIX_ENV=jumpa elixir --sname prod -S mix phx.server
+
+# connect to those session
+# iex --remsh jumpa --sname dev
+# iex --remsh jumpa --sname dev2
+
+```
+
 ## Channels
 
 ```
