@@ -17,9 +17,13 @@ PORT=4001 MIX_ENV=jumpa elixir --sname prod -S mix phx.server
 
 ## Channels
 
+#### Connect to server
 ```
 $ wscat -c 'ws://localhost:4000/game/websocket?vsn=2.0.0'
 
 > ["1","1","ping","phx_join",{}]
 > [null,null,"ping","send_ping",{"from_node":"server@127.0.0.2"}]
 ```
+
+### Server broadcast msg to client
+> JumpaWeb.Endpoint.broadcast("ping", "try", %{yo: "adalah"})
