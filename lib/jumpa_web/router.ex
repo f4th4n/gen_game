@@ -5,6 +5,12 @@ defmodule JumpaWeb.Router do
     plug :accepts, ["json"]
   end
 
+  scope "/", JumpaWeb do
+    pipe_through :api
+
+    get "/", Api.HomeController, :index
+  end
+
   scope "/api", JumpaWeb do
     pipe_through :api
   end
