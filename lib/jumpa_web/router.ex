@@ -13,6 +13,8 @@ defmodule JumpaWeb.Router do
 
   scope "/api", JumpaWeb do
     pipe_through :api
+
+    resources "/rooms", RoomController, except: [:new, :edit]
   end
 
   # Enables LiveDashboard only for development
