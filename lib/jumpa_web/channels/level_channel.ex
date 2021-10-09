@@ -1,36 +1,46 @@
 defmodule JumpaWeb.LevelChannel do
   use Phoenix.Channel
-  import JumpaWeb.Gettext
   alias JumpaWeb.Presence
   alias Jumpa.Repo
+  alias Jumpa.Game.Player
+
+  require Logger
 
   intercept ["request_ping"]
 
-  # def join(_topic, _payload, socket) do
-  #  {:ok, socket}
-  # end
-  def join(_topic, _params, socket) do
-    room_id = "1"
+  def join(_topic, %{"player_id" => player_id, "room_id" => room_id}, socket) do
+    # TODO change player_id with token
+    player = Repo.get(Player, player_id)
+    join_if_player_valid(player, room_id, socket)
+  end
+
+  def join_if_player_valid(nil, _room_id, _socket), do: {:error, %{msg: "Player not found"}}
+
+  def join_if_player_valid(player, room_id, socket) do
     send(self(), :after_join)
-    {:ok, %{channel: "room:#{room_id}"}, assign(socket, :room_id, room_id)}
+    {:ok, %{channel: "room:#{room_id}"}, assign(socket, :player_id, player.id)}
+  end
+
+  def join(_topic, _params, _socket) do
+    {:error, %{code: 100, msg: "wrong parameters"}}
   end
 
   def handle_info(:after_join, socket) do
     push(socket, "presence_state", Presence.list(socket))
 
-    user = Repo.get(User, socket.assigns[:current_user_id])
+    player = Repo.get(Player, socket.assigns.player_id)
 
     {:ok, _} =
-      Presence.track(socket, "user:#{user.id}", %{
-        user_id: user.id,
-        username: user.username
+      Presence.track(socket, "player:#{player.id}", %{
+        player_id: player.id,
+        nick: player.nick
       })
 
     {:noreply, socket}
   end
 
   def handle_in("walk", _payload, socket) do
-    {:reply, {:ok, %{ping: gettext("walk to the fire")}}, socket}
+    {:reply, {:ok, %{ping: "walk to the fire"}}, socket}
   end
 
   def handle_out("request_ping", payload, socket) do
