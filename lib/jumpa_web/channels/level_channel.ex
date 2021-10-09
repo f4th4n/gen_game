@@ -14,15 +14,15 @@ defmodule JumpaWeb.LevelChannel do
     join_if_player_valid(player, room_id, socket)
   end
 
+  def join(_topic, _params, _socket) do
+    {:error, %{code: 100, msg: "wrong parameters"}}
+  end
+
   def join_if_player_valid(nil, _room_id, _socket), do: {:error, %{msg: "Player not found"}}
 
   def join_if_player_valid(player, room_id, socket) do
     send(self(), :after_join)
     {:ok, %{channel: "room:#{room_id}"}, assign(socket, :player_id, player.id)}
-  end
-
-  def join(_topic, _params, _socket) do
-    {:error, %{code: 100, msg: "wrong parameters"}}
   end
 
   def handle_info(:after_join, socket) do
@@ -39,8 +39,10 @@ defmodule JumpaWeb.LevelChannel do
     {:noreply, socket}
   end
 
-  def handle_in("walk", _payload, socket) do
-    {:reply, {:ok, %{ping: "walk to the fire"}}, socket}
+  def handle_in("walk", payload, socket) do
+    broadcast(socket, "walk", payload)
+    # {:reply, {:ok, %{ping: "walk to the fire"}}, socket}
+    {:noreply, socket}
   end
 
   def handle_out("request_ping", payload, socket) do
