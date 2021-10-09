@@ -1,0 +1,2 @@
+1. player join to channel
+2. assign client session as current channel code
