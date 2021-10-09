@@ -15,7 +15,9 @@ defmodule Jumpa.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Jumpa.PubSub},
       # Start the Endpoint (http/https)
-      JumpaWeb.Endpoint
+      JumpaWeb.Endpoint,
+      # supervisor(JumpaWeb.Presence, [])
+      JumpaWeb.Presence
       # Start a worker by calling: Jumpa.Worker.start_link(arg)
       # {Jumpa.Worker, arg}
     ]
