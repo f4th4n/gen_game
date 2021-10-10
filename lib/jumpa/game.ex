@@ -118,6 +118,15 @@ defmodule Jumpa.Game do
   end
 
   @doc """
+  Returns the list of players for client
+  # TODO filter unecessary field
+
+  """
+  def list_players_for_client do
+    Repo.all(Player)
+  end
+
+  @doc """
   Gets a single player.
 
   Raises `Ecto.NoResultsError` if the Player does not exist.

@@ -14,7 +14,9 @@ defmodule JumpaWeb.PlayerView do
     %{
       id: player.id,
       nick: player.nick,
-      room_id: player.room_id
+      room_id: player.room_id,
+      pos_x: player.pos_x,
+      pos_y: player.pos_y
     }
   end
 end
