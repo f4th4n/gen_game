@@ -25,7 +25,7 @@ $ wscat -c 'ws://localhost:4000/game/websocket?vsn=2.0.0'
 > [null,null,"ping","send_ping",{"from_node":"server@127.0.0.2"}]
 
 Example join a level channel
-> ["1","1","level","phx_join",{"player_id": 1, "room_id": 1}]
+> ["1","1","level","phx_join",{"player_id": 1}]
 > [null,null,"level","request_ping",{"from_node":"server@127.0.0.2"}]
 ```
 

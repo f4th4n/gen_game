@@ -1,2 +1,9 @@
 1. player join to channel
 2. assign client session as current channel code
+
+-----
+
+Client:
+Browser:
+	push:
+		channel.push('walk', {page: '3'})

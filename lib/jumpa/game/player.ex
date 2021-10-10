@@ -4,7 +4,9 @@ defmodule Jumpa.Game.Player do
 
   schema "players" do
     field :nick, :string
-    field :room_id, :string
+    field :room_id, :integer
+    field :pos_x, :float
+    field :pos_y, :float
 
     timestamps()
   end
@@ -12,7 +14,7 @@ defmodule Jumpa.Game.Player do
   @doc false
   def changeset(player, attrs) do
     player
-    |> cast(attrs, [:nick, :room_id])
-    |> validate_required([:nick, :room_id])
+    |> cast(attrs, [:nick, :room_id, :pos_x, :pos_y])
+    |> validate_required([:nick, :room_id, :pos_x, :pos_y])
   end
 end
