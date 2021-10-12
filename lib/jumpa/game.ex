@@ -5,6 +5,7 @@ defmodule Jumpa.Game do
 
   import Ecto.Query, warn: false
   alias Jumpa.Repo
+  alias Jumpa.Game.Player
 
   alias Jumpa.Game.Room
 
@@ -102,8 +103,6 @@ defmodule Jumpa.Game do
     Room.changeset(room, attrs)
   end
 
-  alias Jumpa.Game.Player
-
   @doc """
   Returns the list of players.
 
@@ -122,8 +121,20 @@ defmodule Jumpa.Game do
   # TODO filter unecessary field
 
   """
-  def list_players_for_client do
-    Repo.all(Player)
+  def list_players_by_room(nil), do: nil
+
+  def list_players_by_room(room_id) do
+    query =
+      from u in Player,
+        where: u.room_id == ^room_id
+
+    Repo.all(query)
+  end
+
+  def get_player_by_token(nil), do: nil
+
+  def get_player_by_token(token) do
+    Repo.get_by(Player, token: token)
   end
 
   @doc """
@@ -141,6 +152,14 @@ defmodule Jumpa.Game do
 
   """
   def get_player!(id), do: Repo.get!(Player, id)
+
+  def get_player(id), do: Repo.get(Player, id)
+
+  def get_players_in_the_same_room(player_id) do
+    get_player(player_id)
+    |> Player.get_room_id_by_player()
+    |> list_players_by_room()
+  end
 
   @doc """
   Creates a player.

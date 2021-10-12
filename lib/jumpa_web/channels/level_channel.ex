@@ -3,14 +3,14 @@ defmodule JumpaWeb.LevelChannel do
   alias JumpaWeb.Presence
   alias Jumpa.Repo
   alias Jumpa.Game.Player
+  alias Jumpa.Game
 
   require Logger
 
   intercept ["request_ping"]
 
-  def join(_topic, %{"player_id" => player_id}, socket) do
-    # TODO change player_id with token
-    player = Repo.get(Player, player_id)
+  def join(_topic, %{"player_token" => player_token}, socket) do
+    player = Game.get_player_by_token(player_token)
     join_if_player_valid(player, socket)
   end
 
@@ -41,8 +41,8 @@ defmodule JumpaWeb.LevelChannel do
 
   # -------------------------------------------------------------------------------- event from client start here
 
-  def handle_in("get_positions", payload, socket) do
-    players = Jumpa.Game.list_players_for_client()
+  def handle_in("get_players", %{"player_token" => player_token}, socket) do
+    players = Game.get_players_in_the_same_room(player_token)
     response = JumpaWeb.PlayerView.render("index.json", players: players)
     {:reply, {:ok, response}, socket}
   end

@@ -7,6 +7,7 @@ defmodule Jumpa.Game.Player do
     field :room_id, :integer
     field :pos_x, :float
     field :pos_y, :float
+    field :token, :string
 
     timestamps()
   end
@@ -14,7 +15,14 @@ defmodule Jumpa.Game.Player do
   @doc false
   def changeset(player, attrs) do
     player
-    |> cast(attrs, [:nick, :room_id, :pos_x, :pos_y])
-    |> validate_required([:nick, :room_id, :pos_x, :pos_y])
+    |> cast(attrs, [:nick, :room_id, :token])
+    |> validate_required([:nick, :room_id, :token])
   end
+
+  # ------
+  def get_room_id_by_player(%Jumpa.Game.Player{} = player) do
+    player.room_id
+  end
+
+  def get_room_id_by_player(_), do: nil
 end

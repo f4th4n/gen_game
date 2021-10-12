@@ -3,8 +3,8 @@ defmodule Jumpa.Game.Room do
   import Ecto.Changeset
 
   schema "rooms" do
-    field :code, :string
     field :region, :string
+    field :token, :string
 
     timestamps()
   end
@@ -12,7 +12,7 @@ defmodule Jumpa.Game.Room do
   @doc false
   def changeset(room, attrs) do
     room
-    |> cast(attrs, [:code, :region])
-    |> validate_required([:code, :region])
+    |> cast(attrs, [:region, :token])
+    |> validate_required([:region, :token])
   end
 end

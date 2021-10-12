@@ -2,6 +2,10 @@ defmodule JumpaWeb.PlayerView do
   use JumpaWeb, :view
   alias JumpaWeb.PlayerView
 
+  def render("index.json", %{players: nil}) do
+    %{data: render_many([], PlayerView, "player.json")}
+  end
+
   def render("index.json", %{players: players}) do
     %{data: render_many(players, PlayerView, "player.json")}
   end
