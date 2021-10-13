@@ -14,8 +14,9 @@ defmodule JumpaWeb.Router do
   scope "/api", JumpaWeb do
     pipe_through :api
 
-    resources "/rooms", RoomController, except: [:new, :edit]
-    resources "/players", PlayerController, except: [:new, :edit]
+    # resources "/rooms", RoomController, except: [:new, :edit]
+    # resources "/players", PlayerController, except: [:new, :edit]
+    get "/players/get-by-token/:token", PlayerController, :get_by_token
   end
 
   # Enables LiveDashboard only for development

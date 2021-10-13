@@ -9,7 +9,7 @@ defmodule JumpaWeb.LevelChannel do
 
   intercept ["request_ping"]
 
-  def join(_topic, %{"player_token" => player_token}, socket) do
+  def join("level:" <> room_token, %{"player_token" => player_token}, socket) do
     player = Game.get_player_by_token(player_token)
     join_if_player_valid(player, socket)
   end

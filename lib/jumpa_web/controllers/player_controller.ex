@@ -40,4 +40,9 @@ defmodule JumpaWeb.PlayerController do
       send_resp(conn, :no_content, "")
     end
   end
+
+  def get_by_token(conn, %{"token" => token}) do
+    player = Game.get_player_by_token(token)
+    render(conn, "show.json", player: player)
+  end
 end

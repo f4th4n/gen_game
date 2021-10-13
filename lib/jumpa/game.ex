@@ -155,8 +155,8 @@ defmodule Jumpa.Game do
 
   def get_player(id), do: Repo.get(Player, id)
 
-  def get_players_in_the_same_room(player_id) do
-    get_player(player_id)
+  def get_players_in_the_same_room(player_token) do
+    get_player_by_token(player_token)
     |> Player.get_room_id_by_player()
     |> list_players_by_room()
   end
