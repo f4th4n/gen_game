@@ -226,4 +226,12 @@ defmodule Jumpa.Game do
   def change_player(%Player{} = player, attrs \\ %{}) do
     Player.changeset(player, attrs)
   end
+
+  def walk_absolute(payload) do
+    player = get_player_by_token(payload["player_token"])
+
+    payload
+    |> Map.delete("player_token")
+    |> Map.put("id", player.id)
+  end
 end

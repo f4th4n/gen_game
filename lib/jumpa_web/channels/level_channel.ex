@@ -41,15 +41,10 @@ defmodule JumpaWeb.LevelChannel do
 
   # -------------------------------------------------------------------------------- event from client start here
 
-  def handle_in("get_players", %{"player_token" => player_token}, socket) do
-    players = Game.get_players_in_the_same_room(player_token)
-    response = JumpaWeb.PlayerView.render("index.json", players: players)
-    {:reply, {:ok, response}, socket}
-  end
-
   # TODO implement walk_relative
   def handle_in("walk_absolute", payload, socket) do
-    broadcast(socket, "walk_absolute", payload)
+    data = Game.walk_absolute(payload)
+    broadcast(socket, "walk_absolute", data)
     {:noreply, socket}
   end
 

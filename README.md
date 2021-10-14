@@ -31,3 +31,4 @@ Example join a level channel
 
 ### Server broadcast msg to client
 > JumpaWeb.Endpoint.broadcast("ping", "try", %{yo: "adalah"})
+
