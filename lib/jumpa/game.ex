@@ -135,6 +135,7 @@ defmodule Jumpa.Game do
 
   def get_player_by_token(token) do
     Repo.get_by(Player, token: token)
+    |> Jumpa.Repo.preload(:room)
   end
 
   @doc """

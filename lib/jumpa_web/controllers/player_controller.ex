@@ -43,6 +43,9 @@ defmodule JumpaWeb.PlayerController do
 
   def get_by_token(conn, %{"token" => token}) do
     player = Game.get_player_by_token(token)
+
     render(conn, "show.json", player: player)
+    # TODO add room via Map.put_new
+    # |> Map.put_new(:room, render(player, JumpaWeb.RoomView, "room.json", as: :room))
   end
 end

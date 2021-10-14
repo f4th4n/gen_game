@@ -4,10 +4,10 @@ defmodule Jumpa.Game.Player do
 
   schema "players" do
     field :nick, :string
-    field :room_id, :integer
     field :pos_x, :float
     field :pos_y, :float
     field :token, :string
+    belongs_to :room, Jumpa.Game.Room
 
     timestamps()
   end

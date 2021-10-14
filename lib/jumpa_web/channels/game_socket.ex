@@ -8,7 +8,6 @@ defmodule JumpaWeb.GameSocket do
 
   channel "ping", JumpaWeb.PingChannel
   channel "level:*", JumpaWeb.LevelChannel
-  # TODO add room channel
 
   @impl true
   def connect(params, socket, _connect_info) do

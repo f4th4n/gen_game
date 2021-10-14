@@ -5,6 +5,7 @@ defmodule Jumpa.Game.Room do
   schema "rooms" do
     field :region, :string
     field :token, :string
+    has_one :player, Jumpa.Game.Player
 
     timestamps()
   end

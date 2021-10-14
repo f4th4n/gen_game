@@ -22,7 +22,7 @@ defmodule JumpaWeb.LevelChannel do
 
   def join_if_player_valid(player, socket) do
     send(self(), :after_join)
-    {:ok, %{channel: "room:#{player.room_id}"}, assign(socket, :player_id, player.id)}
+    {:ok, %{channel: "room:#{player.room.token}"}, assign(socket, :player_id, player.id)}
   end
 
   def handle_info(:after_join, socket) do
