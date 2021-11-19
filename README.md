@@ -1,5 +1,20 @@
 # Jumpa
 
+## Installation
+
+```
+mix deps.get
+mix ecto.migrate
+# seed with some data
+mix run priv/repo/seeds.exs
+```
+
+## Default User
+
+nick: player1
+token: abc
+link: http://localhost:3000/?player_token=abc
+
 ## Up
 
 ```
