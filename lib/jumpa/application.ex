@@ -17,9 +17,10 @@ defmodule Jumpa.Application do
       # Start the Endpoint (http/https)
       JumpaWeb.Endpoint,
       # supervisor(JumpaWeb.Presence, [])
-      JumpaWeb.Presence
+      JumpaWeb.Presence,
       # Start a worker by calling: Jumpa.Worker.start_link(arg)
       # {Jumpa.Worker, arg}
+      Jumpa.GameSpv
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
