@@ -9,4 +9,8 @@ defmodule JumpaWeb.PingChannel do
   def handle_in("send_ping", _payload, socket) do
     {:reply, {:ok, %{ping: gettext("pong")}}, socket}
   end
+
+  def handle_in(_, _payload, socket) do
+    {:reply, {:error, "unknown command"}, socket}
+  end
 end

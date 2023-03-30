@@ -22,11 +22,11 @@ link: http://localhost:3000/?player_token=abc
 elixir --sname jumpa -S mix phx.server
 
 # for dev:
-PORT=4001 MIX_ENV=jumpa elixir --sname prod -S mix phx.server
+PORT=4001 MIX_ENV=dev elixir --sname jumpa -S mix phx.server
 
 # connect to those session
-# iex --remsh jumpa --sname dev
-# iex --remsh jumpa --sname dev2
+iex --remsh jumpa --sname dev
+iex --remsh jumpa --sname dev2
 
 ```
 
@@ -40,7 +40,7 @@ $ wscat -c 'ws://localhost:4000/game/websocket?vsn=2.0.0'
 > [null,null,"ping","send_ping",{"from_node":"server@127.0.0.2"}]
 
 Example join a level channel
-> ["1","1","level","phx_join",{"player_id": 1}]
+> ["1","1","level","phx_join",{"player_token": "abc"}]
 > [null,null,"level","request_ping",{"from_node":"server@127.0.0.2"}]
 ```
 

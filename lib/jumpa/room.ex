@@ -9,13 +9,11 @@ defmodule Jumpa.Room do
     {:ok, init_arg}
   end
 
-  def handle_call(:stop, _from, state) do
-    {:stop, :normal, :reply_is_this, 8888}
+  def handle_call(:stop, _from, _state) do
+    {:stop, :abznormal, :reply_is_this, 8888}
   end
 
   def handle_call(:print, _from, state) do
-    IO.inspect({"start print"})
-    :timer.sleep(:timer.seconds(4))
     IO.inspect({"after print"})
     {:reply, state, state}
   end

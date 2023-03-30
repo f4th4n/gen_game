@@ -22,11 +22,7 @@ config :jumpa, JumpaWeb.Endpoint,
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
-  secret_key_base: "rfsQ1WieHP6bVzw+3w7X2T/k9pL0u+bzNvZHjUctXtNqUR36BmmPKjNNZW0LiUay",
-  watchers: [
-    # Start the esbuild watcher by calling Esbuild.install_and_run(:default, args)
-    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
-  ]
+  secret_key_base: "rfsQ1WieHP6bVzw+3w7X2T/k9pL0u+bzNvZHjUctXtNqUR36BmmPKjNNZW0LiUay"
 
 # ## SSL Support
 #

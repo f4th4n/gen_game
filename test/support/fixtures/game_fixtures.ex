@@ -11,8 +11,8 @@ defmodule Jumpa.GameFixtures do
     {:ok, room} =
       attrs
       |> Enum.into(%{
-        code: "some code",
-        region: "some region"
+        token: "abc",
+        region: "sea-1"
       })
       |> Jumpa.Game.create_room()
 
@@ -26,8 +26,11 @@ defmodule Jumpa.GameFixtures do
     {:ok, player} =
       attrs
       |> Enum.into(%{
-        nick: "some nick",
-        room_id: "some room_id"
+        nick: "ali",
+        token: "abc",
+        pos_x: 0.0,
+        pos_y: 0.0,
+        room_id: 1
       })
       |> Jumpa.Game.create_player()
 

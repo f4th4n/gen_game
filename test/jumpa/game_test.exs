@@ -21,10 +21,10 @@ defmodule Jumpa.GameTest do
     end
 
     test "create_room/1 with valid data creates a room" do
-      valid_attrs = %{code: "some code", region: "some region"}
+      valid_attrs = %{token: "some token", region: "some region"}
 
       assert {:ok, %Room{} = room} = Game.create_room(valid_attrs)
-      assert room.code == "some code"
+      assert room.token == "some token"
       assert room.region == "some region"
     end
 
@@ -34,10 +34,10 @@ defmodule Jumpa.GameTest do
 
     test "update_room/2 with valid data updates the room" do
       room = room_fixture()
-      update_attrs = %{code: "some updated code", region: "some updated region"}
+      update_attrs = %{token: "some updated token", region: "some updated region"}
 
       assert {:ok, %Room{} = room} = Game.update_room(room, update_attrs)
-      assert room.code == "some updated code"
+      assert room.token == "some updated token"
       assert room.region == "some updated region"
     end
 
@@ -55,7 +55,7 @@ defmodule Jumpa.GameTest do
 
     test "change_room/1 returns a room changeset" do
       room = room_fixture()
-      assert %Ecto.Changeset{} = Game.change_room(room)
+      assert %Ecto.Changeset{} = Game.change_room(room, %{})
     end
   end
 
@@ -77,11 +77,17 @@ defmodule Jumpa.GameTest do
     end
 
     test "create_player/1 with valid data creates a player" do
-      valid_attrs = %{nick: "some nick", room_id: "some room_id"}
+      valid_attrs = %{
+        nick: "some nick",
+        room_id: 1,
+        token: "token",
+        pos_x: 0.0,
+        pos_y: 0.0
+      }
 
       assert {:ok, %Player{} = player} = Game.create_player(valid_attrs)
       assert player.nick == "some nick"
-      assert player.room_id == "some room_id"
+      assert player.room_id == 1
     end
 
     test "create_player/1 with invalid data returns error changeset" do
@@ -90,11 +96,11 @@ defmodule Jumpa.GameTest do
 
     test "update_player/2 with valid data updates the player" do
       player = player_fixture()
-      update_attrs = %{nick: "some updated nick", room_id: "some updated room_id"}
+      update_attrs = %{nick: "some updated nick", room_id: 99}
 
       assert {:ok, %Player{} = player} = Game.update_player(player, update_attrs)
       assert player.nick == "some updated nick"
-      assert player.room_id == "some updated room_id"
+      assert player.room_id == 99
     end
 
     test "update_player/2 with invalid data returns error changeset" do
@@ -111,7 +117,7 @@ defmodule Jumpa.GameTest do
 
     test "change_player/1 returns a player changeset" do
       player = player_fixture()
-      assert %Ecto.Changeset{} = Game.change_player(player)
+      assert %Ecto.Changeset{} = Game.change_player(player, %{})
     end
   end
 end

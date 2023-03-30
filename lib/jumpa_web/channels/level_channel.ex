@@ -41,10 +41,43 @@ defmodule JumpaWeb.LevelChannel do
 
   # -------------------------------------------------------------------------------- event from client start here
 
-  # TODO implement walk_relative
-  def handle_in("walk_absolute", payload, socket) do
-    data = Game.walk_absolute(payload)
+  def handle_in("walk_absolute", %{"player_token" => player_token, "pos_x" => pos_x, "pos_y" => pos_y}, socket) do    
+    data = Game.walk_absolute(player_token, pos_x, pos_y)
     broadcast(socket, "walk_absolute", data)
+
+    {:noreply, socket}
+  end
+
+  # TODO implement walk_relative
+  def handle_in("walk_relative", _payload, socket) do
+    data = nil
+    broadcast(socket, "walk_absolute", data)
+    {:noreply, socket}
+  end
+
+  def handle_in(
+        "get_player_detail",
+        %{"player_id" => player_id, "room_token" => room_token},
+        socket
+      ) do
+    data =
+      Game.get_player_by_id_and_room_token(player_id, room_token)
+      |> Game.view_player()
+
+    # TODO make it non blocking
+    case data do
+      %{player_id: _} ->
+        broadcast(socket, "player_detail", data)
+
+      _e ->
+        :noop
+    end
+
+    {:noreply, socket}
+  end
+
+  def handle_in(event, payload, socket) do
+    IO.inspect({"event, payload", event, payload})
     {:noreply, socket}
   end
 
