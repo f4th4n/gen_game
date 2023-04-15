@@ -1,0 +1,6 @@
+{
+	"wsGameEndpoint": "ws://localhost:4000/game",
+	"apiGameEndpoint": "http://localhost:4000/api",
+	"isProd": true,
+	"roomToken": "abc"
+}
