@@ -2,7 +2,6 @@ defmodule JumpaWeb.PlayerController do
   use JumpaWeb, :controller
 
   alias Jumpa.Game
-  alias Jumpa.Game.Player
 
   action_fallback JumpaWeb.FallbackController
 
