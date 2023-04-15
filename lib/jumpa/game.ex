@@ -16,6 +16,7 @@ defmodule Jumpa.Game do
 
   def list_players(), do: Players.list_players()
   def list_players_by_room(room_id), do: Players.list_players_by_room(room_id)
+  def get_player_by(opts), do: Players.get_by(opts)
   def get_player_by_token(token), do: Players.get_player_by_token(token)
   def get_player!(id), do: Players.get_player!(id)
   def get_players_in_the_same_room(player_token), do: Players.get_players_in_the_same_room(player_token)

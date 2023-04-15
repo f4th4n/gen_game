@@ -27,10 +27,29 @@ defmodule Jumpa.Game.Players do
 
   def list_players_by_room(room_id) do
     query =
-      from u in Player,
-        where: u.room_id == ^room_id
+      from p in Player,
+        where: p.room_id == ^room_id
 
     Repo.all(query)
+  end
+
+  @spec get_by(list()) :: list()
+  def get_by(opts) when is_list(opts) do
+    token = Keyword.get(opts, :token)
+    room_token = Keyword.get(opts, :room_token)
+
+    # TODO join rom only if necessary
+    query =
+      from p in Player,
+        left_join: r in Room,
+        on:
+          r.id ==
+            p.room_id
+
+    query
+    |> filter_by_token(token)
+    |> filter_by_room_token(room_token)
+    |> Repo.all()
   end
 
   def get_player_by_token(nil), do: nil
@@ -151,4 +170,10 @@ defmodule Jumpa.Game.Players do
   end
 
   def view_player(_), do: nil
+
+  defp filter_by_token(query, nil), do: query
+  defp filter_by_token(query, token), do: where(query, [p], p.token == ^token)
+
+  defp filter_by_room_token(query, nil), do: query
+  defp filter_by_room_token(query, room_token), do: where(query, [p, r], r.token == ^room_token)
 end

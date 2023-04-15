@@ -13,7 +13,7 @@ mix run priv/repo/seeds.exs
 
 nick: player1
 token: abc
-link: http://localhost:3000/?player_token=abc
+link: http://localhost:3000/?player_token=abc&room_token=abc
 
 ## Up
 
@@ -33,6 +33,7 @@ iex --remsh jumpa --sname dev2
 ## Channels
 
 #### Connect to server
+
 ```
 $ wscat -c 'ws://localhost:4000/game/websocket?vsn=2.0.0'
 
@@ -45,5 +46,5 @@ Example join a level channel
 ```
 
 ### Server broadcast msg to client
-> JumpaWeb.Endpoint.broadcast("ping", "try", %{yo: "adalah"})
 
+> JumpaWeb.Endpoint.broadcast("ping", "try", %{yo: "adalah"})

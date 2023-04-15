@@ -14,7 +14,7 @@ defmodule JumpaWeb.Router do
   scope "/api", JumpaWeb do
     pipe_through :api
 
-    get "/players/get-by-token/:token", PlayerController, :get_by_token
+    get "/players/auth/:player_token/:room_token", PlayerController, :auth
   end
 
   # Enables LiveDashboard only for development
