@@ -3,28 +3,35 @@ defmodule Jumpa.PlayerTest do
 
   alias Jumpa.GameFixtures
   alias Jumpa.Game.Players
+  alias Jumpa.Game.Player
 
   describe "get_by/1" do
     test "with empty list opts returns all rooms" do
-      player = GameFixtures.player_fixture(%{token: "abc"})
+      assert nil == Players.get_by(token: "abc")
 
-      assert [player] == Players.get_by([])
+      %{id: id} = GameFixtures.player_fixture(%{token: "abc"})
+
+      assert %Player{id: ^id, room: nil} = Players.get_by([])
     end
 
     test "with token params returns rooms" do
-      assert [] == Players.get_by(token: "abc")
+      assert nil == Players.get_by(token: "abc")
 
-      player = GameFixtures.player_fixture(%{token: "abc"})
+      %{id: id} = GameFixtures.player_fixture(%{token: "abc"})
 
-      assert [player] == Players.get_by(token: "abc")
+      assert %Player{id: ^id, room: nil} = Players.get_by(token: "abc")
     end
 
     test "with token and room_token params returns rooms" do
-      room = GameFixtures.room_fixture()
-      player = GameFixtures.player_fixture(%{token: "abc", room_id: room.id})
+      %{id: room_id, token: room_token} = GameFixtures.room_fixture()
+      %{id: player_id} = GameFixtures.player_fixture(%{token: "abc", room_id: room_id})
 
-      assert [] == Players.get_by(token: "abc", room_token: "wrong")
-      assert [player] == Players.get_by(token: "abc", room_token: room.token)
+      assert nil == Players.get_by(token: "abc", room_token: "wrong")
+
+      assert %Player{
+               id: ^player_id,
+               room: %{id: ^room_id}
+             } = Players.get_by(token: "abc", room_token: room_token)
     end
   end
 end
