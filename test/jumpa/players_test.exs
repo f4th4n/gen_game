@@ -12,19 +12,19 @@ defmodule Jumpa.PlayerTest do
     end
 
     test "with token params returns rooms" do
-      assert [] == Players.get_by([token: "abc"])
+      assert [] == Players.get_by(token: "abc")
 
       player = GameFixtures.player_fixture(%{token: "abc"})
 
-      assert [player] == Players.get_by([token: "abc"])
+      assert [player] == Players.get_by(token: "abc")
     end
 
     test "with token and room_token params returns rooms" do
       room = GameFixtures.room_fixture()
       player = GameFixtures.player_fixture(%{token: "abc", room_id: room.id})
 
-      assert [] == Players.get_by([token: "abc", room_token: "wrong"])
-      assert [player] == Players.get_by([token: "abc", room_token: room.token])
+      assert [] == Players.get_by(token: "abc", room_token: "wrong")
+      assert [player] == Players.get_by(token: "abc", room_token: room.token)
     end
   end
 end

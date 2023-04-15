@@ -49,14 +49,15 @@ defmodule Jumpa.Game.Players do
     query
     |> filter_by_token(token)
     |> filter_by_room_token(room_token)
-    |> Repo.all()
+    |> Repo.one()
+    |> Repo.preload(:room)
   end
 
   def get_player_by_token(nil), do: nil
 
   def get_player_by_token(token) do
     Repo.get_by(Player, token: token)
-    |> Jumpa.Repo.preload(:room)
+    |> Repo.preload(:room)
   end
 
   def get_player!(id), do: Repo.get!(Player, id)
