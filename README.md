@@ -1,34 +1,19 @@
 # Jumpa Repo
 
-### To start API service
+### To start all service
+
+docker compose up -d
+
+### To attach service
+
+#### api
 
 ```
-cd jumpa-api
-PORT=4001 MIX_ENV=dev elixir --sname jumpa -S mix phx.server
+./jumpa.sh api
 ```
 
-attach remote shell:
+#### world
 
 ```
-iex --remsh jumpa --sname dev
-```
-
-### To start world service
-
-```
-cd world
-PORT=4001 MIX_ENV=dev elixir --sname jumpa -S mix phx.server
-```
-
-attach remote shell:
-
-```
-iex --remsh jumpa --sname dev
-```
-
-### To start web
-
-```
-cd jumpa-client/web/
-npm run start
+./jumpa.sh world
 ```
