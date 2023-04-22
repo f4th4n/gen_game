@@ -14,7 +14,7 @@ services:
       - 4000:4000
   jumpa.world:
     <<: *app
-    command: /bin/sh -c "mix setup && elixir --name jumpa@jumpa.world --cookie jumpa -S mix phx.server --no-halt"
+    command: /bin/sh -c "mix setup && elixir --name jumpa@jumpa.world --cookie jumpa -S mix run --no-halt"
     working_dir: /jumpa/jumpa-world
   frontend:
     image: node:19-alpine3.16

@@ -1,6 +1,4 @@
 defmodule Jumpa.Application do
-  # See https://hexdocs.pm/elixir/Application.html
-  # for more information on OTP Applications
   @moduledoc false
 
   use Application
@@ -20,17 +18,12 @@ defmodule Jumpa.Application do
       JumpaWeb.Presence,
       # Start a worker by calling: Jumpa.Worker.start_link(arg)
       # {Jumpa.Worker, arg}
-      Jumpa.GameSpv
     ]
 
-    # See https://hexdocs.pm/elixir/Supervisor.html
-    # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Jumpa.Supervisor]
     Supervisor.start_link(children, opts)
   end
 
-  # Tell Phoenix to update the endpoint configuration
-  # whenever the application is updated.
   @impl true
   def config_change(changed, _new, removed) do
     JumpaWeb.Endpoint.config_change(changed, removed)
