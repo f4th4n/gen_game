@@ -6,6 +6,6 @@ defmodule JumpaWeb.Presence do
   docs for more details.
   """
   use Phoenix.Presence,
-    otp_app: :jumpa,
+    otp_app: :jumpa_api,
     pubsub_server: Jumpa.PubSub
 end

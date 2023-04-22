@@ -20,5 +20,5 @@ defmodule JumpaWeb.Gettext do
 
   See the [Gettext Docs](https://hexdocs.pm/gettext) for detailed usage.
   """
-  use Gettext, otp_app: :jumpa
+  use Gettext, otp_app: :jumpa_api
 end

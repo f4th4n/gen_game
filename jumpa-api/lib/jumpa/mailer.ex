@@ -1,3 +1,3 @@
 defmodule Jumpa.Mailer do
-  use Swoosh.Mailer, otp_app: :jumpa
+  use Swoosh.Mailer, otp_app: :jumpa_api
 end

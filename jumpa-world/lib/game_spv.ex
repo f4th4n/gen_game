@@ -13,6 +13,7 @@ defmodule Jumpa.GameSpv do
   @impl true
   def init(_) do
     IO.inspect("init")
+
     children = [
       %{
         id: Jumpa.Room,

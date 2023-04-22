@@ -1,0 +1,4 @@
+%{
+  "jason": {:hex, :jason, "1.4.0", "e855647bc964a44e2f67df589ccf49105ae039d4179db7f6271dfd3843dc27e6", [:mix], [{:decimal, "~> 1.0 or ~> 2.0", [hex: :decimal, repo: "hexpm", optional: true]}], "hexpm", "79a3791085b2a0f743ca04cec0f7be26443738779d09302e01318f97bdb82121"},
+  "libcluster": {:hex, :libcluster, "3.3.2", "84c6ebfdc72a03805955abfb5ff573f71921a3e299279cc3445445d5af619ad1", [:mix], [{:jason, "~> 1.1", [hex: :jason, repo: "hexpm", optional: false]}], "hexpm", "8b691ce8185670fc8f3fc0b7ed59eff66c6889df890d13411f8f1a0e6871d8a5"},
+}

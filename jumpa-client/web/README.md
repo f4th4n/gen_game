@@ -21,5 +21,5 @@ shell 2
 ```
 $ http-server
 
-then open http://localhost:3000/?player_token=abc
+then open http://localhost:3000/?player_token=abc&room_token=abc
 ```

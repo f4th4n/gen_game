@@ -1,5 +1,5 @@
 defmodule JumpaWeb.Endpoint do
-  use Phoenix.Endpoint, otp_app: :jumpa
+  use Phoenix.Endpoint, otp_app: :jumpa_api
 
   plug CORSPlug
 
@@ -32,7 +32,7 @@ defmodule JumpaWeb.Endpoint do
   # :code_reloader configuration of your endpoint.
   if code_reloading? do
     plug Phoenix.CodeReloader
-    plug Phoenix.Ecto.CheckRepoStatus, otp_app: :jumpa
+    plug Phoenix.Ecto.CheckRepoStatus, otp_app: :jumpa_api
   end
 
   plug Phoenix.LiveDashboard.RequestLogger,

@@ -4,16 +4,16 @@
 
 docker compose up -d
 
-### To attach service
+### To connect running node (via attach):
 
 #### api
 
 ```
-./jumpa.sh api
+connect_remote.sh api
 ```
 
 #### world
 
 ```
-./jumpa.sh world
+connect_remote.sh world
 ```

@@ -5,8 +5,10 @@ defmodule JumpaWorld.Application do
 
   @impl true
   def start(_type, _args) do
-    IO.inspect({"Application...."})
+    topologies = Application.fetch_env!(:jumpa_world, :topologies)
+
     children = [
+      {Cluster.Supervisor, [topologies, [name: JumpaWorld.ClusterSupervisor]]},
       Jumpa.GameSpv
     ]
 

@@ -5,7 +5,10 @@ defmodule Jumpa.Application do
 
   @impl true
   def start(_type, _args) do
+    topologies = Application.fetch_env!(:jumpa_api, :topologies)
+
     children = [
+      {Cluster.Supervisor, [topologies, [name: JumpaApi.ClusterSupervisor]]},
       # Start the Ecto repository
       Jumpa.Repo,
       # Start the Telemetry supervisor

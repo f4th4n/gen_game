@@ -7,11 +7,23 @@
 # General application configuration
 import Config
 
-config :jumpa,
+# TODO change app name to jumpa_api
+
+config :jumpa_api,
+  topologies: [
+    gossip: [
+      strategy: Cluster.Strategy.Gossip,
+      config: [
+        secret: System.get_env("RELEASE_COOKIE", "jumpa")
+      ]
+    ]
+  ]
+
+config :jumpa_api,
   ecto_repos: [Jumpa.Repo]
 
 # Configures the endpoint
-config :jumpa, JumpaWeb.Endpoint,
+config :jumpa_api, JumpaWeb.Endpoint,
   url: [host: "localhost"],
   render_errors: [view: JumpaWeb.ErrorView, accepts: ~w(json), layout: false],
   pubsub_server: Jumpa.PubSub,
@@ -24,7 +36,7 @@ config :jumpa, JumpaWeb.Endpoint,
 #
 # For production it's recommended to configure a different adapter
 # at the `config/runtime.exs`.
-config :jumpa, Jumpa.Mailer, adapter: Swoosh.Adapters.Local
+config :jumpa_api, Jumpa.Mailer, adapter: Swoosh.Adapters.Local
 
 # Swoosh API client is needed for adapters other than SMTP.
 config :swoosh, :api_client, false

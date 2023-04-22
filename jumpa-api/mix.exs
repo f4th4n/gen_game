@@ -3,7 +3,7 @@ defmodule Jumpa.MixProject do
 
   def project do
     [
-      app: :jumpa,
+      app: :jumpa_api,
       version: "0.1.0",
       elixir: "~> 1.12",
       elixirc_paths: elixirc_paths(Mix.env()),
@@ -45,7 +45,8 @@ defmodule Jumpa.MixProject do
       {:jason, "~> 1.4"},
       {:plug_cowboy, "~> 2.5"},
       {:cors_plug, "~> 2.0"},
-      {:distillery, "~> 2.1"}
+      {:distillery, "~> 2.1"},
+      {:libcluster, "~> 3.3"}
     ]
   end
 
