@@ -6,6 +6,8 @@ defmodule Jumpa.Game.Rooms do
   alias Jumpa.Game.Rooms
   alias Jumpa.Game.Room
 
+  @regions ["sea"]
+
   @doc """
   Returns the list of rooms.
 
@@ -47,10 +49,26 @@ defmodule Jumpa.Game.Rooms do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_room(attrs \\ %{}) do
+  def create_room(attrs) when is_map(attrs) do
     %Room{}
     |> Room.changeset(attrs)
     |> Repo.insert()
+  end
+
+  @create_room_max_retry 5
+  def create_room(5), do: {:error, "can't create room, max retries reached"}
+  def create_room(retry \\ 0) do
+    random_region = Enum.random(@regions)
+    # TODO implement multi region
+    attrs = %{
+      region: random_region,
+      token: random_string(10)
+    }
+
+    case create_room(attrs) do
+      {:error, _} -> create_room(retry + 1) # same code, try again
+      {:ok, room} -> {:ok, room}
+    end
   end
 
   @doc """
@@ -99,4 +117,9 @@ defmodule Jumpa.Game.Rooms do
   def change_room(%Room{} = room, attrs \\ %{}) do
     Room.changeset(room, attrs)
   end
+
+  defp random_string(length) do
+    :crypto.strong_rand_bytes(length) |> Base.url_encode64 |> binary_part(0, length) |> String.downcase()
+  end
 end
+

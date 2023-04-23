@@ -15,5 +15,6 @@ defmodule Jumpa.Game.Room do
     room
     |> cast(attrs, [:region, :token])
     |> validate_required([:region, :token])
+    |> unique_constraint(:token)
   end
 end
