@@ -2,8 +2,13 @@ x-app: &app
   build: .
   volumes:
     - .:/jumpa:cached
+    - ./log/erlang-history:/log/erlang-history
+    - ./log/shell-history:/log/shell-history
   environment:
     DATABASE_URL: postgres://postgres:postgres@postgres:5432/jumpa_dev
+    ERL_AFLAGS: -kernel shell_history enabled -kernel shell_history_path '"/log/erlang-history"'
+    HISTSIZE: 10000
+    HISTFILE: /log/shell_history
 
 services:
   jumpa.api:

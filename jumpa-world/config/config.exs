@@ -9,3 +9,6 @@ config :jumpa_world,
       ]
     ]
   ]
+
+config :jumpa_world,
+  type: :world

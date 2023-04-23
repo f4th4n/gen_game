@@ -1,4 +1,4 @@
-defmodule Jumpa.MixProject do
+defmodule JumpaApi.MixProject do
   use Mix.Project
 
   def project do
@@ -19,7 +19,7 @@ defmodule Jumpa.MixProject do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {Jumpa.Application, []},
+      mod: {JumpaApi.Application, []},
       extra_applications: [:logger, :runtime_tools]
     ]
   end

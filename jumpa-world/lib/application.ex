@@ -9,10 +9,10 @@ defmodule JumpaWorld.Application do
 
     children = [
       {Cluster.Supervisor, [topologies, [name: JumpaWorld.ClusterSupervisor]]},
-      Jumpa.GameSpv
+      JumpaWorld.GameSpv
     ]
 
-    opts = [strategy: :one_for_one, name: Jumpa.Supervisor]
+    opts = [strategy: :one_for_one, name: JumpaWorld.Supervisor]
     Supervisor.start_link(children, opts)
   end
 end

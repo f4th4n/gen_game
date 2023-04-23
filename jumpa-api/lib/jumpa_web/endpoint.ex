@@ -24,7 +24,7 @@ defmodule JumpaWeb.Endpoint do
   # when deploying your static files in production.
   plug Plug.Static,
     at: "/static",
-    from: :jumpa,
+    from: :jumpa_api,
     gzip: false,
     only: ~w(assets fonts images favicon.ico robots.txt)
 

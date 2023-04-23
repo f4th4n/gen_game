@@ -1,4 +1,4 @@
-defmodule Jumpa.Application do
+defmodule JumpaApi.Application do
   @moduledoc false
 
   use Application
