@@ -1,7 +1,7 @@
-defmodule Jumpa.GameFixtures do
+defmodule JumpaApi.GameFixtures do
   @moduledoc """
   This module defines test helpers for creating
-  entities via the `Jumpa.Game` context.
+  entities via the `JumpaApi.Game` context.
   """
 
   @doc """
@@ -14,7 +14,7 @@ defmodule Jumpa.GameFixtures do
         token: "abc",
         region: "sea-1"
       })
-      |> Jumpa.Game.create_room()
+      |> JumpaApi.Game.create_room()
 
     room
   end
@@ -32,7 +32,7 @@ defmodule Jumpa.GameFixtures do
         pos_y: 0.0,
         room_id: 1
       })
-      |> Jumpa.Game.create_player()
+      |> JumpaApi.Game.create_player()
 
     player
   end

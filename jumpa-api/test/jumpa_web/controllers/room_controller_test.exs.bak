@@ -1,9 +1,9 @@
 defmodule JumpaWeb.RoomControllerTest do
   use JumpaWeb.ConnCase
 
-  import Jumpa.GameFixtures
+  import JumpaApi.GameFixtures
 
-  alias Jumpa.Game.Room
+  alias JumpaApi.Game.Room
 
   @create_attrs %{
     code: "some code",

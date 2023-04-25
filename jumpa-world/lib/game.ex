@@ -20,7 +20,7 @@ defmodule JumpaWorld.Game do
   def handle_cast({:new_game, game_token}, state) do
     IO.inspect({":new_game, game_token, state", :new_game, game_token, state})
     api_node = JumpaWorld.Proxy.get_api_node()
-    res = :rpc.call(api_node, Jumpa.Game.games, :list_games, [])
+    res = :rpc.call(api_node, Jumpa.Gam.games, :start_game, [game_token])
     IO.inspect({"res", res})
 
     {:noreply, state}

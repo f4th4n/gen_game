@@ -10,9 +10,9 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
-room1 = Jumpa.Repo.get(Jumpa.Game.Room, 1)
+room1 = Jumpa.Repo.get(JumpaApi.Game.Room, 1)
 
-new_room = %Jumpa.Game.Room{
+new_room = %JumpaApi.Game.Room{
   id: 1,
   region: "sea",
   token: "abc"
@@ -23,9 +23,9 @@ case room1 do
   _ -> nil
 end
 
-player1 = Jumpa.Repo.get(Jumpa.Game.Player, 1)
+player1 = Jumpa.Repo.get(JumpaApi.Game.Player, 1)
 
-new_player = %Jumpa.Game.Player{
+new_player = %JumpaApi.Game.Player{
   id: 1,
   nick: "player1",
   pos_x: 1.0,
@@ -39,9 +39,9 @@ case player1 do
   _ -> nil
 end
 
-player2 = Jumpa.Repo.get(Jumpa.Game.Player, 1)
+player2 = Jumpa.Repo.get(JumpaApi.Game.Player, 1)
 
-new_player = %Jumpa.Game.Player{
+new_player = %JumpaApi.Game.Player{
   id: 1,
   nick: "player2",
   pos_x: 1.0,

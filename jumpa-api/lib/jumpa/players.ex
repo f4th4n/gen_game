@@ -1,8 +1,8 @@
-defmodule Jumpa.Game.Players do
+defmodule JumpaApi.Game.Players do
   import Ecto.Query, warn: false
   alias Jumpa.Repo
-  alias Jumpa.Game.Player
-  alias Jumpa.Game.Room
+  alias JumpaApi.Game.Player
+  alias JumpaApi.Game.Room
 
   @doc """
   Returns the list of players.
@@ -17,7 +17,7 @@ defmodule Jumpa.Game.Players do
     Repo.all(Player)
   end
 
-  def get_room_id_by_player(%Jumpa.Game.Player{} = player) do
+  def get_room_id_by_player(%JumpaApi.Game.Player{} = player) do
     player.room_id
   end
 
@@ -65,7 +65,7 @@ defmodule Jumpa.Game.Players do
 
   def get_players_in_the_same_room(player_token) do
     get_player_by_token(player_token)
-    |> Players.get_room_id_by_player()
+    |> get_room_id_by_player()
     |> list_players_by_room()
   end
 

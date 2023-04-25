@@ -1,11 +1,11 @@
-defmodule Jumpa.Game do
+defmodule JumpaApi.Game do
   @moduledoc """
   The Game context.
   """
 
   import Ecto.Query, warn: false
-  alias Jumpa.Game.Players
-  alias Jumpa.Game.Rooms
+  alias JumpaApi.Game.Players
+  alias JumpaApi.Game.Rooms
 
   def list_rooms(), do: Rooms.list_rooms()
   def get_room!(id), do: Rooms.get_room!(id)

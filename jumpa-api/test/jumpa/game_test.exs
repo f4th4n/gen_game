@@ -1,12 +1,12 @@
-defmodule Jumpa.GameTest do
+defmodule JumpaApi.GameTest do
   use Jumpa.DataCase
 
-  alias Jumpa.Game
+  alias JumpaApi.Game
 
   describe "rooms" do
-    alias Jumpa.Game.Room
+    alias JumpaApi.Game.Room
 
-    import Jumpa.GameFixtures
+    import JumpaApi.GameFixtures
 
     @invalid_attrs %{code: nil, region: nil}
 
@@ -60,9 +60,9 @@ defmodule Jumpa.GameTest do
   end
 
   describe "players" do
-    alias Jumpa.Game.Player
+    alias JumpaApi.Game.Player
 
-    import Jumpa.GameFixtures
+    import JumpaApi.GameFixtures
 
     @invalid_attrs %{nick: nil, room_id: nil}
 

@@ -3,8 +3,8 @@ defmodule JumpaWeb.PlayerViewTest do
 
   import Phoenix.View
 
-  alias Jumpa.GameFixtures
-  alias Jumpa.Game.Players
+  alias JumpaApi.GameFixtures
+  alias JumpaApi.Game.Players
   alias Jumpa.Repo
 
   describe "render/2" do

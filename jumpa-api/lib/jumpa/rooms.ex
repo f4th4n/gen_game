@@ -1,10 +1,7 @@
-defmodule Jumpa.Game.Rooms do
+defmodule JumpaApi.Game.Rooms do
   import Ecto.Query, warn: false
   alias Jumpa.Repo
-  alias Jumpa.Game.Players
-  alias Jumpa.Game.Player
-  alias Jumpa.Game.Rooms
-  alias Jumpa.Game.Room
+  alias JumpaApi.Game.Room
 
   @regions ["sea"]
 
@@ -49,6 +46,8 @@ defmodule Jumpa.Game.Rooms do
       {:error, %Ecto.Changeset{}}
 
   """
+  def create_room(), do: create_room(0)
+
   def create_room(attrs) when is_map(attrs) do
     %Room{}
     |> Room.changeset(attrs)
@@ -56,8 +55,8 @@ defmodule Jumpa.Game.Rooms do
   end
 
   @create_room_max_retry 5
-  def create_room(5), do: {:error, "can't create room, max retries reached"}
-  def create_room(retry \\ 0) do
+  def create_room(@create_room_max_retry), do: {:error, "can't create room, max retries reached"}
+  def create_room(retry) do
     random_region = Enum.random(@regions)
     # TODO implement multi region
     attrs = %{

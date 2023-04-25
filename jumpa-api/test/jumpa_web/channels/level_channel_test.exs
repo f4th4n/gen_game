@@ -1,7 +1,7 @@
 defmodule JumpaWeb.LevelChannelTest do
   use JumpaWeb.ChannelCase
 
-  import Jumpa.GameFixtures
+  import JumpaApi.GameFixtures
 
   @player_token "abc"
 

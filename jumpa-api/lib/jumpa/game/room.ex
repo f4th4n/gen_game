@@ -1,11 +1,12 @@
-defmodule Jumpa.Game.Room do
+defmodule JumpaApi.Game.Room do
   use Ecto.Schema
   import Ecto.Changeset
 
   schema "rooms" do
     field :region, :string
     field :token, :string
-    has_one :player, Jumpa.Game.Player
+    field :status, Ecto.Enum, values: [:open, :started, :finished]
+    has_one :player, JumpaApi.Game.Player
 
     timestamps()
   end

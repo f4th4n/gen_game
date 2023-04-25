@@ -1,9 +1,9 @@
 defmodule JumpaWeb.PlayerControllerTest do
   use JumpaWeb.ConnCase
 
-  import Jumpa.GameFixtures
+  import JumpaApi.GameFixtures
 
-  alias Jumpa.Game.Player
+  alias JumpaApi.Game.Player
 
   @create_attrs %{
     nick: "some nick",

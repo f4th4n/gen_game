@@ -1,4 +1,4 @@
-defmodule Jumpa.Game.Player do
+defmodule JumpaApi.Game.Player do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -7,7 +7,7 @@ defmodule Jumpa.Game.Player do
     field :pos_x, :float
     field :pos_y, :float
     field :token, :string
-    belongs_to :room, Jumpa.Game.Room
+    belongs_to :room, JumpaApi.Game.Room
 
     timestamps()
   end

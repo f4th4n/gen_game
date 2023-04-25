@@ -2,8 +2,8 @@ defmodule JumpaWeb.LevelChannel do
   use Phoenix.Channel
   alias JumpaWeb.Presence
   alias Jumpa.Repo
-  alias Jumpa.Game.Player
-  alias Jumpa.Game
+  alias JumpaApi.Game.Player
+  alias JumpaApi.Game
 
   require Logger
 
