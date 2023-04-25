@@ -9,11 +9,11 @@ docker compose up -d
 #### api
 
 ```
-connect_remote.sh api
+jumpa.sh api
 ```
 
 #### world
 
 ```
-connect_remote.sh world
+jumpa.sh world
 ```
