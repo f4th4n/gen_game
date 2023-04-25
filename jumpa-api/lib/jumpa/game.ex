@@ -7,13 +7,16 @@ defmodule JumpaApi.Game do
   alias JumpaApi.Game.Players
   alias JumpaApi.Game.Rooms
 
+  # --------------------------------------------------------------------------- room
   def list_rooms(), do: Rooms.list_rooms()
   def get_room!(id), do: Rooms.get_room!(id)
+  def get_room_by(opts), do: Rooms.get_by(opts)
   def create_room(attrs), do: Rooms.create_room(attrs)
   def update_room(room, attrs), do: Rooms.update_room(room, attrs)
   def delete_room(room), do: Rooms.delete_room(room)
   def change_room(room, attrs), do: Rooms.change_room(room, attrs)
 
+  # --------------------------------------------------------------------------- player
   def list_players(), do: Players.list_players()
   def list_players_by_room(room_id), do: Players.list_players_by_room(room_id)
   def get_player_by(opts), do: Players.get_by(opts)
@@ -31,5 +34,21 @@ defmodule JumpaApi.Game do
 
   def walk_absolute(player_token, x, y) do
     Players.walk_absolute(player_token, x, y)
+  end
+
+  # --------------------------------------------------------------------------- game
+  # def new_game(room_token) do
+  #   with %JumpaApi.Game.Room{} = room <- get_room_by(token: room_token),
+  #   end
+  # end
+
+  def start_game(room_token) do
+    with %JumpaApi.Game.Room{} = room <- get_room_by(token: room_token),
+         {:ok, room} <- Rooms.update_room(room, %{status: :started}) do
+      room
+    else
+      nil -> {:error, :game_is_not_created}
+      _error -> {:error, :failed_to_start_game}
+    end
   end
 end

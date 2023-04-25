@@ -38,7 +38,7 @@ defmodule JumpaApi.Game.Players do
     token = Keyword.get(opts, :token)
     room_token = Keyword.get(opts, :room_token)
 
-    # TODO join rom only if necessary
+    # TODO join room only if necessary
     query =
       from p in Player,
         left_join: r in Room,

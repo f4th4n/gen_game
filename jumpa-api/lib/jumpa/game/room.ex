@@ -5,7 +5,7 @@ defmodule JumpaApi.Game.Room do
   schema "rooms" do
     field :region, :string
     field :token, :string
-    field :status, Ecto.Enum, values: [:open, :started, :finished]
+    field :status, Ecto.Enum, values: [:open, :started, :finished], default: :open
     has_one :player, JumpaApi.Game.Player
 
     timestamps()
@@ -14,7 +14,7 @@ defmodule JumpaApi.Game.Room do
   @doc false
   def changeset(room, attrs) do
     room
-    |> cast(attrs, [:region, :token])
+    |> cast(attrs, [:region, :token, :status])
     |> validate_required([:region, :token])
     |> unique_constraint(:token)
   end

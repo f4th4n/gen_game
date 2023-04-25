@@ -56,6 +56,7 @@ defmodule JumpaApi.Game.Rooms do
 
   @create_room_max_retry 5
   def create_room(@create_room_max_retry), do: {:error, "can't create room, max retries reached"}
+
   def create_room(retry) do
     random_region = Enum.random(@regions)
     # TODO implement multi region
@@ -65,7 +66,8 @@ defmodule JumpaApi.Game.Rooms do
     }
 
     case create_room(attrs) do
-      {:error, _} -> create_room(retry + 1) # same code, try again
+      # same code, try again
+      {:error, _} -> create_room(retry + 1)
       {:ok, room} -> {:ok, room}
     end
   end
@@ -117,8 +119,19 @@ defmodule JumpaApi.Game.Rooms do
     Room.changeset(room, attrs)
   end
 
+  @spec get_by(list()) :: list()
+  def get_by(opts) when is_list(opts) do
+    token = Keyword.get(opts, :token)
+
+    Room
+    |> filter_by_token(token)
+    |> Repo.one()
+  end
+
+  defp filter_by_token(query, nil), do: query
+  defp filter_by_token(query, token), do: where(query, [p], p.token == ^token)
+
   defp random_string(length) do
-    :crypto.strong_rand_bytes(length) |> Base.url_encode64 |> binary_part(0, length) |> String.downcase()
+    :crypto.strong_rand_bytes(length) |> Base.url_encode64() |> binary_part(0, length) |> String.downcase()
   end
 end
-

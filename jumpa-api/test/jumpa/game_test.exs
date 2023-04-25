@@ -119,5 +119,32 @@ defmodule JumpaApi.GameTest do
       player = player_fixture()
       assert %Ecto.Changeset{} = Game.change_player(player, %{})
     end
+
+    test "get_player_by_id_and_room_token/2 return a player" do
+      room = room_fixture()
+
+      player =
+        player_fixture(room_id: room.id)
+        |> Jumpa.Repo.preload(:room)
+
+      player_id = player.id
+      assert %Player{id: ^player_id} = Game.get_player_by_id_and_room_token(player.id, room.token)
+    end
+
+    # TODO test walk_absolute()
+  end
+
+  describe "game" do
+    import JumpaApi.GameFixtures
+
+    test "start_game/1 with valid room_token" do
+      room = room_fixture()
+      room_id = room.id
+      assert %{id: ^room_id, status: :started} = Game.start_game(room.token)
+    end
+
+    test "start_game/1 with non existing room_token" do
+      assert {:error, :game_is_not_created} = Game.start_game("unknown")
+    end
   end
 end
