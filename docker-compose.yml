@@ -15,6 +15,8 @@ services:
     <<: *app
     command: sleep 1000000000000000000
     working_dir: /jumpa
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/jumpa_test
   jumpa.api:
     <<: *app
     command: /bin/sh -c "mix setup && elixir --name jumpa@jumpa.api --cookie jumpa -S mix phx.server --no-halt"
