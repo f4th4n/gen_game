@@ -45,8 +45,8 @@ defmodule JumpaApi.Game do
   end
 
   def new_game(room_token) do
-    with nil <- get_room_by(token: room_token) do
-      :ok
+    with {:ok, room} <- Rooms.create_room() do
+      {:ok, room}
     else
       %Room{} -> {:error, :game_is_exist}
     end

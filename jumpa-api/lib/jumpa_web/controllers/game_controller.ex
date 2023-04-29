@@ -5,9 +5,14 @@ defmodule JumpaWeb.GameController do
 
   action_fallback JumpaWeb.FallbackController
 
-  def new(conn, params) do
-    #render(conn, "show.json", player: params)
+  def new(conn, %{"player_token" => player_token}) do
+    case JumpaApi.Game.new_game() do
+      {:ok, room} -> render(conn, "show.json", room: room)
+      _ -> :error
+    end
+  end
 
-    :something
+  def new(_conn, _params) do
+    :error
   end
 end
