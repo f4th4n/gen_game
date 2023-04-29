@@ -2,6 +2,7 @@ defmodule JumpaApi.Game.Rooms do
   import Ecto.Query, warn: false
   alias Jumpa.Repo
   alias JumpaApi.Game.Room
+  alias JumpaApi.Util
 
   @regions ["sea"]
 
@@ -62,7 +63,7 @@ defmodule JumpaApi.Game.Rooms do
     # TODO implement multi region
     attrs = %{
       region: random_region,
-      token: random_string(10)
+      token: Util.random_string(10)
     }
 
     case create_room(attrs) do
@@ -130,8 +131,4 @@ defmodule JumpaApi.Game.Rooms do
 
   defp filter_by_token(query, nil), do: query
   defp filter_by_token(query, token), do: where(query, [p], p.token == ^token)
-
-  defp random_string(length) do
-    :crypto.strong_rand_bytes(length) |> Base.url_encode64() |> binary_part(0, length) |> String.downcase()
-  end
 end

@@ -6,6 +6,8 @@ defmodule JumpaApi.Game do
   import Ecto.Query, warn: false
   alias JumpaApi.Game.Players
   alias JumpaApi.Game.Rooms
+  alias JumpaApi.Game.Room
+  alias JumpaApi.Util
 
   # --------------------------------------------------------------------------- room
   def list_rooms(), do: Rooms.list_rooms()
@@ -37,13 +39,21 @@ defmodule JumpaApi.Game do
   end
 
   # --------------------------------------------------------------------------- game
-  # def new_game(room_token) do
-  #   with %JumpaApi.Game.Room{} = room <- get_room_by(token: room_token),
-  #   end
-  # end
+  def new_game() do
+    random_token = Util.random_string(10)
+    new_game(random_token)
+  end
+
+  def new_game(room_token) do
+    with nil <- get_room_by(token: room_token) do
+      :ok
+    else
+      %Room{} -> {:error, :game_is_exist}
+    end
+  end
 
   def start_game(room_token) do
-    with %JumpaApi.Game.Room{} = room <- get_room_by(token: room_token),
+    with %Room{} = room <- get_room_by(token: room_token),
          {:ok, room} <- Rooms.update_room(room, %{status: :started}) do
       room
     else

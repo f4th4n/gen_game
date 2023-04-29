@@ -1,4 +1,6 @@
 defmodule JumpaWeb.FallbackController do
+  require Logger
+
   @moduledoc """
   Translates controller action results into valid `Plug.Conn` responses.
 
@@ -20,5 +22,12 @@ defmodule JumpaWeb.FallbackController do
     |> put_status(:not_found)
     |> put_view(JumpaWeb.ErrorView)
     |> render(:"404")
+  end
+
+  def call(conn, error) do
+    conn
+    |> put_status(:not_implemented)
+    |> put_view(JumpaWeb.ErrorView)
+    |> render(:"501")
   end
 end
