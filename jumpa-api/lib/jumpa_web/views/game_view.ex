@@ -10,10 +10,11 @@ defmodule JumpaWeb.GameView do
     }
   end
 
-  defp get_room(game) do
+  defp get_room(room) do
     %{
-      id: game.id,
-      token: game.token
+      id: room.id,
+      token: room.token,
+      status: room.status
     }
   end
 end

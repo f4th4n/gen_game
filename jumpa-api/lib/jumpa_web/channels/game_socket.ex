@@ -6,6 +6,7 @@ defmodule JumpaWeb.GameSocket do
     transport_log: :debug
   )
 
+  channel "game", JumpaWeb.GameChannel
   channel "ping", JumpaWeb.PingChannel
   channel "level:*", JumpaWeb.LevelChannel
 

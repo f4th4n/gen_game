@@ -76,8 +76,7 @@ defmodule JumpaWeb.LevelChannel do
     {:noreply, socket}
   end
 
-  def handle_in(event, payload, socket) do
-    IO.inspect({"event, payload", event, payload})
+  def handle_in(_event, _payload, socket) do
     {:noreply, socket}
   end
 

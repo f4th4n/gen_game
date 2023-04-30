@@ -13,10 +13,10 @@ const levelChannel = {
 
   init: (socket) => {
     levelChannel.socket = socket
-    levelChannel.subscribe()
+    levelChannel.subscribeState()
   },
 
-  subscribe: () => {
+  subscribeState: () => {
     playerModel.currentPlayer.subscribe({
       next: (currentPlayer) => {
         levelChannel.state.currentPlayer = currentPlayer

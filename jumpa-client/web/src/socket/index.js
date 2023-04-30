@@ -1,6 +1,7 @@
 import config from '../config.json'
 import { Socket } from 'phoenix'
 import { levelChannel } from './level-channel'
+import { gameChannel } from './game-channel'
 
 const channelModule = {
   start: () => {
@@ -8,6 +9,7 @@ const channelModule = {
     socket.connect()
 
     levelChannel.init(socket)
+    gameChannel.init(socket)
 
     return socket
   },
