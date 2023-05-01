@@ -7,12 +7,10 @@ defmodule JumpaWeb.GameChannel do
 
   require Logger
 
-  intercept(["request_ping"])
-
   def join("game", %{"player_token" => player_token}, socket) do
     case Game.get_player_by_token(player_token) do
       %{id: player_id, room: %{token: room_token}} ->
-        {:ok, socket}
+        {:ok, assign(socket, :player_id, player_id)}
 
       _ ->
         {:error, %{msg: "Player not found"}}
@@ -25,19 +23,18 @@ defmodule JumpaWeb.GameChannel do
 
   # -------------------------------------------------------------------------------- event from client start here
 
-  def handle_in("walk_relative", _payload, socket) do
-    data = nil
-    broadcast(socket, "walk_absolute", data)
-    {:noreply, socket}
+  def handle_in("new_game", payload, socket) do
+    with :ok <- validate_player_id(socket),
+         {:ok, %JumpaApi.Game.Room{} = room} <- Game.new_game() do
+      res = %{room: room}
+      {:reply, {:ok, res}, socket}
+    end
   end
 
   def handle_in(_event, _payload, socket) do
     {:noreply, socket}
   end
 
-  # -------------------------------------------------------------------------------- event from server start here
-  def handle_out("request_ping", payload, socket) do
-    push(socket, "send_ping", Map.put(payload, "from_node", Node.self()))
-    {:noreply, socket}
-  end
+  defp validate_player_id(%{assigns: %{player_id: player_id}}) when is_number(player_id), do: :ok
+  defp validate_player_id(_), do: :error
 end

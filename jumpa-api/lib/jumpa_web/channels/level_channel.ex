@@ -41,6 +41,7 @@ defmodule JumpaWeb.LevelChannel do
 
   # -------------------------------------------------------------------------------- event from client start here
 
+  # TODO add validation by socket.assigns, see game_channel
   def handle_in("walk_absolute", %{"player_token" => player_token, "pos_x" => pos_x, "pos_y" => pos_y}, socket) do
     data = Game.walk_absolute(player_token, pos_x, pos_y)
     broadcast(socket, "walk_absolute", data)

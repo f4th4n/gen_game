@@ -2,6 +2,8 @@ defmodule JumpaApi.Game.Room do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @derive {Jason.Encoder, only: [:region, :token, :status]}
+
   schema "rooms" do
     field :region, :string
     field :token, :string

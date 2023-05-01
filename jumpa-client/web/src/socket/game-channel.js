@@ -1,4 +1,3 @@
-import { Presence } from 'phoenix'
 import { playerModel } from '../models/player-model'
 
 const gameChannel = {
@@ -25,7 +24,6 @@ const gameChannel = {
 	registerChannel() {
 		const currentPlayer = gameChannel.state.currentPlayer
 		const payload = { player_token: currentPlayer.token }
-		console.log('registerChannel', payload, 'game')
 		const channel = gameChannel.socket.channel('game', payload)
 		gameChannel.channel = channel
 
