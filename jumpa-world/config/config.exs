@@ -12,3 +12,6 @@ config :jumpa_world,
 
 config :jumpa_world,
   type: :world
+
+config :logger, :console,
+  level: :info

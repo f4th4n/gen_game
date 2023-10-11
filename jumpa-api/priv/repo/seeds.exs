@@ -39,10 +39,10 @@ case player1 do
   _ -> nil
 end
 
-player2 = Jumpa.Repo.get(JumpaApi.Game.Player, 1)
+player2 = Jumpa.Repo.get(JumpaApi.Game.Player, 2)
 
 new_player = %JumpaApi.Game.Player{
-  id: 1,
+  id: 2,
   nick: "player2",
   pos_x: 1.0,
   pos_y: 2.0,

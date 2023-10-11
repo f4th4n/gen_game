@@ -5,8 +5,6 @@ defmodule JumpaWorld.GameSpv do
 
   use Supervisor
 
-  require Logger
-
   def start_link(_) do
     Supervisor.start_link(__MODULE__, [], name: __MODULE__)
   end
@@ -14,10 +12,11 @@ defmodule JumpaWorld.GameSpv do
   @impl true
   def init(_) do
     children = [
-      {JumpaWorld.Game, [5]}
+      {JumpaWorld.Game, [5]},
+      JumpaWorld.KafkaConsumer,
+      JumpaWorld.KafkaProducer
     ]
 
-    Logger.info("application started...")
-    Supervisor.init(children, strategy: :rest_for_one)
+    Supervisor.init(children, strategy: :one_for_one)
   end
 end

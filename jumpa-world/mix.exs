@@ -24,7 +24,8 @@ defmodule JumpaWorld.MixProject do
   defp deps do
     [
       {:libcluster, "~> 3.3"},
-      {:broadway, "~> 1.0"}
+      {:broadway_kafka, "~> 0.3.0"},
+      {:phoenix_pubsub, "~> 2.1"}
     ]
   end
 

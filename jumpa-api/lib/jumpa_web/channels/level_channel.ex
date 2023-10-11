@@ -62,7 +62,8 @@ defmodule JumpaWeb.LevelChannel do
         socket
       ) do
     data =
-      Game.get_player_by_id_and_room_token(player_id, room_token)
+      player_id
+      |> Game.get_player_by_id_and_room_token(room_token)
       |> Game.view_player()
 
     # TODO make it non blocking

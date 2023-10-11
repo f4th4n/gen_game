@@ -1,4 +1,6 @@
-defmodule JumpaWorld.Game do
+# TODO not implemented
+
+defmodule JumpaWorld.PlayerPosition do
   use GenServer
 
   def start_link(state) do
@@ -11,15 +13,15 @@ defmodule JumpaWorld.Game do
 
   # --------------------------------------------------------------------------- client
 
-  def start_game(game_token) do
-    GenServer.cast(__MODULE__, {:start_game, game_token})
+  def player_position(game_token) do
+    GenServer.cast(__MODULE__, {:player_position, game_token})
   end
 
   # --------------------------------------------------------------------------- server
 
-  def handle_cast({:start_game, game_token}, state) do
+  def handle_cast({:player_position, game_token}, state) do
     api_node = JumpaWorld.Proxy.get_api_node()
-    res = :rpc.call(api_node, JumpaApi.Game, :start_game, [game_token])
+    _res = :rpc.call(api_node, JumpaApi.Game, :player_position, [game_token])
 
     {:noreply, state}
   end

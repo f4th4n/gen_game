@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "browser-sync-webpack-plugin": "^2.3.0",
-    "phoenix": "^1.6.2",
+    "phoenix": "^1.7.9",
     "rxjs": "^7.4.0"
   }
 }

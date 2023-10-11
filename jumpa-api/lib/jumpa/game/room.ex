@@ -7,6 +7,7 @@ defmodule JumpaApi.Game.Room do
   schema "rooms" do
     field :region, :string
     field :token, :string
+    # TODO restrict room by status
     field :status, Ecto.Enum, values: [:open, :started, :finished], default: :open
     has_one :player, JumpaApi.Game.Player
 

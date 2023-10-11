@@ -1,15 +1,13 @@
 defmodule JumpaWeb.GameChannel do
   use Phoenix.Channel
-  alias JumpaWeb.Presence
-  alias Jumpa.Repo
-  alias JumpaApi.Game.Player
+
   alias JumpaApi.Game
 
   require Logger
 
   def join("game", %{"player_token" => player_token}, socket) do
     case Game.get_player_by_token(player_token) do
-      %{id: player_id, room: %{token: room_token}} ->
+      %{id: player_id, room: %{token: _room_token}} ->
         {:ok, assign(socket, :player_id, player_id)}
 
       _ ->
@@ -17,13 +15,13 @@ defmodule JumpaWeb.GameChannel do
     end
   end
 
-  def join(_topic, params, _socket) do
+  def join(_topic, _params, _socket) do
     {:error, %{code: 100, msg: "wrong parameters"}}
   end
 
   # -------------------------------------------------------------------------------- event from client start here
 
-  def handle_in("new_game", payload, socket) do
+  def handle_in("new_game", _payload, socket) do
     with :ok <- validate_player_id(socket),
          {:ok, %JumpaApi.Game.Room{} = room} <- Game.new_game() do
       res = %{room: room}
