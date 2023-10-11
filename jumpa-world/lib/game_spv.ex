@@ -5,6 +5,8 @@ defmodule JumpaWorld.GameSpv do
 
   use Supervisor
 
+  require Logger
+
   def start_link(_) do
     Supervisor.start_link(__MODULE__, [], name: __MODULE__)
   end
@@ -12,12 +14,10 @@ defmodule JumpaWorld.GameSpv do
   @impl true
   def init(_) do
     children = [
-      %{
-        id: JumpaWorld.Game,
-        start: {JumpaWorld.Game, :start_link, [5]}
-      }
+      {JumpaWorld.Game, [5]}
     ]
 
+    Logger.info("application started...")
     Supervisor.init(children, strategy: :rest_for_one)
   end
 end

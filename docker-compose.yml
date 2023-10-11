@@ -17,16 +17,19 @@ services:
     working_dir: /jumpa
     environment:
       DATABASE_URL: postgres://postgres:postgres@postgres:5432/jumpa_test
+
   jumpa.api:
     <<: *app
     command: /bin/sh -c "mix setup && elixir --name jumpa@jumpa.api --cookie jumpa -S mix phx.server --no-halt"
     working_dir: /jumpa/jumpa-api
     ports:
       - 4000:4000
+
   jumpa.world:
     <<: *app
     command: /bin/sh -c "mix setup && elixir --name jumpa@jumpa.world --cookie jumpa -S mix run --no-halt"
     working_dir: /jumpa/jumpa-world
+
   frontend:
     image: node:19-alpine3.16
     command: /bin/sh -c "npm i && npm run start"
@@ -35,6 +38,7 @@ services:
       - .:/jumpa:cached
     ports:
       - 3000:3000
+
   postgres:
     image: postgres:14-alpine
     healthcheck:
@@ -46,33 +50,43 @@ services:
       POSTGRES_PASSWORD: postgres
     ports:
       - 5433:5432
-  kafka-ui:
-    container_name: kafka-ui
-    image: provectuslabs/kafka-ui:latest
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    container_name: zookeeper
     ports:
-      - 8080:8080
+      - "2181:2181"
     environment:
-      DYNAMIC_CONFIG_ENABLED: true
-    volumes:
-      - ./data/config.yml:/etc/kafkaui/dynamic_config.yaml
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
   kafka:
-    image: docker.io/bitnami/kafka:3.5
+    image: confluentinc/cp-kafka:latest
+    container_name: kafka
+    depends_on:
+      - zookeeper
     ports:
       - "9092:9092"
-    volumes:
-      - "kafka_data:/bitnami"
     environment:
-      # KRaft settings
-      - KAFKA_CFG_NODE_ID=0
-      - KAFKA_CFG_PROCESS_ROLES=controller,broker
-      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka:9093
-      # Listeners
-      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093
-      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://:9092
-      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
-      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
-      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+      KAFKA_BROKER_ID: 1
+      KAFKA_LISTENERS: PLAINTEXT://:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY: 0
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: kafka-ui
+    depends_on:
+      - kafka
+    ports:
+      - "8080:8080"
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local-kafka
+      KAFKA_CLUSTERS_0_BOOTSTRAP_SERVERS: kafka:9092
+
+
 volumes:
   postgres:
-  kafka_data:
-    driver: local

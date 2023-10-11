@@ -9,11 +9,11 @@ docker compose up -d
 #### api
 
 ```
-jumpa.sh api
+./jumpa api
 ```
 
 #### world
 
 ```
-jumpa.sh world
+./jumpa world
 ```
