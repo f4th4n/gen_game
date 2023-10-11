@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kafka-ui-helm-values
+data:
+  KAFKA_CLUSTERS_0_NAME: "cluster1"
+  KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: "kafka:9092"
+  AUTH_TYPE: "DISABLED"
+  MANAGEMENT_HEALTH_LDAP_ENABLED: "FALSE"
