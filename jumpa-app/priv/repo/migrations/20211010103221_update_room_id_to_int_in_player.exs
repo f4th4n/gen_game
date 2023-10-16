@@ -1,4 +1,4 @@
-defmodule Jumpa.Repo.Migrations.UpdateRoomIdToIntInPlayer do
+defmodule JumpaApp.Repo.Migrations.UpdateRoomIdToIntInPlayer do
   use Ecto.Migration
 
   def up do

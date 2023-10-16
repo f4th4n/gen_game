@@ -9,9 +9,8 @@ defmodule JumpaApi.Application do
 
     children = [
       {Cluster.Supervisor, [topologies, [name: JumpaApi.ClusterSupervisor]]},
-      Jumpa.Repo,
-      JumpaWeb.Telemetry,
       {Phoenix.PubSub, name: Jumpa.PubSub},
+      JumpaWeb.Telemetry,
       JumpaWeb.Endpoint,
       JumpaWeb.Presence
     ]

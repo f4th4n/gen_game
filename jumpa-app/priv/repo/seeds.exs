@@ -5,27 +5,27 @@
 # Inside the script, you can read and write to any of your
 # repositories directly:
 #
-#     Jumpa.Repo.insert!(%Jumpa.SomeSchema{})
+#     JumpaApp.Repo.insert!(%Jumpa.SomeSchema{})
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
-room1 = Jumpa.Repo.get(JumpaApi.Game.Room, 1)
+room1 = JumpaApp.Repo.get(JumpaApp.Game.Room, 1)
 
-new_room = %JumpaApi.Game.Room{
+new_room = %JumpaApp.Game.Room{
   id: 1,
   region: "sea",
   token: "abc"
 }
 
 case room1 do
-  nil -> Jumpa.Repo.insert!(new_room)
+  nil -> JumpaApp.Repo.insert!(new_room)
   _ -> nil
 end
 
-player1 = Jumpa.Repo.get(JumpaApi.Game.Player, 1)
+player1 = JumpaApp.Repo.get(JumpaApp.Game.Player, 1)
 
-new_player = %JumpaApi.Game.Player{
+new_player = %JumpaApp.Game.Player{
   id: 1,
   nick: "player1",
   pos_x: 1.0,
@@ -35,13 +35,13 @@ new_player = %JumpaApi.Game.Player{
 }
 
 case player1 do
-  nil -> Jumpa.Repo.insert!(new_player)
+  nil -> JumpaApp.Repo.insert!(new_player)
   _ -> nil
 end
 
-player2 = Jumpa.Repo.get(JumpaApi.Game.Player, 2)
+player2 = JumpaApp.Repo.get(JumpaApp.Game.Player, 2)
 
-new_player = %JumpaApi.Game.Player{
+new_player = %JumpaApp.Game.Player{
   id: 2,
   nick: "player2",
   pos_x: 1.0,
@@ -51,6 +51,6 @@ new_player = %JumpaApi.Game.Player{
 }
 
 case player2 do
-  nil -> Jumpa.Repo.insert!(new_player)
+  nil -> JumpaApp.Repo.insert!(new_player)
   _ -> nil
 end

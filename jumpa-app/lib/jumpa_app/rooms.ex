@@ -1,8 +1,8 @@
-defmodule JumpaApi.Game.Rooms do
+defmodule JumpaApp.Game.Rooms do
   import Ecto.Query, warn: false
-  alias Jumpa.Repo
-  alias JumpaApi.Game.Room
-  alias JumpaApi.Util
+  alias JumpaApp.Repo
+  alias JumpaApp.Game.Room
+  alias JumpaApp.Util
 
   @regions ["sea"]
 

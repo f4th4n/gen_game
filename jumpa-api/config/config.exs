@@ -7,8 +7,6 @@
 # General application configuration
 import Config
 
-# TODO change app name to jumpa_api
-
 config :jumpa_api,
   topologies: [
     gossip: [
@@ -19,27 +17,12 @@ config :jumpa_api,
     ]
   ]
 
-config :jumpa_api,
-  ecto_repos: [Jumpa.Repo]
-
 # Configures the endpoint
 config :jumpa_api, JumpaWeb.Endpoint,
   url: [host: "localhost"],
   render_errors: [view: JumpaWeb.ErrorView, accepts: ~w(json), layout: false],
   pubsub_server: Jumpa.PubSub,
   live_view: [signing_salt: "WrSwRop/"]
-
-# Configures the mailer
-#
-# By default it uses the "Local" adapter which stores the emails
-# locally. You can see the emails in your browser, at "/dev/mailbox".
-#
-# For production it's recommended to configure a different adapter
-# at the `config/runtime.exs`.
-config :jumpa_api, Jumpa.Mailer, adapter: Swoosh.Adapters.Local
-
-# Swoosh API client is needed for adapters other than SMTP.
-config :swoosh, :api_client, false
 
 # Configures Elixir's Logger
 config :logger, :console,

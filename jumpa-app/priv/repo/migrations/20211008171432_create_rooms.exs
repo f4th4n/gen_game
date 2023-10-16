@@ -1,4 +1,4 @@
-defmodule Jumpa.Repo.Migrations.CreateRooms do
+defmodule JumpaApp.Repo.Migrations.CreateRooms do
   use Ecto.Migration
 
   def change do
