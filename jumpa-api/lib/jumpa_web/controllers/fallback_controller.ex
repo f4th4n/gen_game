@@ -24,6 +24,12 @@ defmodule JumpaWeb.FallbackController do
     |> render(:"404")
   end
 
+  def call(conn, {:rpc_error, _}) do
+    conn
+    |> put_status(500)
+    |> json(%{error: :temporarily_unavailable})
+  end
+
   def call(conn, error) do
     conn
     |> put_status(:not_implemented)
