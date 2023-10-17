@@ -6,6 +6,16 @@ defmodule JumpaApp.Game.Rooms do
 
   @regions ["sea"]
 
+  def find(opts) when is_list(opts) do
+    token = Keyword.get(opts, :token)
+    status = Keyword.get(opts, :status)
+
+    Room
+    |> filter_by_token(token)
+    |> filter_by_status(status)
+    |> Repo.all()
+  end
+
   @doc """
   Returns the list of rooms.
 
@@ -131,4 +141,7 @@ defmodule JumpaApp.Game.Rooms do
 
   defp filter_by_token(query, nil), do: query
   defp filter_by_token(query, token), do: where(query, [p], p.token == ^token)
+
+  defp filter_by_status(query, nil), do: query
+  defp filter_by_status(query, status), do: where(query, [p], p.status == ^status)
 end

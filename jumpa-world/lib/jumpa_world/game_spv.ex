@@ -13,6 +13,7 @@ defmodule JumpaWorld.GameSpv do
   def init(_) do
     children = [
       {DynamicSupervisor, strategy: :one_for_one, name: JumpaWorld.DynamicGameSpv},
+      JumpaWorld.GameManager,
       JumpaWorld.KafkaConsumer,
       JumpaWorld.KafkaProducer
     ]
