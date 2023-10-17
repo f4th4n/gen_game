@@ -25,6 +25,11 @@ services:
     ports:
       - 4000:4000
 
+  jumpa.app:
+    <<: *app
+    command: /bin/sh -c "mix setup && elixir --name jumpa@jumpa.app --cookie jumpa -S mix run --no-halt"
+    working_dir: /jumpa/jumpa-app
+
   jumpa.world:
     <<: *app
     command: /bin/sh -c "mix setup && elixir --name jumpa@jumpa.world --cookie jumpa -S mix run --no-halt"

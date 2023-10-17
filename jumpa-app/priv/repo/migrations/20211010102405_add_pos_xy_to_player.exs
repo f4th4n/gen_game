@@ -1,4 +1,4 @@
-defmodule Jumpa.Repo.Migrations.AddPosXyToPlayer do
+defmodule JumpaApp.Repo.Migrations.AddPosXyToPlayer do
   use Ecto.Migration
 
   def change do

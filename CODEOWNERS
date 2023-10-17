@@ -1,0 +1,10 @@
+/jumpa-api/ @f4th4n
+/jumpa-app/ @f4th4n
+/jumpa-world/ @f4th4n
+/jumpa-client/ @f4th4n
+
+docker-compose.yml @f4th4n
+Dockerfile @f4th4n
+jumpa @f4th4n
+README.md @f4th4n
+scripts @f4th4n

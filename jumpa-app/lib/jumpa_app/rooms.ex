@@ -1,10 +1,20 @@
-defmodule JumpaApi.Game.Rooms do
+defmodule JumpaApp.Game.Rooms do
   import Ecto.Query, warn: false
-  alias Jumpa.Repo
-  alias JumpaApi.Game.Room
-  alias JumpaApi.Util
+  alias JumpaApp.Repo
+  alias JumpaApp.Game.Room
+  alias JumpaApp.Util
 
   @regions ["sea"]
+
+  def find(opts) when is_list(opts) do
+    token = Keyword.get(opts, :token)
+    status = Keyword.get(opts, :status)
+
+    Room
+    |> filter_by_token(token)
+    |> filter_by_status(status)
+    |> Repo.all()
+  end
 
   @doc """
   Returns the list of rooms.
@@ -131,4 +141,7 @@ defmodule JumpaApi.Game.Rooms do
 
   defp filter_by_token(query, nil), do: query
   defp filter_by_token(query, token), do: where(query, [p], p.token == ^token)
+
+  defp filter_by_status(query, nil), do: query
+  defp filter_by_status(query, status), do: where(query, [p], p.status == ^status)
 end

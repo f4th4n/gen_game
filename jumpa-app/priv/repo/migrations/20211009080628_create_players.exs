@@ -1,4 +1,4 @@
-defmodule Jumpa.Repo.Migrations.CreatePlayers do
+defmodule JumpaApp.Repo.Migrations.CreatePlayers do
   use Ecto.Migration
 
   def change do

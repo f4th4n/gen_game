@@ -11,8 +11,8 @@ defmodule JumpaWorld.Application do
 
     children = [
       {Cluster.Supervisor, [topologies, [name: JumpaWorld.ClusterSupervisor]]},
-      JumpaWorld.GameSpv,
       {Phoenix.PubSub, name: Jumpa.PubSub},
+      JumpaWorld.GameSpv,
       JumpaWorld.CommandHandler
     ]
 

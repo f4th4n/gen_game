@@ -2,7 +2,9 @@
 
 ### To start all service
 
+```
 docker compose up -d
+```
 
 ### To connect running node (via attach):
 

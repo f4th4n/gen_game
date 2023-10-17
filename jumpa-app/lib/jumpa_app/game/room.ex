@@ -1,4 +1,4 @@
-defmodule JumpaApi.Game.Room do
+defmodule JumpaApp.Game.Room do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -9,7 +9,7 @@ defmodule JumpaApi.Game.Room do
     field :token, :string
     # TODO restrict room by status
     field :status, Ecto.Enum, values: [:open, :started, :finished], default: :open
-    has_one :player, JumpaApi.Game.Player
+    has_one :player, JumpaApp.Game.Player
 
     timestamps()
   end

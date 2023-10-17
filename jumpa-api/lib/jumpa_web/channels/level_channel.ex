@@ -28,7 +28,7 @@ defmodule JumpaWeb.LevelChannel do
   def handle_info(:after_join, socket) do
     push(socket, "presence_state", Presence.list(socket))
 
-    player = Repo.get(Player, socket.assigns.player_id)
+    player = JumpaApi.Game.get_player(socket.assigns.player_id)
 
     {:ok, _} =
       Presence.track(socket, "player:#{player.id}", %{
@@ -62,8 +62,7 @@ defmodule JumpaWeb.LevelChannel do
         socket
       ) do
     data =
-      player_id
-      |> Game.get_player_by_id_and_room_token(room_token)
+      Game.get_player_by(token: room_token, id: player_id)
       |> Game.view_player()
 
     # TODO make it non blocking

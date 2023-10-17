@@ -1,13 +1,32 @@
-defmodule JumpaApi.Game do
+defmodule JumpaApp.Game do
   @moduledoc """
   The Game context.
   """
 
   import Ecto.Query, warn: false
-  alias JumpaApi.Game.Players
-  alias JumpaApi.Game.Rooms
-  alias JumpaApi.Game.Room
-  alias JumpaApi.Util
+  alias JumpaApp.Game.Players
+  alias JumpaApp.Game.Rooms
+  alias JumpaApp.Game.Room
+  alias JumpaApp.Util
+
+  # --------------------------------------------------------------------------- game
+  def new_game() do
+    with {:ok, room} <- Rooms.create_room() do
+      {:ok, room}
+    else
+      %Room{} -> {:error, :game_is_exist}
+    end
+  end
+
+  def start_game(room_token) do
+    with %Room{} = room <- get_room_by(token: room_token),
+         {:ok, room} <- Rooms.update_room(room, %{status: :started}) do
+      room
+    else
+      nil -> {:error, :game_is_not_created}
+      _error -> {:error, :failed_to_start_game}
+    end
+  end
 
   # --------------------------------------------------------------------------- room
   def list_rooms(), do: Rooms.list_rooms()
@@ -24,7 +43,11 @@ defmodule JumpaApi.Game do
   def get_player_by(opts), do: Players.get_by(opts)
   def get_player_by_token(token), do: Players.get_player_by_token(token)
   def get_player!(id), do: Players.get_player!(id)
-  def get_players_in_the_same_room(player_token), do: Players.get_players_in_the_same_room(player_token)
+  def get_player(id), do: Players.get_player(id)
+
+  def get_players_in_the_same_room(player_token),
+    do: Players.get_players_in_the_same_room(player_token)
+
   def create_player(attrs), do: Players.create_player(attrs)
   def update_player(player, attrs), do: Players.update_player(player, attrs)
   def delete_player(player), do: Players.delete_player(player)
@@ -36,29 +59,5 @@ defmodule JumpaApi.Game do
 
   def walk_absolute(player_token, x, y) do
     Players.walk_absolute(player_token, x, y)
-  end
-
-  # --------------------------------------------------------------------------- game
-  def new_game() do
-    random_token = Util.random_string(10)
-    new_game(random_token)
-  end
-
-  def new_game(room_token) do
-    with {:ok, room} <- Rooms.create_room() do
-      {:ok, room}
-    else
-      %Room{} -> {:error, :game_is_exist}
-    end
-  end
-
-  def start_game(room_token) do
-    with %Room{} = room <- get_room_by(token: room_token),
-         {:ok, room} <- Rooms.update_room(room, %{status: :started}) do
-      room
-    else
-      nil -> {:error, :game_is_not_created}
-      _error -> {:error, :failed_to_start_game}
-    end
   end
 end

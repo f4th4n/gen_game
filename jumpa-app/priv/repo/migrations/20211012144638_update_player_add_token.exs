@@ -1,8 +1,8 @@
-defmodule Jumpa.Repo.Migrations.UpdateRoomAddToken do
+defmodule JumpaApp.Repo.Migrations.UpdatePlayerAddToken do
   use Ecto.Migration
 
   def change do
-    alter table(:rooms) do
+    alter table(:players) do
       add :token, :string, default: ""
     end
   end

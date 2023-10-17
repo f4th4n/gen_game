@@ -1,4 +1,4 @@
-defmodule Jumpa.Repo.Migrations.UpdateRoomsAddUniqueConstraint do
+defmodule JumpaApp.Repo.Migrations.UpdateRoomsAddUniqueConstraint do
   use Ecto.Migration
 
   def change do
