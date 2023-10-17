@@ -10,8 +10,7 @@ defmodule JumpaApp.Application do
     children = [
       {Cluster.Supervisor, [topologies, [name: JumpaApp.ClusterSupervisor]]},
       {Phoenix.PubSub, name: Jumpa.PubSub},
-      JumpaApp.Repo,
-      JumpaApp.GameManager
+      JumpaApp.Repo
     ]
 
     opts = [strategy: :one_for_one, name: JumpaApp.Supervisor]

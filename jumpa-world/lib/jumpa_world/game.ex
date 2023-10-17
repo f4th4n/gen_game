@@ -12,8 +12,11 @@ defmodule JumpaWorld.Game do
 
   # --------------------------------------------------------------------------- client
 
-  def new_game(game_token) do
-    DynamicSupervisor.start_child(JumpaWorld.DynamicGameSpv, {JumpaWorld.Game, [name: game_token]})
+  @spec new_game(binary()) :: {:ok, pid(), atom()}
+  def new_game(token_str) do
+    process_name = String.to_atom("game_" <> token_str)
+    {:ok, pid} = DynamicSupervisor.start_child(JumpaWorld.DynamicGameSpv, {JumpaWorld.Game, [name: process_name]})
+    {:ok, pid, process_name}
   end
 
   def start_game(game_token) do
