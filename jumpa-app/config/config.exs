@@ -8,7 +8,6 @@ config :jumpa_app,
         secret: System.get_env("RELEASE_COOKIE", "jumpa")
       ]
     ]
-  ]
-
-config :jumpa_app,
-  ecto_repos: [JumpaApp.Repo]
+  ],
+  ecto_repos: [JumpaApp.Repo],
+  type: :app

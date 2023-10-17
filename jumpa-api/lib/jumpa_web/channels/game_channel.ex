@@ -2,6 +2,7 @@ defmodule JumpaWeb.GameChannel do
   use Phoenix.Channel
 
   alias JumpaApi.Game
+  alias JumpaApi.Game.Room
 
   require Logger
 
@@ -23,9 +24,17 @@ defmodule JumpaWeb.GameChannel do
 
   def handle_in("new_game", _payload, socket) do
     with :ok <- validate_player_id(socket),
-         {:ok, %JumpaApi.Game.Room{} = room} <- Game.new_game() do
-      res = %{room: room}
-      {:reply, {:ok, res}, socket}
+         {:ok, token} <- Game.new_game() do
+      {:reply, {:ok, %{token: token}}, socket}
+    else
+      {:rpc_error, :no_worker} ->
+        # {:rpc_error, :no_worker}
+        Logger.info("error create new game, reason: #{inspect({:rpc_error, :no_worker})}")
+        {:reply, {:error, :rpc_error}}
+      e ->
+        # {:rpc_error, :no_worker}
+        Logger.info("error create new game, reason: #{inspect(e)}")
+        {:reply, {:error, :unknown_error}}
     end
   end
 

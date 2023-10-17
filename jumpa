@@ -1,5 +1,7 @@
 if [ "$1" = "api" ]; then
   docker compose exec jumpa.api iex --name "remote-1@jumpa.api" --cookie jumpa --remsh "jumpa@jumpa.api"
+elif [ "$1" = "app" ]; then
+  docker compose exec jumpa.app iex --name "remote-1@jumpa.app" --cookie jumpa --remsh "jumpa@jumpa.app"
 elif [ "$1" = "world" ]; then
   docker compose exec jumpa.world iex --name "remote-1@jumpa.world" --cookie jumpa --remsh "jumpa@jumpa.world"
 elif [ "$1" = "shell" ]; then
@@ -11,7 +13,8 @@ elif [ "$1" = "up" ]; then
 else
   echo "unknown command. available command:
 	./jumpa.sh shell
-	./jumpa.sh api
+  ./jumpa.sh api
+  ./jumpa.sh app
   ./jumpa.sh world
   ./jumpa.sh up"
 fi

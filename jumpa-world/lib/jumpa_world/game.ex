@@ -2,7 +2,8 @@ defmodule JumpaWorld.Game do
   use GenServer
 
   def start_link(state) do
-    GenServer.start_link(__MODULE__, state, name: __MODULE__)
+    {name, state} = Keyword.pop(state, :name)
+    GenServer.start_link(__MODULE__, state, name: name)
   end
 
   def init(init_arg) do
@@ -10,6 +11,10 @@ defmodule JumpaWorld.Game do
   end
 
   # --------------------------------------------------------------------------- client
+
+  def new_game(game_token) do
+    DynamicSupervisor.start_child(JumpaWorld.DynamicGameSpv, {JumpaWorld.Game, [name: game_token]})
+  end
 
   def start_game(game_token) do
     GenServer.cast(__MODULE__, {:start_game, game_token})
@@ -22,6 +27,10 @@ defmodule JumpaWorld.Game do
     _res = :rpc.call(api_node, JumpaApi.Game, :start_game, [game_token])
 
     {:noreply, state}
+  end
+
+  def handle_call(:try, _from, state) do
+    {:reply, state, state}
   end
 
   def handle_cast(_, _state) do
