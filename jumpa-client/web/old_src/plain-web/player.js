@@ -1,16 +1,16 @@
 import { playerModel } from '../models/player-model'
 
-const renderPlayer = {
+const player = {
   start: () => {
-    renderPlayer.subscribe()
+    player.subscribe()
   },
 
   subscribe: () => {
     playerModel.presences.subscribe({
-      next: (v) => renderPlayer.render(),
+      next: (v) => player.render(),
     })
     playerModel.players.subscribe({
-      next: (v) => renderPlayer.render(),
+      next: (v) => player.render(),
     })
   },
 
@@ -27,7 +27,7 @@ const renderPlayer = {
 
       html += `<li>
         nick: ${player_id}<br />
-        ${player ? `position: x ${player.pos_x}, y ${player.pos_y}}` : ''}
+        ${player ? `position: x ${player.pos_x}, y ${player.pos_y}` : ''}
         <br /><br />
       </li>`
     }
@@ -35,4 +35,4 @@ const renderPlayer = {
   },
 }
 
-export { renderPlayer }
+export { player }

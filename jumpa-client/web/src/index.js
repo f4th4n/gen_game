@@ -1,12 +1,11 @@
-import { initializeState } from './initialize-state'
-import { socket } from './socket/index'
+import { app } from './app'
+/*import { socket } from './socket/index'
 import { global } from './global'
-import { listeners } from './listeners'
+import { listeners } from './listeners'*/
 
-initializeState
-  .waitForUnity()
-  .then(initializeState.setState)
-  .then(initializeState.renderState)
+console.log('app', app)
+app.start()
+/*  .then(app.setState)
   .then(() => {
     socket.start()
     listeners.start()
@@ -16,3 +15,4 @@ initializeState
     console.log('e', e)
     //alert(e)
   })
+*/

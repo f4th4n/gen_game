@@ -3,7 +3,7 @@ const caller = {
 		try {
 			return window.unityInstance.SendMessage(gameObject, method, arg)
 		} catch (e) {
-			//console.log('e', e)
+			console.log('e', e)
 		}
 	},
 }

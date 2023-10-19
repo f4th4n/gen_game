@@ -1,4 +1,4 @@
-import { caller } from './caller'
+import { eventDispatcher } from '../event-dispatcher'
 import { playerModel } from '../models/player-model'
 import { PlayerProfile } from '../models/player-profile-class'
 
@@ -63,17 +63,20 @@ const player = {
 			name: player.nick,
 			color: [1.0, 0, 0], // TODO implement color system
 		}
-		caller.call('Player', 'BridgeUpdateProfile', JSON.stringify(profile))
+		//caller.call('Player', 'BridgeUpdateProfile', JSON.stringify(profile))
+		eventDispatcher.dispatch('player:update_profile', profile)
 	},
 	updatePos: (x, y) => {
 		var profile = new PlayerProfile()
 		profile.id = -99 // self
 		profile.posX = x
 		profile.posY = y
-		caller.call('Player', 'BridgeUpdatePos', JSON.stringify(profile))
+		//caller.call('Player', 'BridgeUpdatePos', JSON.stringify(profile))
+		eventDispatcher.dispatch('player:update_pos', profile)
 	},
 	spawn: (profile) => {
-		caller.call('PlayerSpawner', 'BridgeSpawn', JSON.stringify(profile))
+		//caller.call('PlayerSpawner', 'BridgeSpawn', JSON.stringify(profile))
+		eventDispatcher.dispatch('player_spawner:update_pos', profile)
 	},
 	destroy: (playerId) => {
 		caller.call('PlayerSpawner', 'BridgeDestroy', playerId)
