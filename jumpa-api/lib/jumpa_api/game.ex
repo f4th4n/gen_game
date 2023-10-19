@@ -4,9 +4,9 @@ defmodule JumpaApi.Game do
   alias JumpaApp.Game.Room
 
   def new_game() do
-    with {:ok, %{token: token_str}} <- Worker.exec(:app, {JumpaApp.Game, :new_game, []}),,
+    with {:ok, %{token: token_str}} <- Worker.exec(:app, {JumpaApp.Game, :new_game, []}),
          {:ok, _pid} <- Worker.exec(:world, {JumpaWorld.Game, :new_game, [token_str]}) do
-      {:ok, token}
+      {:ok, token_str}
     end
   end
 
