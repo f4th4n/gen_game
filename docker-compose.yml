@@ -1,7 +1,7 @@
 x-app: &app
   build: .
   volumes:
-    - .:/jumpa:cached
+    - .:/app:cached
     - ./log/erlang-history:/log/erlang-history
     - ./log/shell-history:/log/shell-history
   environment:
@@ -18,10 +18,10 @@ services:
     environment:
       DATABASE_URL: postgres://postgres:postgres@postgres:5432/jumpa_test
 
-  jumpa.api:
+  gen_game.api:
     <<: *app
-    command: /bin/sh -c "mix setup && elixir --name jumpa@jumpa.api --cookie jumpa -S mix phx.server --no-halt"
-    working_dir: /jumpa/jumpa-api
+    command: /bin/sh -c "mix setup && elixir --name node1@gen_game.api --cookie gen_game -S mix phx.server --no-halt"
+    working_dir: /app/gen_game_api
     ports:
       - 4000:4000
 
