@@ -14,8 +14,8 @@ defmodule JumpaWorld.GameSpv do
     children = [
       {DynamicSupervisor, strategy: :one_for_one, name: JumpaWorld.DynamicGameSpv},
       JumpaWorld.GameManager,
-      JumpaWorld.KafkaConsumer,
-      JumpaWorld.KafkaProducer
+      #JumpaWorld.KafkaConsumer,
+      #JumpaWorld.KafkaProducer
     ]
 
     Supervisor.init(children, strategy: :one_for_one)
