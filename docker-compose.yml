@@ -21,7 +21,7 @@ services:
   gen_game.api:
     <<: *app
     command: /bin/sh -c "mix setup && elixir --name node1@gen_game.api --cookie gen_game -S mix phx.server --no-halt"
-    working_dir: /app/gen_game_api
+    working_dir: /app/api
     ports:
       - 4000:4000
 
@@ -30,12 +30,12 @@ services:
     depends_on:
       - kafka
     command: /bin/sh -c "mix setup && elixir --name node1@gen_game.app --cookie gen_game -S mix run --no-halt"
-    working_dir: /app/gen_game_app
+    working_dir: /app/app
 
   gen_game.world:
     <<: *app
     command: /bin/sh -c "mix setup && elixir --name node1@gen_game.world --cookie gen_game -S mix run --no-halt"
-    working_dir: /app/gen_game_world
+    working_dir: /app/world
 
   frontend:
     image: node:19-alpine3.16
