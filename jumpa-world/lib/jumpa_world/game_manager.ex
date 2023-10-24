@@ -14,7 +14,7 @@ defmodule JumpaWorld.GameManager do
 
   def handle_cast(:hydrate, state) do
     case hydrate() do
-      {:rpc_error, _} ->
+      {:bad_rpc, _} ->
         :timer.sleep(500)
         GenServer.cast(__MODULE__, :hydrate)
 

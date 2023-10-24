@@ -4,7 +4,7 @@ defmodule JumpaApi.Worker do
 	@spec exec(atom(), list()) :: any()
 	def exec(app, {m, f, a}) do
 		case get_node(app) do
-			nil -> {:rpc_error, :no_worker}
+			nil -> {:bad_rpc, {:no_worker, app}}
 			node_name ->
 				:rpc.call(node_name, m, f, a)
 		end
