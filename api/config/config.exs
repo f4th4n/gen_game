@@ -21,7 +21,7 @@ config :gen_game_api,
 config :gen_game_api, GenGameWeb.Endpoint,
   url: [host: "localhost"],
   render_errors: [view: GenGameWeb.ErrorView, accepts: ~w(json), layout: false],
-  pubsub_server: GenGameApi.PubSub,
+  pubsub_server: GenGame.PubSub,
   live_view: [signing_salt: "WrSwRop/"]
 
 # Configures Elixir's Logger

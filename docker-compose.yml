@@ -11,30 +11,30 @@ x-app: &app
     HISTFILE: /log/shell_history
 
 services:
-  jumpa.shell:
+  shell:
     <<: *app
     command: sleep 1000000000000000000
     working_dir: /jumpa
     environment:
       DATABASE_URL: postgres://postgres:postgres@postgres:5432/jumpa_test
 
-  gen_game.api:
+  api:
     <<: *app
-    command: /bin/sh -c "mix setup && elixir --name node1@gen_game.api --cookie gen_game -S mix phx.server --no-halt"
+    command: /bin/sh -c "mix setup && elixir --name api@gen_game.ex --cookie gen_game -S mix phx.server --no-halt"
     working_dir: /app/api
     ports:
       - 4000:4000
 
-  gen_game.app:
+  app:
     <<: *app
     depends_on:
       - kafka
-    command: /bin/sh -c "mix setup && elixir --name node1@gen_game.app --cookie gen_game -S mix run --no-halt"
+    command: /bin/sh -c "mix setup && elixir --name app@gen_game.ex --cookie gen_game -S mix run --no-halt"
     working_dir: /app/app
 
-  gen_game.world:
+  world:
     <<: *app
-    command: /bin/sh -c "mix setup && elixir --name node1@gen_game.world --cookie gen_game -S mix run --no-halt"
+    command: /bin/sh -c "mix setup && elixir --name world@gen_game.ex --cookie gen_game -S mix run --no-halt"
     working_dir: /app/world
 
   frontend:

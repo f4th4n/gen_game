@@ -3,6 +3,8 @@ defmodule GenGameApp.Application do
 
   use Application
 
+  require Logger
+
   @impl true
   def start(_type, _args) do
     topologies = Application.fetch_env!(:gen_game_app, :topologies)
@@ -13,6 +15,7 @@ defmodule GenGameApp.Application do
       GenGameApp.Repo
     ]
 
+    Logger.info("app started...")
     opts = [strategy: :one_for_one, name: GenGameApp.Supervisor]
     Supervisor.start_link(children, opts)
   end

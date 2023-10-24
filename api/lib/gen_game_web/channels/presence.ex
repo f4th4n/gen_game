@@ -7,5 +7,5 @@ defmodule GenGameWeb.Presence do
   """
   use Phoenix.Presence,
     otp_app: :gen_game_api,
-    pubsub_server: GenGameApi.PubSub
+    pubsub_server: GenGame.PubSub
 end
