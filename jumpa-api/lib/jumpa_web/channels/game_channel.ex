@@ -27,12 +27,12 @@ defmodule JumpaWeb.GameChannel do
          {:ok, token} <- Game.new_game() do
       {:reply, {:ok, %{token: token}}, socket}
     else
-      {:rpc_error, :no_worker} ->
-        # {:rpc_error, :no_worker}
-        Logger.info("error create new game, reason: #{inspect({:rpc_error, :no_worker})}")
-        {:reply, {:error, :rpc_error}}
+      {:bad_rpc, :no_worker} ->
+        # {:bad_rpc, :no_worker}
+        Logger.info("error create new game, reason: #{inspect({:bad_rpc, :no_worker})}")
+        {:reply, {:error, :bad_rpc}}
       e ->
-        # {:rpc_error, :no_worker}
+        # {:bad_rpc, :no_worker}
         Logger.info("error create new game, reason: #{inspect(e)}")
         {:reply, {:error, :unknown_error}}
     end

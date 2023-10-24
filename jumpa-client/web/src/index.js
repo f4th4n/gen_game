@@ -1,18 +1,17 @@
-import { initializeState } from './initialize-state'
-import { socket } from './socket/index'
-import { global } from './global'
-import { listeners } from './listeners'
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import App from './App';
+import reportWebVitals from './reportWebVitals';
 
-initializeState
-  .waitForUnity()
-  .then(initializeState.setState)
-  .then(initializeState.renderState)
-  .then(() => {
-    socket.start()
-    listeners.start()
-    global.start()
-  })
-  .catch((e) => {
-    console.log('e', e)
-    //alert(e)
-  })
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+
+// If you want to start measuring performance in your app, pass a function
+// to log results (for example: reportWebVitals(console.log))
+// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+reportWebVitals();

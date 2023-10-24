@@ -1,0 +1,22 @@
+{
+  "name": "web",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "scripts": {
+    "start": "NODE_OPTIONS=--openssl-legacy-provider webpack --watch",
+    "deploy": "./resolve-unity-build.sh"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "webpack": "^5.58.1",
+    "webpack-cli": "^4.9.0"
+  },
+  "dependencies": {
+    "browser-sync-webpack-plugin": "^2.3.0",
+    "phoenix": "^1.7.9",
+    "rxjs": "^7.4.0"
+  }
+}

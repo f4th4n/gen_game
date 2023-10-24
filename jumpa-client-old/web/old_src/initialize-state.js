@@ -24,7 +24,7 @@ const initializeState = {
         const urlSearchParams = new URLSearchParams(window.location.search)
         const params = Object.fromEntries(urlSearchParams.entries())
         if (!params[paramName]) {
-          throw new Error(`Unknown ${paramName}`)
+          throw new Error(`Unknown ${paramName}, go to http://localhost:3000/?player_token=abc&room_token=abc`)
         }
 
         return params[paramName]
@@ -42,12 +42,9 @@ const initializeState = {
     await setPlayer()
   },
   renderState: async () => {
-    if (window.isInsideUnity) {
-      const currentPlayer = playerModel.currentPlayer._value
-      unity.player.start(currentPlayer)
-    } else {
-      plainWeb.renderPlayer.start()
-    }
+    const currentPlayer = playerModel.currentPlayer._value
+    const ui = window.isInsideUnity ? unity : plainWeb
+    ui.player.start(currentPlayer)
   },
 }
 
