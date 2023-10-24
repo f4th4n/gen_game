@@ -1,7 +1,7 @@
 x-app: &app
   build: .
   volumes:
-    - .:/jumpa:cached
+    - .:/app:cached
     - ./log/erlang-history:/log/erlang-history
     - ./log/shell-history:/log/shell-history
   environment:
@@ -11,31 +11,31 @@ x-app: &app
     HISTFILE: /log/shell_history
 
 services:
-  jumpa.shell:
+  shell:
     <<: *app
     command: sleep 1000000000000000000
     working_dir: /jumpa
     environment:
       DATABASE_URL: postgres://postgres:postgres@postgres:5432/jumpa_test
 
-  jumpa.api:
+  api:
     <<: *app
-    command: /bin/sh -c "mix setup && elixir --name jumpa@jumpa.api --cookie jumpa -S mix phx.server --no-halt"
-    working_dir: /jumpa/jumpa-api
+    command: /bin/sh -c "mix setup && elixir --name api@gen_game.ex --cookie gen_game -S mix phx.server --no-halt"
+    working_dir: /app/api
     ports:
       - 4000:4000
 
-  jumpa.app:
+  app:
     <<: *app
     depends_on:
       - kafka
-    command: /bin/sh -c "mix setup && elixir --name jumpa@jumpa.app --cookie jumpa -S mix run --no-halt"
-    working_dir: /jumpa/jumpa-app
+    command: /bin/sh -c "mix setup && elixir --name app@gen_game.ex --cookie gen_game -S mix run --no-halt"
+    working_dir: /app/app
 
-  jumpa.world:
+  world:
     <<: *app
-    command: /bin/sh -c "mix setup && elixir --name jumpa@jumpa.world --cookie jumpa -S mix run --no-halt"
-    working_dir: /jumpa/jumpa-world
+    command: /bin/sh -c "mix setup && elixir --name world@gen_game.ex --cookie gen_game -S mix run --no-halt"
+    working_dir: /app/world
 
   frontend:
     image: node:19-alpine3.16

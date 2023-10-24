@@ -1,2 +1,0 @@
-defmodule JumpaWorld do
-end

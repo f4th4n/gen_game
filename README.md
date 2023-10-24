@@ -1,6 +1,6 @@
-# Jumpa Repo
+# GenGame Repo
 
-Jumpa is distributed generic game server, written in Elixir.
+GenGame is distributed generic game server, written in Elixir.
 
 Features:
 
@@ -37,19 +37,19 @@ docker compose up -d
 #### api
 
 ```
-./jumpa api
+./gen_game api
 ```
 
 #### app
 
 ```
-./jumpa app
+./gen_game app
 ```
 
 #### world
 
 ```
-./jumpa world
+./gen_game world
 ```
 
 ## Kafka UI
