@@ -12,7 +12,7 @@ config :gen_game_api,
     gossip: [
       strategy: Cluster.Strategy.Gossip,
       config: [
-        secret: System.get_env("RELEASE_COOKIE", "GenGameApi")
+        secret: System.get_env("RELEASE_COOKIE", "gen_game")
       ]
     ]
   ]

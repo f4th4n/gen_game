@@ -9,7 +9,7 @@ defmodule GenGameApi.Application do
 
     children = [
       {Cluster.Supervisor, [topologies, [name: GenGameApi.ClusterSupervisor]]},
-      {Phoenix.PubSub, name: GenGameApi.PubSub},
+      {Phoenix.PubSub, name: GenGame.PubSub},
       GenGameWeb.Telemetry,
       GenGameWeb.Endpoint,
       GenGameWeb.Presence

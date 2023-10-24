@@ -1,6 +1,6 @@
 import Config
 
-config :jumpa_world,
+config :gen_game_app,
   topologies: [
     gossip: [
       strategy: Cluster.Strategy.Gossip,
@@ -8,10 +8,6 @@ config :jumpa_world,
         secret: System.get_env("RELEASE_COOKIE", "gen_game")
       ]
     ]
-  ]
-
-config :jumpa_world,
-  type: :world
-
-config :logger, :console,
-  level: :info
+  ],
+  ecto_repos: [GenGameApp.Repo],
+  type: :app

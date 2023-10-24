@@ -25,12 +25,12 @@ services:
     ports:
       - 4000:4000
 
-  jumpa.app:
+  gen_game.app:
     <<: *app
     depends_on:
       - kafka
-    command: /bin/sh -c "mix setup && elixir --name jumpa@jumpa.app --cookie jumpa -S mix run --no-halt"
-    working_dir: /jumpa/jumpa-app
+    command: /bin/sh -c "mix setup && elixir --name node1@gen_game.app --cookie gen_game -S mix run --no-halt"
+    working_dir: /app/gen_game_app
 
   jumpa.world:
     <<: *app
