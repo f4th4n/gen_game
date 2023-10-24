@@ -1,4 +1,4 @@
-defmodule JumpaApi.Worker do
+defmodule GenGameApi.Worker do
 	@type app() :: :api|:app|:world
 
 	@spec exec(atom(), list()) :: any()
@@ -27,9 +27,9 @@ defmodule JumpaApi.Worker do
   def find_nodes_by_type(node_name, type) do
     config_key =
       case type do
-        :world -> :jumpa_world
-        :api -> :jumpa_api
-        :app -> :jumpa_app
+        :world -> :GenGameApi_world
+        :api -> :gen_game_api
+        :app -> :GenGameApi_app
       end
 
     case :rpc.call(node_name, Application, :fetch_env, [config_key, :type]) do

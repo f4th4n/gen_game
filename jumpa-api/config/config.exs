@@ -7,21 +7,21 @@
 # General application configuration
 import Config
 
-config :jumpa_api,
+config :gen_game_api,
   topologies: [
     gossip: [
       strategy: Cluster.Strategy.Gossip,
       config: [
-        secret: System.get_env("RELEASE_COOKIE", "jumpa")
+        secret: System.get_env("RELEASE_COOKIE", "GenGameApi")
       ]
     ]
   ]
 
 # Configures the endpoint
-config :jumpa_api, JumpaWeb.Endpoint,
+config :gen_game_api, GenGameWeb.Endpoint,
   url: [host: "localhost"],
-  render_errors: [view: JumpaWeb.ErrorView, accepts: ~w(json), layout: false],
-  pubsub_server: Jumpa.PubSub,
+  render_errors: [view: GenGameWeb.ErrorView, accepts: ~w(json), layout: false],
+  pubsub_server: GenGameApi.PubSub,
   live_view: [signing_salt: "WrSwRop/"]
 
 # Configures Elixir's Logger
@@ -32,7 +32,7 @@ config :logger, :console,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
-config :jumpa_api,
+config :gen_game_api,
   type: :api
 
 # Import environment specific config. This must remain at the bottom

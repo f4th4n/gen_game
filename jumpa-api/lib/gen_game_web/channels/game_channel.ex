@@ -1,8 +1,8 @@
-defmodule JumpaWeb.GameChannel do
+defmodule GenGameWeb.GameChannel do
   use Phoenix.Channel
 
-  alias JumpaApi.Game
-  alias JumpaApi.Game.Room
+  alias GenGameApi.Game
+  alias GenGameApi.Game.Room
 
   require Logger
 

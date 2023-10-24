@@ -1,11 +1,11 @@
-defmodule JumpaWeb.ChangesetView do
-  use JumpaWeb, :view
+defmodule GenGameWeb.ChangesetView do
+  use GenGameWeb, :view
 
   @doc """
   Traverses and translates changeset errors.
 
   See `Ecto.Changeset.traverse_errors/2` and
-  `JumpaWeb.ErrorHelpers.translate_error/1` for more details.
+  `GenGameWeb.ErrorHelpers.translate_error/1` for more details.
   """
   def translate_errors(changeset) do
     Ecto.Changeset.traverse_errors(changeset, &translate_error/1)

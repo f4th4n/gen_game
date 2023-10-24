@@ -1,9 +1,9 @@
-defmodule JumpaWeb.RoomControllerTest do
-  use JumpaWeb.ConnCase
+defmodule GenGameWeb.RoomControllerTest do
+  use GenGameWeb.ConnCase
 
-  import JumpaApi.GameFixtures
+  import GenGameApi.GameFixtures
 
-  alias JumpaApi.Game.Room
+  alias GenGameApi.Game.Room
 
   @create_attrs %{
     code: "some code",

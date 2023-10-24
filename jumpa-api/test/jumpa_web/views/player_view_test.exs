@@ -1,17 +1,17 @@
-defmodule JumpaWeb.PlayerViewTest do
-  use JumpaWeb.ConnCase, async: true
+defmodule GenGameWeb.PlayerViewTest do
+  use GenGameWeb.ConnCase, async: true
 
   import Phoenix.View
 
-  alias JumpaApi.GameFixtures
-  alias JumpaApi.Game.Players
-  alias Jumpa.Repo
+  alias GenGameApi.GameFixtures
+  alias GenGameApi.Game.Players
+  alias GenGameApi.Repo
 
   describe "render/2" do
     test "render show.json with param player" do
       player = GameFixtures.player_fixture()
       player_id = player.id
-      assert %{data: %{id: ^player_id}} = render(JumpaWeb.PlayerView, "show.json", %{player: player})
+      assert %{data: %{id: ^player_id}} = render(GenGameWeb.PlayerView, "show.json", %{player: player})
     end
 
     test "render show.json with param player with room" do
@@ -30,7 +30,7 @@ defmodule JumpaWeb.PlayerViewTest do
                  id: ^player_id,
                  room: %{token: ^room_token}
                }
-             } = render(JumpaWeb.PlayerView, "show.json", %{player: player})
+             } = render(GenGameWeb.PlayerView, "show.json", %{player: player})
     end
   end
 end

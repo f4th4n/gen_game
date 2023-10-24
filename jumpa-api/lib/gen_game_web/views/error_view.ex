@@ -1,5 +1,5 @@
-defmodule JumpaWeb.ErrorView do
-  use JumpaWeb, :view
+defmodule GenGameWeb.ErrorView do
+  use GenGameWeb, :view
 
   # If you want to customize a particular status code
   # for a certain format, you may uncomment below.

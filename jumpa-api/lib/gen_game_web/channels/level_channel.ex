@@ -1,9 +1,9 @@
-defmodule JumpaWeb.LevelChannel do
+defmodule GenGameWeb.LevelChannel do
   use Phoenix.Channel
-  alias JumpaWeb.Presence
-  alias Jumpa.Repo
-  alias JumpaApi.Game.Player
-  alias JumpaApi.Game
+  alias GenGameWeb.Presence
+  alias GenGameApi.Repo
+  alias GenGameApi.Game.Player
+  alias GenGameApi.Game
 
   require Logger
 
@@ -28,7 +28,7 @@ defmodule JumpaWeb.LevelChannel do
   def handle_info(:after_join, socket) do
     push(socket, "presence_state", Presence.list(socket))
 
-    player = JumpaApi.Game.get_player(socket.assigns.player_id)
+    player = GenGameApi.Game.get_player(socket.assigns.player_id)
 
     {:ok, _} =
       Presence.track(socket, "player:#{player.id}", %{

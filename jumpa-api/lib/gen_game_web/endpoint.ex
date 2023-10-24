@@ -1,5 +1,5 @@
-defmodule JumpaWeb.Endpoint do
-  use Phoenix.Endpoint, otp_app: :jumpa_api
+defmodule GenGameWeb.Endpoint do
+  use Phoenix.Endpoint, otp_app: :gen_game_api
 
   plug CORSPlug
 
@@ -8,13 +8,13 @@ defmodule JumpaWeb.Endpoint do
   # Set :encryption_salt if you would also like to encrypt it.
   @session_options [
     store: :cookie,
-    key: "_jumpa_key",
+    key: "_GenGameApi_key",
     signing_salt: "RTKHkd2K"
   ]
 
   socket "/live", Phoenix.LiveView.Socket, websocket: [connect_info: [session: @session_options]]
 
-  socket "/game", JumpaWeb.GameSocket,
+  socket "/game", GenGameWeb.GameSocket,
     websocket: true,
     longpoll: false
 
@@ -24,7 +24,7 @@ defmodule JumpaWeb.Endpoint do
   # when deploying your static files in production.
   plug Plug.Static,
     at: "/static",
-    from: :jumpa_api,
+    from: :gen_game_api,
     gzip: false,
     only: ~w(assets fonts images favicon.ico robots.txt)
 
@@ -32,7 +32,7 @@ defmodule JumpaWeb.Endpoint do
   # :code_reloader configuration of your endpoint.
   if code_reloading? do
     plug Phoenix.CodeReloader
-    plug Phoenix.Ecto.CheckRepoStatus, otp_app: :jumpa_api
+    plug Phoenix.Ecto.CheckRepoStatus, otp_app: :gen_game_api
   end
 
   plug Phoenix.LiveDashboard.RequestLogger,
@@ -50,5 +50,5 @@ defmodule JumpaWeb.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options
-  plug JumpaWeb.Router
+  plug GenGameWeb.Router
 end

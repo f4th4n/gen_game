@@ -1,12 +1,12 @@
-defmodule JumpaWeb do
+defmodule GenGameWeb do
   @moduledoc """
   The entrypoint for defining your web interface, such
   as controllers, views, channels and so on.
 
   This can be used in your application as:
 
-      use JumpaWeb, :controller
-      use JumpaWeb, :view
+      use GenGameWeb, :controller
+      use GenGameWeb, :view
 
   The definitions below will be executed for every view,
   controller, etc, so keep them short and clean, focused
@@ -19,19 +19,19 @@ defmodule JumpaWeb do
 
   def controller do
     quote do
-      use Phoenix.Controller, namespace: JumpaWeb
+      use Phoenix.Controller, namespace: GenGameWeb
 
       import Plug.Conn
-      import JumpaWeb.Gettext
-      alias JumpaWeb.Router.Helpers, as: Routes
+      import GenGameWeb.Gettext
+      alias GenGameWeb.Router.Helpers, as: Routes
     end
   end
 
   def view do
     quote do
       use Phoenix.View,
-        root: "lib/jumpa_web/templates",
-        namespace: JumpaWeb
+        root: "lib/GenGameApi_web/templates",
+        namespace: GenGameWeb
 
       # Import convenience functions from controllers
       import Phoenix.Controller,
@@ -54,7 +54,7 @@ defmodule JumpaWeb do
   def channel do
     quote do
       use Phoenix.Channel
-      import JumpaWeb.Gettext
+      import GenGameWeb.Gettext
     end
   end
 
@@ -63,9 +63,9 @@ defmodule JumpaWeb do
       # Import basic rendering functionality (render, render_layout, etc)
       import Phoenix.View
 
-      import JumpaWeb.ErrorHelpers
-      import JumpaWeb.Gettext
-      alias JumpaWeb.Router.Helpers, as: Routes
+      import GenGameWeb.ErrorHelpers
+      import GenGameWeb.Gettext
+      alias GenGameWeb.Router.Helpers, as: Routes
     end
   end
 

@@ -1,4 +1,4 @@
-defmodule JumpaWeb.Presence do
+defmodule GenGameWeb.Presence do
   @moduledoc """
   Provides presence tracking to channels and processes.
 
@@ -6,6 +6,6 @@ defmodule JumpaWeb.Presence do
   docs for more details.
   """
   use Phoenix.Presence,
-    otp_app: :jumpa_api,
-    pubsub_server: Jumpa.PubSub
+    otp_app: :gen_game_api,
+    pubsub_server: GenGameApi.PubSub
 end

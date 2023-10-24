@@ -1,12 +1,12 @@
-defmodule JumpaApi.GameTest do
-  use Jumpa.DataCase
+defmodule GenGameApi.GameTest do
+  use GenGameApi.DataCase
 
-  alias JumpaApi.Game
+  alias GenGameApi.Game
 
   describe "rooms" do
-    alias JumpaApi.Game.Room
+    alias GenGameApi.Game.Room
 
-    import JumpaApi.GameFixtures
+    import GenGameApi.GameFixtures
 
     @invalid_attrs %{code: nil, region: nil}
 
@@ -60,9 +60,9 @@ defmodule JumpaApi.GameTest do
   end
 
   describe "players" do
-    alias JumpaApi.Game.Player
+    alias GenGameApi.Game.Player
 
-    import JumpaApi.GameFixtures
+    import GenGameApi.GameFixtures
 
     @invalid_attrs %{nick: nil, room_id: nil}
 
@@ -125,7 +125,7 @@ defmodule JumpaApi.GameTest do
 
       player =
         player_fixture(room_id: room.id)
-        |> Jumpa.Repo.preload(:room)
+        |> GenGameApi.Repo.preload(:room)
 
       player_id = player.id
       assert %Player{id: ^player_id} = Game.get_player_by_id_and_room_token(player.id, room.token)
@@ -135,7 +135,7 @@ defmodule JumpaApi.GameTest do
   end
 
   describe "game" do
-    import JumpaApi.GameFixtures
+    import GenGameApi.GameFixtures
 
     test "start_game/1 with valid room_token" do
       room = room_fixture()

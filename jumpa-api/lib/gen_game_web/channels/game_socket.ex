@@ -1,4 +1,4 @@
-defmodule JumpaWeb.GameSocket do
+defmodule GenGameWeb.GameSocket do
   use Phoenix.Socket
 
   transport(:websocket, Phoenix.Transports.WebSocket,
@@ -6,9 +6,9 @@ defmodule JumpaWeb.GameSocket do
     transport_log: :debug
   )
 
-  channel "game", JumpaWeb.GameChannel
-  channel "ping", JumpaWeb.PingChannel
-  channel "level:*", JumpaWeb.LevelChannel
+  channel "game", GenGameWeb.GameChannel
+  channel "ping", GenGameWeb.PingChannel
+  channel "level:*", GenGameWeb.LevelChannel
 
   @impl true
   def connect(_params, socket, _connect_info) do

@@ -1,6 +1,6 @@
-defmodule JumpaWeb.PingChannel do
+defmodule GenGameWeb.PingChannel do
   use Phoenix.Channel
-  import JumpaWeb.Gettext
+  import GenGameWeb.Gettext
 
   def join(_topic, _payload, socket) do
     {:ok, socket}

@@ -1,9 +1,9 @@
-defmodule Jumpa.PlayerTest do
-  use Jumpa.DataCase
+defmodule GenGameApi.PlayerTest do
+  use GenGameApi.DataCase
 
-  alias JumpaApi.GameFixtures
-  alias JumpaApi.Game.Players
-  alias JumpaApi.Game.Player
+  alias GenGameApi.GameFixtures
+  alias GenGameApi.Game.Players
+  alias GenGameApi.Game.Player
 
   describe "get_by/1" do
     test "with empty list opts returns all rooms" do

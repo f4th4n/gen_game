@@ -1,17 +1,17 @@
-defmodule JumpaWeb.Router do
-  use JumpaWeb, :router
+defmodule GenGameWeb.Router do
+  use GenGameWeb, :router
 
   pipeline :api do
     plug :accepts, ["json"]
   end
 
-  scope "/", JumpaWeb do
+  scope "/", GenGameWeb do
     pipe_through :api
 
     get "/", Api.HomeController, :index
   end
 
-  scope "/api", JumpaWeb do
+  scope "/api", GenGameWeb do
     pipe_through :api
 
     get "/players/auth/:player_token/:room_token", PlayerController, :auth
@@ -30,7 +30,7 @@ defmodule JumpaWeb.Router do
 
     scope "/" do
       pipe_through [:fetch_session, :protect_from_forgery]
-      live_dashboard "/dashboard", metrics: JumpaWeb.Telemetry
+      live_dashboard "/dashboard", metrics: GenGameWeb.Telemetry
     end
   end
 

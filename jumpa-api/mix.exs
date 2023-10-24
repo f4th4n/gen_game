@@ -1,9 +1,9 @@
-defmodule JumpaApi.MixProject do
+defmodule GenGameApi.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :jumpa_api,
+      app: :gen_game_api,
       version: "0.1.0",
       elixir: "~> 1.12",
       elixirc_paths: elixirc_paths(Mix.env()),
@@ -19,7 +19,7 @@ defmodule JumpaApi.MixProject do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {JumpaApi.Application, []},
+      mod: {GenGameApi.Application, []},
       extra_applications: [:logger, :runtime_tools]
     ]
   end

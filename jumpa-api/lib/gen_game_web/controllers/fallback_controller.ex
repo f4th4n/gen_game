@@ -1,4 +1,4 @@
-defmodule JumpaWeb.FallbackController do
+defmodule GenGameWeb.FallbackController do
   require Logger
 
   @moduledoc """
@@ -6,13 +6,13 @@ defmodule JumpaWeb.FallbackController do
 
   See `Phoenix.Controller.action_fallback/1` for more details.
   """
-  use JumpaWeb, :controller
+  use GenGameWeb, :controller
 
   # This clause handles errors returned by Ecto's insert/update/delete.
   def call(conn, {:error, %Ecto.Changeset{} = changeset}) do
     conn
     |> put_status(:unprocessable_entity)
-    |> put_view(JumpaWeb.ChangesetView)
+    |> put_view(GenGameWeb.ChangesetView)
     |> render("error.json", changeset: changeset)
   end
 
@@ -20,7 +20,7 @@ defmodule JumpaWeb.FallbackController do
   def call(conn, {:error, :not_found}) do
     conn
     |> put_status(:not_found)
-    |> put_view(JumpaWeb.ErrorView)
+    |> put_view(GenGameWeb.ErrorView)
     |> render(:"404")
   end
 
@@ -33,7 +33,7 @@ defmodule JumpaWeb.FallbackController do
   def call(conn, error) do
     conn
     |> put_status(:not_implemented)
-    |> put_view(JumpaWeb.ErrorView)
+    |> put_view(GenGameWeb.ErrorView)
     |> render(:"501")
   end
 end

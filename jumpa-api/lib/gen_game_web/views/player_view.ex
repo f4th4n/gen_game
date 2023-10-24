@@ -1,6 +1,6 @@
-defmodule JumpaWeb.PlayerView do
-  use JumpaWeb, :view
-  alias JumpaWeb.PlayerView
+defmodule GenGameWeb.PlayerView do
+  use GenGameWeb, :view
+  alias GenGameWeb.PlayerView
 
   def render("show.json", %{player: player}) do
     %{data: render_one(player, PlayerView, "player.json")}
