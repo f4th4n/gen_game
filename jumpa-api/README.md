@@ -1,34 +1,6 @@
 # Jumpa
 
-## Installation
-
-```
-mix deps.get
-mix ecto.migrate
-# seed with some data
-mix run priv/repo/seeds.exs
-```
-
-## Default User
-
-nick: player1
-token: abc
-link: http://localhost:3000/?player_token=abc&room_token=abc
-
-## Up
-
-```
-# for dev:
-elixir --sname jumpa -S mix phx.server
-
-# for dev:
-PORT=4001 MIX_ENV=dev elixir --sname jumpa -S mix phx.server
-
-# connect to those session
-iex --remsh jumpa --sname dev
-iex --remsh jumpa --sname dev2
-
-```
+## Scenario
 
 ## Channels
 
