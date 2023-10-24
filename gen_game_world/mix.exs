@@ -1,9 +1,9 @@
-defmodule JumpaWorld.MixProject do
+defmodule GenGameWorld.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :jumpa_world,
+      app: :gen_game_world,
       version: "0.1.0",
       elixir: "~> 1.14",
       start_permanent: Mix.env() == :prod,
@@ -15,7 +15,7 @@ defmodule JumpaWorld.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      mod: {JumpaWorld.Application, []},
+      mod: {GenGameWorld.Application, []},
       extra_applications: [:logger]
     ]
   end
@@ -25,7 +25,8 @@ defmodule JumpaWorld.MixProject do
     [
       {:libcluster, "~> 3.3"},
       {:broadway_kafka, "~> 0.3.0"},
-      {:phoenix_pubsub, "~> 2.1"}
+      {:phoenix_pubsub, "~> 2.1"},
+      {:rename_project, "~> 0.1.0", only: :dev}
     ]
   end
 

@@ -32,10 +32,10 @@ services:
     command: /bin/sh -c "mix setup && elixir --name node1@gen_game.app --cookie gen_game -S mix run --no-halt"
     working_dir: /app/gen_game_app
 
-  jumpa.world:
+  gen_game.world:
     <<: *app
-    command: /bin/sh -c "mix setup && elixir --name jumpa@jumpa.world --cookie jumpa -S mix run --no-halt"
-    working_dir: /jumpa/jumpa-world
+    command: /bin/sh -c "mix setup && elixir --name node1@gen_game.world --cookie gen_game -S mix run --no-halt"
+    working_dir: /app/gen_game_world
 
   frontend:
     image: node:19-alpine3.16

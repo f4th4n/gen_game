@@ -20,7 +20,7 @@ erl_crash.dump
 *.ez
 
 # Ignore package tarball (built via "mix hex.build").
-jumpa_world-*.tar
+gen_game_world-*.tar
 
 # Temporary files, for example, from tests.
 /tmp/

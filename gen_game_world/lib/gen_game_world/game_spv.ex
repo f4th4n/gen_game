@@ -1,4 +1,4 @@
-defmodule JumpaWorld.GameSpv do
+defmodule GenGameWorld.GameSpv do
   @moduledoc """
   Game supervisor
   """
@@ -12,10 +12,10 @@ defmodule JumpaWorld.GameSpv do
   @impl true
   def init(_) do
     children = [
-      {DynamicSupervisor, strategy: :one_for_one, name: JumpaWorld.DynamicGameSpv},
-      JumpaWorld.GameManager,
-      #JumpaWorld.KafkaConsumer,
-      #JumpaWorld.KafkaProducer
+      {DynamicSupervisor, strategy: :one_for_one, name: GenGameWorld.DynamicGameSpv},
+      GenGameWorld.GameManager,
+      #GenGameWorld.KafkaConsumer,
+      #GenGameWorld.KafkaProducer
     ]
 
     Supervisor.init(children, strategy: :one_for_one)

@@ -1,4 +1,4 @@
-defmodule JumpaWorld.Game do
+defmodule GenGameWorld.Game do
   use GenServer
 
   def start_link(state) do
@@ -15,7 +15,7 @@ defmodule JumpaWorld.Game do
   @spec new_game(binary()) :: {:ok, pid(), atom()}
   def new_game(token_str) do
     process_name = String.to_atom("game_" <> token_str)
-    {:ok, pid} = DynamicSupervisor.start_child(JumpaWorld.DynamicGameSpv, {JumpaWorld.Game, [name: process_name]})
+    {:ok, pid} = DynamicSupervisor.start_child(GenGameWorld.DynamicGameSpv, {GenGameWorld.Game, [name: process_name]})
     {:ok, pid, process_name}
   end
 
@@ -26,8 +26,8 @@ defmodule JumpaWorld.Game do
   # --------------------------------------------------------------------------- server
 
   def handle_cast({:start_game, game_token}, state) do
-    api_node = JumpaWorld.Proxy.get_api_node()
-    _res = :rpc.call(api_node, JumpaApi.Game, :start_game, [game_token])
+    api_node = GenGameWorld.Proxy.get_api_node()
+    _res = :rpc.call(api_node, GenGameApi.Game, :start_game, [game_token])
 
     {:noreply, state}
   end

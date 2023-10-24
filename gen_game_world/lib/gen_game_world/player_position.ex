@@ -1,6 +1,6 @@
 # TODO not implemented
 
-defmodule JumpaWorld.PlayerPosition do
+defmodule GenGameWorld.PlayerPosition do
   use GenServer
 
   def start_link(state) do
@@ -20,8 +20,8 @@ defmodule JumpaWorld.PlayerPosition do
   # --------------------------------------------------------------------------- server
 
   def handle_cast({:player_position, game_token}, state) do
-    api_node = JumpaWorld.Proxy.get_api_node()
-    _res = :rpc.call(api_node, JumpaApi.Game, :player_position, [game_token])
+    api_node = GenGameWorld.Proxy.get_api_node()
+    _res = :rpc.call(api_node, GenGameApi.Game, :player_position, [game_token])
 
     {:noreply, state}
   end

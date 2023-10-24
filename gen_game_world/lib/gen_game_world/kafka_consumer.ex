@@ -1,4 +1,4 @@
-defmodule JumpaWorld.KafkaConsumer do
+defmodule GenGameWorld.KafkaConsumer do
   use Broadway
 
   @hosts [kafka: 9092]

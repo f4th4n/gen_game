@@ -1,4 +1,4 @@
-defmodule JumpaWorld.KafkaProducer do
+defmodule GenGameWorld.KafkaProducer do
   use GenServer
 
   @client_id :my_client

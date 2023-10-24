@@ -1,4 +1,4 @@
-defmodule JumpaWorld.Proxy do
+defmodule GenGameWorld.Proxy do
   def get_api_node(key \\ nil) do
     case get_api_nodes() do
       [] -> nil
@@ -14,8 +14,8 @@ defmodule JumpaWorld.Proxy do
   def find_nodes_by_type(node, type) do
     config_key =
       case type do
-        :world -> :jumpa_world
-        :api -> :jumpa_api
+        :world -> :gen_game_world
+        :api -> :gen_game_api
       end
 
     case :rpc.call(node, Application, :fetch_env, [config_key, :type]) do

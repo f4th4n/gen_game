@@ -1,7 +1,7 @@
-defmodule JumpaWorld.GameManager do
+defmodule GenGameWorld.GameManager do
   use GenServer
 
-  alias JumpaWorld.Worker
+  alias GenGameWorld.Worker
 
   def start_link(init_arg) do
     GenServer.start_link(__MODULE__, init_arg, name: __MODULE__)
@@ -26,7 +26,7 @@ defmodule JumpaWorld.GameManager do
   end
 
   defp hydrate() do
-    with games = [_h | _t] <- Worker.exec(:app, {JumpaApp.Game.Rooms, :find, [[status: :started]]}) do
+    with games = [_h | _t] <- Worker.exec(:app, {GenGameApp.Game.Rooms, :find, [[status: :started]]}) do
       create_games(games)
     end
   end
@@ -34,7 +34,7 @@ defmodule JumpaWorld.GameManager do
   defp create_games(games) do
     games
     |> Enum.map(fn game ->
-      {:ok, _pid, _process_name} = JumpaWorld.Game.new_game(game.token)
+      {:ok, _pid, _process_name} = GenGameWorld.Game.new_game(game.token)
     end)
   end
 end

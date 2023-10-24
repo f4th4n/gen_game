@@ -1,4 +1,4 @@
-defmodule JumpaWorld.Spawner do
+defmodule GenGameWorld.Spawner do
 	use GenServer
 
 	@polling_frequency 1000

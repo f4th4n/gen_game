@@ -1,6 +1,6 @@
-defmodule JumpaWorldTest do
+defmodule GenGameWorldTest do
   use ExUnit.Case
-  doctest JumpaWorld
+  doctest GenGameWorld
 
   test "greets the world" do
     assert true

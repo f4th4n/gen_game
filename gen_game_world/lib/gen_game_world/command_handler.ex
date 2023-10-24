@@ -1,4 +1,4 @@
-defmodule JumpaWorld.CommandHandler do
+defmodule GenGameWorld.CommandHandler do
 	use GenServer
 
 	def start_link(init_arg) do
@@ -6,8 +6,8 @@ defmodule JumpaWorld.CommandHandler do
 	end
 
 	def init(init_arg) do
-		Phoenix.PubSub.subscribe(Jumpa.PubSub, "user:123")
-		Phoenix.PubSub.subscribe(Jumpa.PubSub, "room:*")
+		Phoenix.PubSub.subscribe(GenGame.PubSub, "user:123")
+		Phoenix.PubSub.subscribe(GenGame.PubSub, "room:*")
 
 		{:ok, init_arg}
 	end

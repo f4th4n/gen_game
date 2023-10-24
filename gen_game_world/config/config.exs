@@ -1,6 +1,6 @@
 import Config
 
-config :jumpa_world,
+config :gen_game_world,
   topologies: [
     gossip: [
       strategy: Cluster.Strategy.Gossip,
@@ -10,7 +10,7 @@ config :jumpa_world,
     ]
   ]
 
-config :jumpa_world,
+config :gen_game_world,
   type: :world
 
 config :logger, :console,
