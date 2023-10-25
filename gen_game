@@ -1,9 +1,9 @@
 if [ "$1" = "api" ]; then
-  docker compose exec api iex --name "remote1@gen_game.api" --cookie gen_game --remsh "node1@gen_game.api"
+  docker compose exec api iex --sname remote_api --cookie gen_game --remsh api
 elif [ "$1" = "app" ]; then
-  docker compose exec app iex --name "remote1@gen_game.app" --cookie gen_game --remsh "node1@gen_game.app"
+  docker compose exec app iex --sname remote_app --cookie gen_game --remsh app
 elif [ "$1" = "world" ]; then
-  docker compose exec world iex --name "remote1@gen_game.world" --cookie gen_game --remsh "node1@gen_game.world"
+  docker compose exec world iex --sname remote_world --cookie gen_game --remsh world
 elif [ "$1" = "shell" ]; then
   docker compose exec shell bash
 elif [ "$1" = "start" ]; then
