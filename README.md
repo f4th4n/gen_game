@@ -30,6 +30,8 @@ GenGame is monorepo consist of 4 projects: `api`, `app`, `world` and `client`. E
 
 `client` is example of how client communicate with `api`. Currently there are example client for web and [godot engine](https://godotengine.org). You can use any game engine you want as long as it can open WebSocket connection.
 
+![Alt text](docs/big_pict.png?raw=true "Big pict")
+
 # Installation
 
 ## Requirements
