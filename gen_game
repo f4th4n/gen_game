@@ -6,15 +6,18 @@ elif [ "$1" = "world" ]; then
   docker compose exec world iex --name "remote1@gen_game.world" --cookie gen_game --remsh "node1@gen_game.world"
 elif [ "$1" = "shell" ]; then
   docker compose exec shell bash
-elif [ "$1" = "up" ]; then
+elif [ "$1" = "start" ]; then
   docker compose down --timeout 0
   docker compose up -d
   docker compose logs api app world -f --tail 100
+elif [ "$1" = "stop" ]; then
+  docker compose down --timeout 0
 else
   echo "unknown command. available command:
+  ./gen_game start
+  ./gen_game stop
 	./gen_game shell
   ./gen_game api
   ./gen_game app
-  ./gen_game world
-  ./gen_game up"
+  ./gen_game world"
 fi
