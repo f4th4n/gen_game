@@ -12,6 +12,7 @@ defmodule GenGameApp.Application do
     children = [
       {Cluster.Supervisor, [topologies, [name: GenGameApp.ClusterSupervisor]]},
       {Phoenix.PubSub, name: GenGame.PubSub},
+      GenGameApp.GameProducer,
       GenGameApp.Repo
     ]
 
