@@ -1,10 +1,10 @@
-defmodule GenGameWorld.Worker do
+defmodule GenGameApi.Rpc do
 	@type app() :: :api|:app|:world
 
 	@spec exec(atom(), list()) :: any()
 	def exec(app, {m, f, a}) do
 		case get_node(app) do
-			nil -> {:bad_rpc, {:no_worker, app}}
+			nil -> {:bad_rpc, {:no_node, app}}
 			node_name ->
 				:rpc.call(node_name, m, f, a)
 		end

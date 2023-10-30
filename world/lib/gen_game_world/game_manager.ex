@@ -1,7 +1,7 @@
 defmodule GenGameWorld.GameManager do
   use GenServer
 
-  alias GenGameWorld.Worker
+  alias GenGameWorld.Rpc
 
   def start_link(init_arg) do
     GenServer.start_link(__MODULE__, init_arg, name: __MODULE__)
@@ -26,7 +26,7 @@ defmodule GenGameWorld.GameManager do
   end
 
   defp hydrate() do
-    with games = [_h | _t] <- Worker.exec(:app, {GenGameApp.Game.Rooms, :find, [[status: :started]]}) do
+    with games = [_h | _t] <- Rpc.exec(:app, {GenGameApp.Game.Rooms, :find, [[status: :started]]}) do
       create_games(games)
     end
   end
