@@ -1,6 +1,6 @@
 # TODO not implemented
 
-defmodule GenGameWorld.PlayerPosition do
+defmodule GenGameWorld.Actions.PlayerPosition do
   use GenServer
 
   def start_link(state) do
@@ -13,7 +13,7 @@ defmodule GenGameWorld.PlayerPosition do
 
   # --------------------------------------------------------------------------- client
 
-  def player_position(game_token) do
+  def move(game_token, x, y) do
     GenServer.cast(__MODULE__, {:player_position, game_token})
   end
 

@@ -11,7 +11,10 @@ defmodule GenGameWorld.MixProject do
       deps: deps(),
       description: description(),
       package: package(),
-      source_url: "https://github.com/f4th4n/gen_game/tree/master/world"
+      source_url: "https://github.com/f4th4n/gen_game/tree/master/world",
+      docs: [
+        extras: ["README.md", "api_docs.md"]
+      ]
     ]
   end
 
@@ -29,7 +32,8 @@ defmodule GenGameWorld.MixProject do
       {:libcluster, "~> 3.3"},
       {:broadway_kafka, "~> 0.3.0"},
       {:phoenix_pubsub, "~> 2.1"},
-      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
+      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
+      {:uuid, "~> 1.1"}
     ]
   end
 

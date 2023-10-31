@@ -11,4 +11,16 @@ defmodule GenGameWorld do
       active_games_count: active_games_count
     }
   end
+
+  def get_node(process_name, id) do
+    GenGameWorld.Game.get_node(process_name, id)
+  end
+
+  def create_node(process_name, node_name, attrs) do
+    node_data = struct(node_name, attrs)
+    GenGameWorld.Game.create_node(process_name, node_data)
+  end
+
+  def update_node(id, attrs) do
+  end
 end

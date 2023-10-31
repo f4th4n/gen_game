@@ -1,6 +1,6 @@
 # GenGameWorld
 
-`world` is part of [GenGame](https://github.com/f4th4n/gen_game).
+`gen_game_world` or `world` is part of [GenGame](https://github.com/f4th4n/gen_game).
 
 ## Installation
 
