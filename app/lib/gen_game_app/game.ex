@@ -7,11 +7,15 @@ defmodule GenGameApp.Game do
   alias GenGameApp.Game.Players
   alias GenGameApp.Game.Rooms
   alias GenGameApp.Game.Room
-  alias GenGameApp.Util
 
   # --------------------------------------------------------------------------- game
+  @spec new_game() ::
+          {:error, :game_is_exist}
+          | {:ok, atom() | %{:token => :undefined | binary(), optional(any()) => any()}}
   def new_game() do
-    with {:ok, room} <- Rooms.create_room() do
+    with {:ok, room} <- Rooms.create_room(),
+         {:ok, room_encoded} <- Jason.encode(room),
+         :ok <- GenGameApp.GameProducer.produce(room.token, room_encoded) do
       {:ok, room}
     else
       %Room{} -> {:error, :game_is_exist}
@@ -29,6 +33,7 @@ defmodule GenGameApp.Game do
   end
 
   # --------------------------------------------------------------------------- room
+  @spec list_rooms() :: any()
   def list_rooms(), do: Rooms.list_rooms()
   def get_room!(id), do: Rooms.get_room!(id)
   def get_room_by(opts), do: Rooms.get_by(opts)

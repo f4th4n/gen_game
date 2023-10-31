@@ -1,8 +1,8 @@
-defmodule GenGameWorld.KafkaConsumer do
+defmodule GenGameWorld.GameConsumer do
   use Broadway
 
   @hosts [kafka: 9092]
-  @topic "topic1"
+  @topic "gg.game"
 
   def start_link(_opts) do
     Broadway.start_link(__MODULE__,
@@ -10,7 +10,7 @@ defmodule GenGameWorld.KafkaConsumer do
       producer: [
         module: {BroadwayKafka.Producer, [
           hosts: @hosts,
-          group_id: "group_1",
+          group_id: "world",
           topics: [@topic],
         ]},
         concurrency: 1
@@ -23,9 +23,12 @@ defmodule GenGameWorld.KafkaConsumer do
     )
   end
 
-  def handle_message(_, message, _) do
-    IO.inspect(message, label: "Got message..........")
-    message
-  end
+  def handle_message(_, %{data: data} = msg, _) do
+    data
+    |> Jason.decode!()
+    |> Map.get("token")
+    |> GenGameWorld.Game.new_game()
 
+    msg
+  end
 end

@@ -29,7 +29,7 @@ Features:
 - [x] player movement
 - [x] game room
 - [x] authentication & authorization
-- [ ] regions
+- [ ] regions (currently it's still single region)
 - [ ] NIF
 
 ## Requirements
@@ -53,6 +53,18 @@ Example:
 ./gen_game api
 ```
 
-## API Contract
+## API Docs
 
-TODO add API contracts here
+TODO add API docs here
+
+## Useful Commands
+
+### world
+
+```
+# get game pid by game token
+GenGameWorld.get_game_pid/1
+
+# overview world state like active games, etc
+GenGameWorld.summary/0
+```

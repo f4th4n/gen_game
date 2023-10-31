@@ -10,6 +10,9 @@ elif [ "$1" = "start" ]; then
   docker compose down --timeout 0
   docker compose up -d
   docker compose logs api app world -f --tail 100
+elif [ "$1" = "restart" ]; then
+  docker compose restart api app world --timeout 0
+  docker compose logs api app world -f --tail 100
 elif [ "$1" = "stop" ]; then
   docker compose down --timeout 0
 else
