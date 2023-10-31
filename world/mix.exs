@@ -8,7 +8,10 @@ defmodule GenGameWorld.MixProject do
       elixir: "~> 1.14",
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      description: description(),
+      package: package(),
+      source_url: "https://github.com/f4th4n/gen_game/tree/master/world"
     ]
   end
 
@@ -26,7 +29,20 @@ defmodule GenGameWorld.MixProject do
       {:libcluster, "~> 3.3"},
       {:broadway_kafka, "~> 0.3.0"},
       {:phoenix_pubsub, "~> 2.1"},
-      {:rename_project, "~> 0.1.0", only: :dev}
+      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
+    ]
+  end
+
+  defp description() do
+    "gen_game_world is component of GenGame that handle game server in realtime"
+  end
+
+  defp package() do
+    [
+      name: :gen_game_world,
+      maintainers: ["Wildan Fathan"],
+      licenses: ["MIT"],
+      links: %{"GitHub" => "https://github.com/f4th4n/gen_game/tree/master/world"}
     ]
   end
 

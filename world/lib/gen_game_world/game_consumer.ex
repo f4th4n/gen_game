@@ -1,4 +1,7 @@
 defmodule GenGameWorld.GameConsumer do
+  @moduledoc """
+  GameConsumer will listen for any message that sent by `app`. Currently it's only for creating new game, it will start spawning one `GenGameWorld.Game` process.
+  """
   use Broadway
 
   @hosts [kafka: 9092]
