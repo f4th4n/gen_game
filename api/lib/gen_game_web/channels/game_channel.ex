@@ -27,12 +27,12 @@ defmodule GenGameWeb.GameChannel do
          {:ok, token} <- Game.new_game() do
       {:reply, {:ok, %{token: token}}, socket}
     else
-      {:bad_rpc, :no_worker} ->
-        # {:bad_rpc, :no_worker}
-        Logger.info("error create new game, reason: #{inspect({:bad_rpc, :no_worker})}")
+      {:bad_rpc, :no_node} ->
+        # {:bad_rpc, :no_node}
+        Logger.info("error create new game, reason: #{inspect({:bad_rpc, :no_node})}")
         {:reply, {:error, :bad_rpc}}
       e ->
-        # {:bad_rpc, :no_worker}
+        # {:bad_rpc, :no_node}
         Logger.info("error create new game, reason: #{inspect(e)}")
         {:reply, {:error, :unknown_error}}
     end

@@ -24,7 +24,8 @@ defmodule GenGameApp.MixProject do
       {:ecto_sql, "~> 3.6"},
       {:postgrex, ">= 0.0.0"},
       {:libcluster, "~> 3.3"},
-      {:phoenix_pubsub, "~> 2.1"}
+      {:phoenix_pubsub, "~> 2.1"},
+      {:brod, "~> 3.17"}
     ]
   end
 

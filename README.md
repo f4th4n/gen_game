@@ -2,14 +2,6 @@
 
 GenGame is distributed generic game server, written in Elixir.
 
-Features:
-
-- [x] player movement
-- [x] game room
-- [x] authentication & authorization
-- [ ] regions
-- [ ] NIF
-
 ## Details:
 
 GenGame is monorepo consist of 4 projects: `api`, `app`, `world` and `client`. Every backend applications (api, app, world) can be scaled horizontally. It means that you can scale based on business requirements. For example if the game need to crunch numbers heavily, you should spawn few more `world` nodes in order to distribute work load. The nodes will be automatically connected, thanks to libcluster.
@@ -32,11 +24,19 @@ GenGame is monorepo consist of 4 projects: `api`, `app`, `world` and `client`. E
 
 ![Alt text](docs/big_pict.png?raw=true "Big pict")
 
-# Installation
+Features:
+
+- [x] player movement
+- [x] game room
+- [x] authentication & authorization
+- [ ] regions
+- [ ] NIF
 
 ## Requirements
 
 - Docker
+
+# Installation
 
 ## Start
 
