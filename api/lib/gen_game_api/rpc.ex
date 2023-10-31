@@ -38,6 +38,7 @@ defmodule GenGameApi.Rpc do
     end
   end
 
+  # TODO change this to distributed consistent hashing
   defp pick_node(nodes, nil), do: List.first(nodes)
 
   defp pick_node(nodes, key) do

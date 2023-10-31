@@ -16,7 +16,7 @@ defmodule GenGameWorld.Application do
       GenGameWorld.CommandHandler
     ]
 
-    Logger.info("world started...")
+    Logger.info("gen_game_world started...")
     opts = [strategy: :one_for_one, name: GenGameWorld.Supervisor]
     Supervisor.start_link(children, opts)
   end

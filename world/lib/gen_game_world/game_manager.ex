@@ -1,4 +1,7 @@
 defmodule GenGameWorld.GameManager do
+  @moduledoc """
+  GameManager used for hydrating existing game from persistence storage when app started.
+  """
   use GenServer
 
   alias GenGameWorld.Rpc

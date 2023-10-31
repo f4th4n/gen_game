@@ -14,8 +14,7 @@ defmodule GenGameWorld.GameSpv do
     children = [
       {DynamicSupervisor, strategy: :one_for_one, name: GenGameWorld.DynamicGameSpv},
       GenGameWorld.GameManager,
-      #GenGameWorld.KafkaConsumer,
-      #GenGameWorld.KafkaProducer
+      GenGameWorld.GameConsumer
     ]
 
     Supervisor.init(children, strategy: :one_for_one)

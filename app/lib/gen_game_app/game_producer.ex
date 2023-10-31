@@ -17,7 +17,12 @@ defmodule GenGameApp.GameProducer do
     {:ok, init_arg}
   end
 
-  def send_msg(partition, key_msg, msg) do
-    :brod.produce_sync(@client_id, @topic, partition, key_msg, msg)
+  def produce(key, msg) do
+    :brod.produce_sync(@client_id, @topic, &partition/4, key, msg)
+  end
+
+  def partition(_, partition_count, key, _) do
+    target_partition = key |> :erlang.phash2() |> rem(partition_count) |> abs()
+    {:ok, target_partition}
   end
 end

@@ -1,21 +1,7 @@
 # GenGameWorld
 
-**TODO: Add description**
+`gen_game_world` or `world` is part of [GenGame](https://github.com/f4th4n/gen_game).
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `gen_game_world` to your list of dependencies in `mix.exs`:
-
-```elixir
-def deps do
-  [
-    {:gen_game_world, "~> 0.1.0"}
-  ]
-end
-```
-
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/gen_game_world>.
-
+The easiest way to run `world` is via docker compose. You can download docker compose from [GenGame](https://github.com/f4th4n/gen_game).

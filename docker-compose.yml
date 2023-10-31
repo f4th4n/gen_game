@@ -38,7 +38,8 @@ services:
     command: /bin/sh -c "mix setup && elixir --sname world --cookie gen_game -S mix run --no-halt"
     working_dir: /app/world
     depends_on:
-      - kafka
+      kafka:
+        condition: service_healthy
 
   frontend:
     image: node:19-alpine3.16
@@ -80,13 +81,13 @@ services:
     healthcheck:
       test: kafka-topics --bootstrap-server kafka:9092 --list
       interval: 1s
-      timeout: 10s
+      timeout: 15s
       retries: 3
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_LISTENERS: PLAINTEXT://:9092
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 3
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY: 0
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
 
