@@ -4,6 +4,10 @@ defmodule GenGameWorld.Game do
   """
 
   use GenServer
+  use Memoize
+
+  @type process_name() :: atom()
+  @type token() :: binary()
 
   def start_link(state) do
     {name, state} = Keyword.pop(state, :name)
@@ -16,20 +20,42 @@ defmodule GenGameWorld.Game do
 
   # --------------------------------------------------------------------------- client
 
-  @spec new_game(binary()) :: {:ok, pid(), atom()}
-  def new_game(token_str) do
-    process_name = to_process_name(token_str)
-    :ets.new(process_name, [:set, :public, :named_table])
-    {:ok, pid} = DynamicSupervisor.start_child(GenGameWorld.DynamicGameSpv, {GenGameWorld.Game, [name: process_name]})
-    {:ok, pid, process_name}
+  @doc """
+  create a process dynamically that handle game state with idempotency.
+  """
+  @spec new_game(token()) :: {:ok, pid(), atom()}
+  def new_game(token) do
+    case get_game(token) do
+      nil ->
+        process_name = token_to_process_name(token)
+        :ets.new(process_name, [:set, :public, :named_table])
+        {:ok, pid} = DynamicSupervisor.start_child(GenGameWorld.DynamicGameSpv, {GenGameWorld.Game, [name: process_name]})
+        {:ok, pid}
+
+      pid ->
+        {:ok, pid}
+    end
   end
 
+  def get_game(token) do
+    token
+    |> token_to_process_name()
+    |> Process.whereis()
+  end
+
+  @doc """
+  create node data into ets table.
+  """
+  @spec create_node(process_name(), struct()) :: {:ok, binary()}
   def create_node(process_name, node_data) do
     id = UUID.uuid4()
     :ets.insert(process_name, {id, node_data})
     {:ok, id}
   end
 
+  @doc """
+  fetch node data from ets table.
+  """
   def get_node(process_name, id) do
     case :ets.lookup(process_name, id) do
       [] -> nil
@@ -37,8 +63,24 @@ defmodule GenGameWorld.Game do
     end
   end
 
-  def to_process_name(token_str) do
-    String.to_atom("game_" <> token_str)
+  @doc """
+  update node data in ets table.
+  """
+  def update_node(process_name, id, attrs) do
+    case :ets.lookup(process_name, id) do
+      [] ->
+        nil
+
+      res ->
+        node_data = res |> List.first() |> elem(1)
+        updated_node_data = Map.merge(node_data, attrs)
+        :ets.insert(process_name, {id, updated_node_data})
+        get_node(process_name, id)
+    end
+  end
+
+  defmemo token_to_process_name(token) do
+    String.to_atom("game_" <> token)
   end
 
   # def start_game(game_token) do

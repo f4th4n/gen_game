@@ -1,7 +1,10 @@
 defmodule GenGameWorld do
-  def get_game_pid(token_str) do
-    token = String.to_atom("game_" <> token_str)
-    Process.whereis(token)
+  use Memoize
+
+  def get_game_pid(token) do
+    token
+    |> token_to_process_name()
+    |> Process.whereis()
   end
 
   def summary() do
@@ -12,15 +15,27 @@ defmodule GenGameWorld do
     }
   end
 
-  def get_node(process_name, id) do
-    GenGameWorld.Game.get_node(process_name, id)
+  def get_node(token, id) do
+    token
+    |> token_to_process_name()
+    |> GenGameWorld.Game.get_node(id)
   end
 
-  def create_node(process_name, node_name, attrs) do
+  def create_node(token, node_name, attrs) do
     node_data = struct(node_name, attrs)
-    GenGameWorld.Game.create_node(process_name, node_data)
+
+    token
+    |> token_to_process_name()
+    |> GenGameWorld.Game.create_node(node_data)
   end
 
-  def update_node(id, attrs) do
+  def update_node(token, id, attrs) do
+    token
+    |> token_to_process_name()
+    |> GenGameWorld.Game.update_node(id, attrs)
+  end
+
+  defmemo token_to_process_name(token) do
+    String.to_atom("game_" <> token)
   end
 end
