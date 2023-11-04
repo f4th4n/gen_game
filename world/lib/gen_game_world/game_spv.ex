@@ -13,6 +13,7 @@ defmodule GenGameWorld.GameSpv do
   def init(_) do
     children = [
       {DynamicSupervisor, strategy: :one_for_one, name: GenGameWorld.DynamicGameSpv},
+      {DynamicSupervisor, strategy: :one_for_one, name: GenGameWorld.DynamicNodesSpv},
       GenGameWorld.GameManager,
       GenGameWorld.GameConsumer
     ]

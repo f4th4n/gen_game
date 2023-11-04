@@ -13,5 +13,4 @@ config :gen_game_world,
 config :gen_game_world,
   type: :world
 
-config :logger, :console,
-  level: :info
+config :logger, :console, level: :info

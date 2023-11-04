@@ -1,16 +1,18 @@
 defmodule GenGameWorld.Rpc do
-  @type app() :: :api|:app|:world
+  @type app() :: :api | :app | :world
 
   @spec exec(atom(), list()) :: any()
   def exec(app, {m, f, a}) do
     case get_node(app) do
-      nil -> {:bad_rpc, {:no_node, app}}
+      nil ->
+        {:bad_rpc, {:no_node, app}}
+
       node_name ->
         :rpc.call(node_name, m, f, a)
     end
   end
 
-  @spec get_node(app(), string()) :: nil|atom()
+  @spec get_node(app(), string()) :: nil | atom()
   def get_node(app, key \\ nil) do
     case get_nodes(app) do
       [] -> nil

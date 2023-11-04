@@ -11,11 +11,13 @@ defmodule GenGameWorld.GameConsumer do
     Broadway.start_link(__MODULE__,
       name: __MODULE__,
       producer: [
-        module: {BroadwayKafka.Producer, [
-          hosts: @hosts,
-          group_id: "world",
-          topics: [@topic],
-        ]},
+        module:
+          {BroadwayKafka.Producer,
+           [
+             hosts: @hosts,
+             group_id: "world",
+             topics: [@topic]
+           ]},
         concurrency: 1
       ],
       processors: [
