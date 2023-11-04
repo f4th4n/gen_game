@@ -15,12 +15,6 @@ defmodule GenGameWorld do
     }
   end
 
-  def get_node(token, id) do
-    token
-    |> token_to_process_name()
-    |> GenGameWorld.Game.get_node(id)
-  end
-
   def create_node(token, node_name, attrs) do
     node_data = struct(node_name, attrs)
 
@@ -29,10 +23,8 @@ defmodule GenGameWorld do
     |> GenGameWorld.Game.create_node(node_data)
   end
 
-  def update_node(token, id, attrs) do
-    token
-    |> token_to_process_name()
-    |> GenGameWorld.Game.update_node(id, attrs)
+  def get_node(pid) do
+    GenGameWorld.Game.get_node(pid)
   end
 
   defmemo token_to_process_name(token) do

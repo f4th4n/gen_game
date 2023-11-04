@@ -11,11 +11,11 @@ defmodule GenGameWorld.Game do
 
   def start_link(state) do
     {name, state} = Keyword.pop(state, :name)
-    GenServer.start_link(__MODULE__, state, name: name)
+    GenServer.start_link(__MODULE__, [], name: name)
   end
 
-  def init(init_arg) do
-    {:ok, init_arg}
+  def init(_init_arg) do
+    {:ok, %{nodes: []}}
   end
 
   # --------------------------------------------------------------------------- client
@@ -27,10 +27,9 @@ defmodule GenGameWorld.Game do
   def new_game(token) do
     case get_game(token) do
       nil ->
-        process_name = token_to_process_name(token)
-        :ets.new(process_name, [:set, :public, :named_table])
-        {:ok, pid} = DynamicSupervisor.start_child(GenGameWorld.DynamicGameSpv, {GenGameWorld.Game, [name: process_name]})
-        {:ok, pid}
+        game_process_name = token_to_process_name(token)
+        :ets.new(game_process_name, [:set, :public, :named_table])
+        DynamicSupervisor.start_child(GenGameWorld.DynamicGameSpv, {GenGameWorld.Game, [name: game_process_name]})
 
       pid ->
         {:ok, pid}
@@ -47,40 +46,33 @@ defmodule GenGameWorld.Game do
   create node data into ets table.
   """
   @spec create_node(process_name(), struct()) :: {:ok, binary()}
-  def create_node(process_name, node_data) do
-    id = UUID.uuid4()
-    :ets.insert(process_name, {id, node_data})
-    {:ok, id}
+  def create_node(game_process_name, node_data) do
+    GenServer.call(game_process_name, {:create_node, node_data})
+  end
+
+  def handle_call({:create_node, %module{} = node_data}, _from, %{nodes: nodes} = state) do
+    {:ok, pid} = DynamicSupervisor.start_child(GenGameWorld.DynamicNodesSpv, {module, node_data})
+    new_node = {pid, module}
+    {:reply, {:ok, new_node}, %{nodes: nodes ++ [new_node]}}
   end
 
   @doc """
   fetch node data from ets table.
   """
-  def get_node(process_name, id) do
-    case :ets.lookup(process_name, id) do
-      [] -> nil
-      res -> res |> List.first() |> elem(1)
-    end
-  end
-
-  @doc """
-  update node data in ets table.
-  """
-  def update_node(process_name, id, attrs) do
-    case :ets.lookup(process_name, id) do
-      [] ->
-        nil
-
-      res ->
-        node_data = res |> List.first() |> elem(1)
-        updated_node_data = Map.merge(node_data, attrs)
-        :ets.insert(process_name, {id, updated_node_data})
-        get_node(process_name, id)
+  def get_node(pid) do
+    if Process.alive?(pid) do
+      :sys.get_state(pid)
+    else
+      nil
     end
   end
 
   defmemo token_to_process_name(token) do
     String.to_atom("game_" <> token)
+  end
+
+  defmemo id_to_process_name(token) do
+    String.to_atom("node_" <> token)
   end
 
   # def start_game(game_token) do
