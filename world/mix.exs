@@ -34,7 +34,8 @@ defmodule GenGameWorld.MixProject do
       {:phoenix_pubsub, "~> 2.1"},
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
       {:uuid, "~> 1.1"},
-      {:memoize, "~> 1.4"}
+      {:memoize, "~> 1.4"},
+      {:rustler, "~> 0.30.0"}
     ]
   end
 
