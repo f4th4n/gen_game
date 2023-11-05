@@ -8,7 +8,8 @@ config :gen_game_world,
         secret: System.get_env("RELEASE_COOKIE", "gen_game")
       ]
     ]
-  ]
+  ],
+  enable_game_consumer: {:system, "ENABLE_GAME_CONSUMER", false}
 
 config :gen_game_world,
   type: :world

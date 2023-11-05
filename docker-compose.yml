@@ -37,6 +37,8 @@ services:
     <<: *app
     command: /bin/sh -c "mix setup && elixir --sname world --cookie gen_game -S mix run --no-halt"
     working_dir: /app/world
+    environment:
+      ENABLE_GAME_CONSUMER: true
     depends_on:
       kafka:
         condition: service_healthy
