@@ -10,7 +10,7 @@ defmodule GenGameWorld.Game do
   @type token() :: binary()
 
   def start_link(state) do
-    {name, state} = Keyword.pop(state, :name)
+    {name, _state} = Keyword.pop(state, :name)
     GenServer.start_link(__MODULE__, [], name: name)
   end
 
@@ -49,7 +49,7 @@ defmodule GenGameWorld.Game do
     GenServer.call(game_process_name, {:create_node, node_data})
   end
 
-  def handle_call({:create_node, %module{} = node_data}, _from, %{nodes: nodes} = state) do
+  def handle_call({:create_node, %module{} = node_data}, _from, %{nodes: nodes}) do
     {:ok, pid} = DynamicSupervisor.start_child(GenGameWorld.DynamicNodesSpv, {module, node_data})
     new_node = {pid, module}
     {:reply, {:ok, new_node}, %{nodes: nodes ++ [new_node]}}
