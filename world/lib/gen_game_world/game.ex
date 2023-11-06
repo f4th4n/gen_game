@@ -15,7 +15,7 @@ defmodule GenGameWorld.Game do
   end
 
   def init(_init_arg) do
-    {:ok, %{nodes: []}}
+    {:ok, %{nodes: [], status: :open}}
   end
 
   # --------------------------------------------------------------------------- client
@@ -28,7 +28,6 @@ defmodule GenGameWorld.Game do
     case get_game(token) do
       nil ->
         game_process_name = token_to_process_name(token)
-        :ets.new(game_process_name, [:set, :public, :named_table])
         DynamicSupervisor.start_child(GenGameWorld.DynamicGameSpv, {GenGameWorld.Game, [name: game_process_name]})
 
       pid ->
@@ -43,7 +42,7 @@ defmodule GenGameWorld.Game do
   end
 
   @doc """
-  create node data into ets table.
+  create node data.
   """
   @spec create_node(process_name(), struct()) :: {:ok, binary()}
   def create_node(game_process_name, node_data) do
@@ -57,7 +56,7 @@ defmodule GenGameWorld.Game do
   end
 
   @doc """
-  fetch node data from ets table.
+  fetch node data.
   """
   def get_node(pid) do
     if Process.alive?(pid) do

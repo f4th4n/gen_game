@@ -37,7 +37,8 @@ defmodule GenGameWorld.MixProject do
       {:memoize, "~> 1.4"},
       {:rustler, "~> 0.30.0"},
       {:confex, "~> 3.5.0"},
-      {:benchee, "~> 1.0", only: :dev}
+      {:benchee, "~> 1.0", only: :dev},
+      {:ex_hash_ring, "~> 6.0"}
     ]
   end
 
