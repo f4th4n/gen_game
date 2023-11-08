@@ -35,7 +35,10 @@ defmodule GenGameWorld.MixProject do
       {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
       {:uuid, "~> 1.1"},
       {:memoize, "~> 1.4"},
-      {:rustler, "~> 0.30.0"}
+      {:rustler, "~> 0.30.0"},
+      {:confex, "~> 3.5.0"},
+      {:benchee, "~> 1.0", only: :dev},
+      {:ex_hash_ring, "~> 6.0"}
     ]
   end
 

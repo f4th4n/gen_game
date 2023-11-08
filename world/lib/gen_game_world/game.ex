@@ -10,12 +10,12 @@ defmodule GenGameWorld.Game do
   @type token() :: binary()
 
   def start_link(state) do
-    {name, state} = Keyword.pop(state, :name)
+    {name, _state} = Keyword.pop(state, :name)
     GenServer.start_link(__MODULE__, [], name: name)
   end
 
   def init(_init_arg) do
-    {:ok, %{nodes: []}}
+    {:ok, %{nodes: [], status: :open}}
   end
 
   # --------------------------------------------------------------------------- client
@@ -28,7 +28,6 @@ defmodule GenGameWorld.Game do
     case get_game(token) do
       nil ->
         game_process_name = token_to_process_name(token)
-        :ets.new(game_process_name, [:set, :public, :named_table])
         DynamicSupervisor.start_child(GenGameWorld.DynamicGameSpv, {GenGameWorld.Game, [name: game_process_name]})
 
       pid ->
@@ -43,21 +42,21 @@ defmodule GenGameWorld.Game do
   end
 
   @doc """
-  create node data into ets table.
+  create node data.
   """
   @spec create_node(process_name(), struct()) :: {:ok, binary()}
   def create_node(game_process_name, node_data) do
     GenServer.call(game_process_name, {:create_node, node_data})
   end
 
-  def handle_call({:create_node, %module{} = node_data}, _from, %{nodes: nodes} = state) do
+  def handle_call({:create_node, %module{} = node_data}, _from, %{nodes: nodes}) do
     {:ok, pid} = DynamicSupervisor.start_child(GenGameWorld.DynamicNodesSpv, {module, node_data})
     new_node = {pid, module}
     {:reply, {:ok, new_node}, %{nodes: nodes ++ [new_node]}}
   end
 
   @doc """
-  fetch node data from ets table.
+  fetch node data.
   """
   def get_node(pid) do
     if Process.alive?(pid) do
