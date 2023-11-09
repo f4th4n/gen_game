@@ -30,7 +30,7 @@ Features:
 - [x] game room
 - [x] authentication & authorization
 - [ ] regions (currently it's still single region)
-- [ ] NIF
+- [X] NIF
 
 ## Requirements
 
