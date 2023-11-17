@@ -15,7 +15,7 @@ defmodule GenGameWorld.Game do
   end
 
   def init(_init_arg) do
-    {:ok, %{nodes: [], status: :open}}
+    {:ok, %{nodes: []}}
   end
 
   # --------------------------------------------------------------------------- client
@@ -73,23 +73,6 @@ defmodule GenGameWorld.Game do
   defmemo id_to_process_name(token) do
     String.to_atom("node_" <> token)
   end
-
-  # def start_game(game_token) do
-  #   GenServer.cast(__MODULE__, {:start_game, game_token})
-  # end
-
-  # --------------------------------------------------------------------------- server
-
-  # def handle_cast({:start_game, game_token}, state) do
-  #   api_node = GenGameWorld.Proxy.get_api_node()
-  #   _res = :rpc.call(api_node, GenGameApi.Game, :start_game, [game_token])
-
-  #   {:noreply, state}
-  # end
-
-  # def handle_call(:try, _from, state) do
-  #   {:reply, state, state}
-  # end
 
   def handle_cast(_, _state) do
     {:error, "unknown command"}
