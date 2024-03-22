@@ -1,70 +1,18 @@
 # GenGame
 
-GenGame is distributed generic game server, written in Elixir.
+To start your Phoenix server:
 
-## Details:
+  * Run `mix setup` to install and setup dependencies
+  * Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
 
-GenGame is monorepo consist of 4 projects: `api`, `app`, `world` and `client`. Every backend applications (api, app, world) can be scaled horizontally. It means that you can scale based on business requirements. For example if the game need to crunch numbers heavily, you should spawn few more `world` nodes in order to distribute work load. The nodes will be automatically connected, thanks to libcluster.
+Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
-1. api
+Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
 
-`api` is used for interfacing with the client (web, mobile, game engine). It is also used as router, almost all actions will be passed to either `app` or `world`.
+## Learn more
 
-2. app
-
-`app` is used for business actions. It can be used for persisting player data, economy data, etc.
-
-3. world
-
-`world` is used for game logic like player movement, fall damage handler, enemy spawner, level, etc. All data is in-memory to maintain performance.
-
-4. client
-
-`client` is example of how client communicate with `api`. Currently there are example client for web and [godot engine](https://godotengine.org). You can use any game engine you want as long as it can open WebSocket connection.
-
-![Alt text](docs/big_pict.png?raw=true "Big pict")
-
-Features:
-
-- [x] player movement
-- [x] game room
-- [x] authentication & authorization
-- [ ] regions (currently it's still single region)
-- [X] NIF
-
-## Requirements
-
-- Docker
-
-# Installation
-
-## Start
-
-```
-./gen_game start
-```
-
-## Connect to running node, attach mode:
-
-```
-./gen_game api|app|world
-
-Example:
-./gen_game api
-```
-
-## API Docs
-
-TODO add API docs here
-
-## Useful Commands
-
-### world
-
-```
-# get game pid by game token
-GenGameWorld.get_game_pid/1
-
-# overview world state like active games, etc
-GenGameWorld.summary/0
-```
+  * Official website: https://www.phoenixframework.org/
+  * Guides: https://hexdocs.pm/phoenix/overview.html
+  * Docs: https://hexdocs.pm/phoenix
+  * Forum: https://elixirforum.com/c/phoenix-forum
+  * Source: https://github.com/phoenixframework/phoenix
