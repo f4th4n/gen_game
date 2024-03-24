@@ -7,14 +7,13 @@ defmodule GenGame.Application do
 
   @impl true
   def start(_type, _args) do
+    Confex.resolve_env!(:gen_game)
+
     children = [
+      {Cluster.Supervisor, libcluster_config()},
       GenGameWeb.Telemetry,
       GenGame.Repo,
-      {DNSCluster, query: Application.get_env(:gen_game, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: GenGame.PubSub},
-      # Start a worker by calling: GenGame.Worker.start_link(arg)
-      # {GenGame.Worker, arg},
-      # Start to serve requests, typically the last entry
       GenGameWeb.Endpoint
     ]
 
@@ -30,5 +29,12 @@ defmodule GenGame.Application do
   def config_change(changed, _new, removed) do
     GenGameWeb.Endpoint.config_change(changed, removed)
     :ok
+  end
+
+  defp libcluster_config() do
+    [
+      [gen_game: [strategy: Cluster.Strategy.LocalEpmd]],
+      [name: GenGame.ClusterSupervisor]
+    ]
   end
 end
