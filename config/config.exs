@@ -14,6 +14,8 @@ config :gen_game,
 # Configures the endpoint
 config :gen_game, GenGameWeb.Endpoint,
   url: [host: "localhost"],
+  http: [ip: {0, 0, 0, 0}, port: {:system, :integer, "HTTP_PORT", 4000}],
+  check_origin: false,
   adapter: Phoenix.Endpoint.Cowboy2Adapter,
   render_errors: [
     formats: [json: GenGameWeb.ErrorJSON],
