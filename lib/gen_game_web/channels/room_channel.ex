@@ -2,12 +2,9 @@ defmodule GenGameWeb.RoomChannel do
   use GenGameWeb, :channel
 
   @impl true
-  def join("room:lobby", payload, socket) do
-    if authorized?(payload) do
-      {:ok, socket}
-    else
-      {:error, %{reason: "unauthorized"}}
-    end
+  def join("room:lobby", %{"name" => name}, socket) do
+    send(self(), :after_join)
+    {:ok, assign(socket, :name, name)}
   end
 
   @impl true
@@ -21,10 +18,5 @@ defmodule GenGameWeb.RoomChannel do
   def handle_in("shout", payload, socket) do
     broadcast(socket, "shout", payload)
     {:noreply, socket}
-  end
-
-  # Add authorization logic here as required.
-  defp authorized?(_payload) do
-    true
   end
 end

@@ -14,6 +14,7 @@ defmodule GenGame.Application do
       GenGameWeb.Telemetry,
       GenGame.Repo,
       {Phoenix.PubSub, name: GenGame.PubSub},
+      GenGameWeb.Presence,
       GenGameWeb.Endpoint
     ]
 
