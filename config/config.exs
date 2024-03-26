@@ -20,7 +20,11 @@ config :gen_game, GenGameWeb.Endpoint,
     layout: false
   ],
   pubsub_server: GenGame.PubSub,
-  live_view: [signing_salt: "MQtVmOzM"]
+  live_view: [signing_salt: "MQtVmOzM"],
+  secret_key_base: {:system, "SECRET_KEY_BASE"}
+
+config :gen_game, GenGame.Repo,
+  url: {:system, "DATABASE_URL", "ecto://postgres:postgres@localhost/gen_game_dev"}
 
 # Configures Elixir's Logger
 config :logger, :console,
