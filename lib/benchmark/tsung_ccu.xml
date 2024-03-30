@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<!DOCTYPE tsung SYSTEM "/home/fathan/work/tools/tsung-1.0.dtd">
+<!DOCTYPE tsung SYSTEM "tsung-1.0.dtd">
 
 <!-- Test number of concurrent socket connections (CCU count) -->
 <!-- Explanation -->
@@ -18,7 +18,7 @@
   <load>
     <arrivalphase phase="1" duration="30" unit="second">
       <!-- <users arrivalrate="100" unit="second"></users> -->
-      <users maxnumber="600" arrivalrate="600" unit="second"></users>
+      <users maxnumber="1000" arrivalrate="1000" unit="second"></users>
     </arrivalphase>
   </load>
 
