@@ -1,20 +1,32 @@
-defmodule GenGameWeb.RoomChannel do
+defmodule Benchmark.BenchmarkChannel do
   use GenGameWeb, :channel
 
   alias GenGameWeb.Presence
 
   @impl true
-  def join("room:lobby", %{"name" => name}, socket) do
+  def join("benchmark:ccu", %{"device_id" => device_id}, socket) do
+    {:ok, assign(socket, :device_id, device_id)}
+  end
+
+  def join("benchmark:new_user", %{"device_id" => _device_id}, socket) do
+    # TODO implement this
+    {:ok, socket}
+  end
+
+  def join("benchmark:gameplay", %{"device_id" => _device_id}, socket) do
+    # TODO implement this
     send(self(), :after_join)
-    {:ok, assign(socket, :name, name)}
+    {:ok, socket}
   end
 
   @impl true
   def handle_info(:after_join, socket) do
-    {:ok, _} =
+    {:ok, a} =
       Presence.track(socket, socket.assigns.name, %{
         online_at: inspect(System.system_time(:second))
       })
+
+    IO.inspect({"masuk after join", socket.assigns.name, a})
 
     push(socket, "presence_state", Presence.list(socket))
     {:noreply, socket}

@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE tsung SYSTEM "/home/fathan/work/tools/tsung-1.0.dtd">
+
+<!-- Test number of concurrent socket connections (CCU count) -->
+<!-- Explanation -->
+<!-- for {arrivalphase.duration} seconds, spawn {arrivalrate} client per second, max client is {maxnumber}, hold for {thinktime.value} seconds -->
+<!-- for 30 seconds, spawn 100 client per second, max client is 100, hold for 10 seconds -->
+
+<tsung loglevel="debug" version="1.0">
+  <clients>
+    <client host="fathan-pc" use_controller_vm="false" />
+  </clients>
+
+  <servers>
+    <server host="localhost" port="4000" type="tcp" />
+  </servers>
+
+  <load>
+    <arrivalphase phase="1" duration="30" unit="second">
+      <!-- <users arrivalrate="100" unit="second"></users> -->
+      <users maxnumber="1" arrivalrate="1000" unit="second"></users>
+    </arrivalphase>
+  </load>
+
+  <options>
+    <option name="ports_range" min="1025" max="65535"/>
+  </options>
+
+  <sessions>
+    <session name="websocket" probability="100" type="ts_websocket">
+      <request>
+        <websocket type="connect" path="/game/websocket"></websocket>
+      </request>
+
+      <request subst="true">
+        <websocket type="message">{"topic":"benchmark:ccu", "event":"phx_join", "payload": {"device_id":"%%ts_user_server:get_unique_id%%"}, "ref":"1"}</websocket>
+      </request>
+
+      <thinktime value="10"/>
+    </session>
+  </sessions>
+</tsung>

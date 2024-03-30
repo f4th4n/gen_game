@@ -2,6 +2,7 @@ defmodule GenGameWeb.GameSocket do
   use Phoenix.Socket
 
   channel "room:*", GenGameWeb.RoomChannel
+  channel "benchmark:*", Benchmark.BenchmarkChannel
 
   @impl true
   def connect(_params, socket, _connect_info) do
