@@ -6,7 +6,7 @@
 <!-- for {arrivalphase.duration} seconds, spawn {arrivalrate} client per second, max client is {maxnumber}, hold for {thinktime.value} seconds -->
 <!-- for 30 seconds, spawn 100 client per second, max client is 100, hold for 10 seconds -->
 
-<tsung loglevel="debug" version="1.0">
+<tsung loglevel="debug" version="1.0" backend="json">
   <clients>
     <client host="fathan-pc" use_controller_vm="false" />
   </clients>
@@ -16,9 +16,9 @@
   </servers>
 
   <load>
-    <arrivalphase phase="1" duration="30" unit="second">
-      <!-- <users arrivalrate="100" unit="second"></users> -->
-      <users maxnumber="1000" arrivalrate="1000" unit="second"></users>
+    <arrivalphase phase="1" duration="200" unit="second">
+      <!-- <users maxnumber="500" arrivalrate="500" unit="second"></users> -->
+      <users arrivalrate="1" unit="second"></users>
     </arrivalphase>
   </load>
 
@@ -36,7 +36,7 @@
         <websocket type="message">{"topic":"benchmark:ccu", "event":"phx_join", "payload": {"device_id":"%%ts_user_server:get_unique_id%%"}, "ref":"1"}</websocket>
       </request>
 
-      <thinktime value="10"/>
+      <thinktime value="200"/>
     </session>
   </sessions>
 </tsung>
