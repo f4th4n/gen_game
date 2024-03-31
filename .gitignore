@@ -26,3 +26,4 @@ erl_crash.dump
 gen_game-*.tar
 
 client
+excluded
