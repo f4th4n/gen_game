@@ -1,17 +1,9 @@
-# This file is responsible for configuring your application
-# and its dependencies with the aid of the Config module.
-#
-# This configuration file is loaded before any dependency and
-# is restricted to this project.
-
-# General application configuration
 import Config
 
 config :gen_game,
   ecto_repos: [GenGame.Repo],
   generators: [timestamp_type: :utc_datetime]
 
-# Configures the endpoint
 config :gen_game, GenGameWeb.Endpoint,
   url: [host: "localhost"],
   http: [ip: {0, 0, 0, 0}, port: {:system, :integer, "HTTP_PORT", 4000}],
@@ -25,17 +17,13 @@ config :gen_game, GenGameWeb.Endpoint,
   live_view: [signing_salt: "MQtVmOzM"],
   secret_key_base: {:system, "SECRET_KEY_BASE"}
 
-config :gen_game, GenGame.Repo,
-  url: {:system, "DATABASE_URL", "ecto://postgres:postgres@localhost/gen_game_dev"}
+config :gen_game, GenGame.Repo, url: {:system, "DATABASE_URL"}
 
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
-# Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
-# Import environment specific config. This must remain at the bottom
-# of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"

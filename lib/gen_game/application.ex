@@ -12,7 +12,7 @@ defmodule GenGame.Application do
     children = [
       {Cluster.Supervisor, libcluster_config()},
       GenGameWeb.Telemetry,
-      # GenGame.Repo,
+      GenGame.Repo,
       {Phoenix.PubSub, name: GenGame.PubSub},
       GenGameWeb.Presence,
       GenGameWeb.Endpoint
