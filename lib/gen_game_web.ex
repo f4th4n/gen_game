@@ -42,7 +42,6 @@ defmodule GenGameWeb do
         layouts: [html: GenGameWeb.Layouts]
 
       import Plug.Conn
-      import GenGameWeb.Gettext
 
       unquote(verified_routes())
     end
