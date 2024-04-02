@@ -4,15 +4,15 @@ defmodule GenGameWeb.RoomChannel do
   alias GenGameWeb.Presence
 
   @impl true
-  def join("room:lobby", %{"name" => name}, socket) do
+  def join("room:lobby", %{"device_id" => device_id}, socket) do
     send(self(), :after_join)
-    {:ok, assign(socket, :name, name)}
+    {:ok, assign(socket, :device_id, device_id)}
   end
 
   @impl true
   def handle_info(:after_join, socket) do
     {:ok, _} =
-      Presence.track(socket, socket.assigns.name, %{
+      Presence.track(socket, socket.assigns.device_id, %{
         online_at: inspect(System.system_time(:second))
       })
 

@@ -10,11 +10,14 @@ defmodule GenGame.Repo.Migrations.CreateAccounts do
       add :timezone, :string
       add :metadata, :string
 
-      add :steam_id, :string
-      add :facebook_id, :string
-      add :google_id, :string
-      add :gamecenter_id, :string
-      add :online, :boolean
+      # add :steam_id, :string
+      # add :facebook_id, :string
+      # add :google_id, :string
+      # add :gamecenter_id, :string
+      # add :online, :boolean virtual
+
+      add :email, :string
+      add :wallet, :string
 
       timestamps()
     end
