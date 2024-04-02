@@ -4,12 +4,14 @@ defmodule GenGame.MixProject do
   def project do
     [
       app: :gen_game,
-      version: "0.1.0",
+      version: "0.0.2",
       elixir: "~> 1.14",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      description: description(),
+      package: package()
     ]
   end
 
@@ -42,7 +44,21 @@ defmodule GenGame.MixProject do
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
       {:libcluster, "~> 3.3"},
-      {:confex, "~> 3.5"}
+      {:confex, "~> 3.5"},
+      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
+    ]
+  end
+
+  defp description() do
+    "GenGame is realtime and distributed game server"
+  end
+
+  defp package() do
+    [
+      name: :gen_game,
+      maintainers: ["Wildan Fathan"],
+      licenses: ["MIT"],
+      links: %{"GitHub" => "https://github.com/f4th4n/gen_game"}
     ]
   end
 
