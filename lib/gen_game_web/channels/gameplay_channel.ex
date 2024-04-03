@@ -1,12 +1,13 @@
-defmodule GenGameWeb.RoomChannel do
+defmodule GenGameWeb.GameplayChannel do
   use GenGameWeb, :channel
 
   alias GenGameWeb.Presence
 
   @impl true
-  def join("room:lobby", %{"device_id" => device_id}, socket) do
+  def join("game:" <> game_id, %{token: _token}, socket) do
+    # TODO verify token
     send(self(), :after_join)
-    {:ok, assign(socket, :device_id, device_id)}
+    {:ok, assign(socket, :game_id, game_id)}
   end
 
   @impl true

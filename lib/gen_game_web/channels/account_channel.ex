@@ -1,4 +1,11 @@
 defmodule GenGameWeb.AccountChannel do
+  @moduledoc """
+  This channel is used for managing player's account.
+
+  Incoming Events:
+  - create_account
+  - [WIP] link_account
+  """
   use GenGameWeb, :channel
 
   require Logger
@@ -6,11 +13,6 @@ defmodule GenGameWeb.AccountChannel do
   alias GenGame.Account.Accounts
   alias GenGame.Account.Account
   alias GenGame.ChangesetHelper
-
-  # events_in = [
-  #   "create_account",
-  #   "get"
-  # ]
 
   @impl true
   def join("account", %{"device_id" => device_id}, socket) do

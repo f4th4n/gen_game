@@ -1,8 +1,9 @@
 defmodule GenGameWeb.GameSocket do
   use Phoenix.Socket
 
+  channel "auth", GenGameWeb.AuthChannel
   channel "account", GenGameWeb.AccountChannel
-  channel "room:*", GenGameWeb.RoomChannel
+  channel "game:*", GenGameWeb.GameplayChannel
   channel "benchmark:*", Benchmark.BenchmarkChannel
 
   @impl true
