@@ -1,10 +1,13 @@
 defmodule GenGameWeb.GameSocket do
   use Phoenix.Socket
 
-  channel "auth", GenGameWeb.AuthChannel
-  channel "account", GenGameWeb.AccountChannel
-  channel "game:*", GenGameWeb.GameplayChannel
-  channel "benchmark:*", Benchmark.BenchmarkChannel
+  alias GenGameWeb.Channels.GenGameChannel
+  alias GenGameWeb.Channels.GameplayChannel
+  alias Benchmark.BenchmarkChannel
+
+  channel "gg", GenGameChannel
+  channel "gg:game:*", GameplayChannel
+  channel "benchmark:*", BenchmarkChannel
 
   @impl true
   def connect(_params, socket, _connect_info) do

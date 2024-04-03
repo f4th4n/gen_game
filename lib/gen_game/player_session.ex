@@ -12,9 +12,14 @@ defmodule GenGame.PlayerSession do
     GenServer.start_link(__MODULE__, default, name: __MODULE__)
   end
 
-  @spec generate_token(binary()) :: term()
-  def generate_token(username) do
-    GenServer.call(__MODULE__, {:generate_token, username})
+  @spec create(binary()) :: binary()
+  def create(username) do
+    Token.sign(Endpoint, @salt, username)
+  end
+
+  @spec verify(binary()) :: {:ok, binary()} | {:error, :expired | :invalid | :missing}
+  def verify(token) do
+    Token.verify(Endpoint, @salt, token)
   end
 
   # ----------------------------------------------------------------------------------------------- server
@@ -23,7 +28,7 @@ defmodule GenGame.PlayerSession do
     {:ok, init_arg}
   end
 
-  def handle_call({:generate_token, username}, _from, state) do
+  def handle_call({:create, username}, _from, state) do
     token = Token.sign(Endpoint, @salt, username)
     {:reply, token, state}
   end

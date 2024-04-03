@@ -1,19 +1,26 @@
-defmodule GenGameWeb.GameplayChannel do
+defmodule GenGameWeb.Channels.GameplayChannel do
   use GenGameWeb, :channel
 
   alias GenGameWeb.Presence
+  alias GenGame.PlayerSession
 
   @impl true
-  def join("game:" <> game_id, %{token: _token}, socket) do
-    # TODO verify token
-    send(self(), :after_join)
-    {:ok, assign(socket, :game_id, game_id)}
+  def join("game:" <> game_id, %{"token" => token}, socket) do
+    case PlayerSession.verify(token) do
+      {:ok, username} ->
+        send(self(), :after_join)
+
+        {:ok, assign(socket, game_id: game_id, username: username)}
+
+      {:error, _error} ->
+        {:error, %{msg: "invalid_token"}}
+    end
   end
 
   @impl true
   def handle_info(:after_join, socket) do
     {:ok, _} =
-      Presence.track(socket, socket.assigns.device_id, %{
+      Presence.track(socket, socket.assigns.username, %{
         online_at: inspect(System.system_time(:second))
       })
 
