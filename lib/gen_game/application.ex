@@ -16,7 +16,8 @@ defmodule GenGame.Application do
       {Phoenix.PubSub, name: GenGame.PubSub},
       GenGameWeb.Presence,
       GenGameWeb.Endpoint,
-      GenGame.PlayerSession
+      GenGame.PlayerSession,
+      GenGame.Gameplay
     ]
 
     opts = [strategy: :one_for_one, name: GenGame.Supervisor]

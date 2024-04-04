@@ -9,7 +9,7 @@ defmodule GenGameWeb.Channels.GenGameChannel do
   alias GenGameWeb.Channels.AccountHandler
 
   @impl true
-  def join("auth", _, socket) do
+  def join("gg", _, socket) do
     {:ok, socket}
   end
 
