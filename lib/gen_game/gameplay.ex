@@ -1,59 +1,43 @@
 defmodule GenGame.Gameplay do
-  use GenServer
+  @moduledoc """
+  Core module to manage a game state.
 
-  alias Phoenix.PubSub
-
+  Example create game, and then try to relay:
+  iex > game_id = GenGame.Gameplay.create_game()
+  iex > :ok = GenGame.Gameplay.relay(game_id, "enemy_1", %{hp: 100})
+  """
   @table :gameplay
-  @pubsub GenGame.PubSub
-  @topic "game"
 
-  # ----------------------------------------------------------------------------------------------- client
+  use GenGame.Storage, table: @table
 
-  def start_link(default) do
-    GenServer.start_link(__MODULE__, default, name: __MODULE__)
+  alias GenGame.Gameplay
+  alias GenGame.Game.Game
+
+  @spec create_game() :: binary()
+  def create_game() do
+    game_id = Ecto.UUID.generate()
+    Gameplay.set(game_id, %Game{})
+
+    game_id
   end
 
-  @doc """
-  Create a game, distributed to all nodes.
-  """
-  @spec create(binary()) :: term()
-  def create(game_id) when is_binary(game_id) do
-    GenServer.call(__MODULE__, {:create, game_id})
-  end
-
-  @doc """
-  Check whether a game exist.
-  """
   @spec check(binary()) :: :exist | :not_found
-  def check(game_id) do
-    GenServer.call(__MODULE__, {:check, game_id})
+  def check(game_id) when is_binary(game_id) do
+    case Gameplay.get(game_id) do
+      [] -> :not_found
+      [_h | _t] -> :exist
+    end
   end
 
-  # ----------------------------------------------------------------------------------------------- server
+  @spec relay(binary(), binary(), term()) :: :ok | {:error, :not_found}
+  def relay(game_id, key, value) do
+    case Gameplay.get(game_id) do
+      %Game{state: state} = game ->
+        new_state = Map.put(state, key, value)
+        Gameplay.set(game_id, Map.put(game, :state, new_state))
 
-  def init(init_arg) do
-    Phoenix.PubSub.subscribe(@pubsub, @topic)
-    :ets.new(@table, [:set, :public, :named_table])
-    {:ok, init_arg}
-  end
-
-  def handle_info(game_id, state) when is_binary(game_id) do
-    :ets.insert(@table, {game_id, self()})
-    {:noreply, state}
-  end
-
-  def handle_call({:create, game_id}, _from, state) do
-    PubSub.broadcast(@pubsub, @topic, game_id)
-    {:reply, :ok, state}
-  end
-
-  def handle_call({:check, game_id}, _from, state) do
-    res =
-      case :ets.lookup(@table, game_id) do
-        [] -> :not_found
-        [_h | _t] -> :exist
-      end
-
-    {:reply, res, state}
+      nil ->
+        {:error, :not_found}
+    end
   end
 end
