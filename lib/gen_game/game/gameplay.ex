@@ -3,8 +3,8 @@ defmodule GenGame.Game.Gameplay do
   Core module to manage a game state.
 
   Example create game, and then try to relay:
-  iex > match_id = GenGame.Game.Gameplay.create_game()
-  iex > :ok = GenGame.Game.Gameplay.relay(match_id, "enemy_1", %{hp: 100})
+  iex > GenGame.Game.Gameplay.create_game("p1", "game_100")
+  iex > :ok = GenGame.Game.Gameplay.relay("game_100", %{"enemy_1": %{hp: 100}})
   iex > GenGame.Game.Gameplay.get(match_id)
   """
   @table :gameplay
@@ -58,6 +58,8 @@ defmodule GenGame.Game.Gameplay do
         Task.async(fn ->
           Gameplay.set(match_id, Map.put(game, :public_state, Map.merge(public_state, payload)))
         end)
+
+        :ok
 
       nil ->
         {:error, :not_found}

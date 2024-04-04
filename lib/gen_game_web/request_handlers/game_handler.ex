@@ -3,6 +3,7 @@ defmodule GenGameWeb.RequestHandlers.GameHandler do
 
   alias GenGame.Game.Gameplay
   alias GenGame.PlayerSession
+  alias Mods.Mod
 
   def join(match_id, token, socket) do
     with :exist <- Gameplay.check(match_id),
@@ -48,5 +49,9 @@ defmodule GenGameWeb.RequestHandlers.GameHandler do
     game = Gameplay.get(match_id)
 
     {:reply, {:ok, game}, socket}
+  end
+
+  def rpc(payload, _socket) do
+    Mod.rpc(payload)
   end
 end

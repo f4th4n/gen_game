@@ -33,4 +33,7 @@ defmodule GenGameWeb.Channels.GameplayChannel do
 
   def handle_in("get_state", params, socket),
     do: GameHandler.get_state(params, socket)
+
+  def handle_in("rpc", params, socket),
+    do: GameHandler.rpc(params, socket)
 end
