@@ -24,12 +24,29 @@ defmodule GenGameWeb.RequestHandlers.GameHandler do
 
   def create_game(_params, socket) do
     # TODO add option to auto start game
-    match_id = Gameplay.create_game()
-    {:reply, {:ok, match_id}, socket}
+    token = socket.assigns.token
+
+    with {:ok, username} <- GenGame.PlayerSession.verify(token),
+         match_id <- Ecto.UUID.generate(),
+         _match_id <- Gameplay.create_game(username, match_id) do
+      {:reply, {:ok, match_id}, socket}
+    else
+      _e -> {:reply, {:error, "cannot create a game"}, socket}
+    end
   end
 
-  def set_state(%{"match_id" => match_id, "key" => key, "value" => value}, socket) do
-    :ok = Gameplay.relay(match_id, key, value)
-    {:reply, :ok, socket}
+  def set_state(payload, socket) do
+    match_id = socket.assigns.match_id
+    Gameplay.relay(match_id, payload)
+    broadcast(socket, "relay", payload)
+
+    {:noreply, socket}
+  end
+
+  def get_state(_payload, socket) do
+    match_id = socket.assigns.match_id
+    game = Gameplay.get(match_id)
+
+    {:reply, {:ok, game}, socket}
   end
 end

@@ -5,6 +5,10 @@ defmodule GenGame.Application do
 
   use Application
 
+  alias GenGameWeb.Endpoint
+  alias GenGame.Game.Gameplay
+  alias GenGame.PlayerSession
+
   @impl true
   def start(_type, _args) do
     Confex.resolve_env!(:gen_game)
@@ -15,18 +19,24 @@ defmodule GenGame.Application do
       GenGame.Repo,
       {Phoenix.PubSub, name: GenGame.PubSub},
       GenGameWeb.Presence,
-      GenGameWeb.Endpoint,
-      GenGame.PlayerSession,
-      GenGame.Game.Gameplay
+      Endpoint,
+      PlayerSession,
+      Gameplay
     ]
 
     opts = [strategy: :one_for_one, name: GenGame.Supervisor]
-    Supervisor.start_link(children, opts)
+    res = Supervisor.start_link(children, opts)
+
+    if Application.get_env(:gen_game, :env) == :dev do
+      Gameplay.create_example_game()
+    end
+
+    res
   end
 
   @impl true
   def config_change(changed, _new, removed) do
-    GenGameWeb.Endpoint.config_change(changed, removed)
+    Endpoint.config_change(changed, removed)
     :ok
   end
 

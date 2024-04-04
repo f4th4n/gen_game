@@ -28,7 +28,6 @@ defmodule GenGame.Storage do
       @spec set(binary(), term()) :: term()
       def set(key, value) when is_binary(key) do
         GenServer.call(__MODULE__, {:set, key, value})
-        :ok
       end
 
       @doc """

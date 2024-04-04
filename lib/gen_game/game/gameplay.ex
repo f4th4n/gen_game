@@ -14,12 +14,14 @@ defmodule GenGame.Game.Gameplay do
   alias GenGame.Game.Gameplay
   alias GenGame.Game.Game
 
-  @spec create_game() :: binary()
-  def create_game() do
-    match_id = Ecto.UUID.generate()
-    Gameplay.set(match_id, %Game{status: :started})
+  @spec create_example_game() :: :ok
+  def create_example_game() do
+    create_game("username", "example")
+  end
 
-    match_id
+  @spec create_game(binary(), binary()) :: :ok
+  def create_game(owner_username, match_id) do
+    Gameplay.set(match_id, %Game{status: :started, players: [owner_username]})
   end
 
   @spec check(binary()) :: :exist | :not_found
@@ -48,13 +50,14 @@ defmodule GenGame.Game.Gameplay do
   @doc """
   relay/3 can be called by clients that associated with this game.
   """
-  @spec relay(binary(), binary(), term()) :: :ok | {:error, :not_found}
-  def relay(match_id, key, value) do
+  @spec relay(binary(), map()) :: :ok | {:error, :not_found}
+  def relay(match_id, payload) do
     # TODO prevent client from changing the state of unstarted game
     case Gameplay.get(match_id) do
       %Game{public_state: public_state} = game ->
-        new_public_state = Map.put(public_state, key, value)
-        Gameplay.set(match_id, Map.put(game, :public_state, new_public_state))
+        Task.async(fn ->
+          Gameplay.set(match_id, Map.put(game, :public_state, Map.merge(public_state, payload)))
+        end)
 
       nil ->
         {:error, :not_found}

@@ -20,10 +20,17 @@ defmodule GenGameWeb.Channels.GameplayChannel do
     {:noreply, socket}
   end
 
+  def handle_info(_payload, socket) do
+    {:noreply, socket}
+  end
+
   @impl true
   def handle_in("ping", params, socket),
     do: GameHandler.ping(params, socket)
 
   def handle_in("set_state", params, socket),
     do: GameHandler.set_state(params, socket)
+
+  def handle_in("get_state", params, socket),
+    do: GameHandler.get_state(params, socket)
 end

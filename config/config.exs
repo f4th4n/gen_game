@@ -2,7 +2,8 @@ import Config
 
 config :gen_game,
   ecto_repos: [GenGame.Repo],
-  generators: [timestamp_type: :utc_datetime]
+  generators: [timestamp_type: :utc_datetime],
+  env: config_env()
 
 config :gen_game, GenGameWeb.Endpoint,
   url: [host: "localhost"],
