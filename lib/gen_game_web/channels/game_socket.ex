@@ -1,10 +1,12 @@
 defmodule GenGameWeb.GameSocket do
   use Phoenix.Socket
 
+  alias GenGameWeb.Channels.PublicChannel
   alias GenGameWeb.Channels.GenGameChannel
   alias GenGameWeb.Channels.GameplayChannel
   alias Benchmark.BenchmarkChannel
 
+  channel "public", PublicChannel
   channel "gg", GenGameChannel
   channel "game:*", GameplayChannel
   channel "benchmark:*", BenchmarkChannel

@@ -1,4 +1,4 @@
-defmodule GenGameWeb.Channels.AccountHandler do
+defmodule GenGameWeb.RequestHandlers.AccountHandler do
   alias GenGame.Account.Account
   alias GenGame.Account.Accounts
   alias GenGame.ChangesetHelper

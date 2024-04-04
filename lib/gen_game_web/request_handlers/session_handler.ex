@@ -1,4 +1,4 @@
-defmodule GenGameWeb.Channels.SessionHandler do
+defmodule GenGameWeb.RequestHandlers.SessionHandler do
   alias GenGame.PlayerSession
 
   def create_session(%{"username" => username}, socket) do

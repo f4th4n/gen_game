@@ -2,22 +2,11 @@ defmodule GenGameWeb.Channels.GameplayChannel do
   use GenGameWeb, :channel
 
   alias GenGameWeb.Presence
-  alias GenGame.PlayerSession
-  alias GenGame.Gameplay
+  alias GenGameWeb.RequestHandlers.GameHandler
 
   @impl true
   def join("game:" <> game_id, %{"token" => token}, socket) do
-    with :exist <- Gameplay.check(game_id),
-         {:ok, username} <- PlayerSession.verify(token) do
-      send(self(), :update_presence)
-      {:ok, assign(socket, game_id: game_id, username: username)}
-    else
-      {:error, _error} ->
-        {:error, %{msg: "invalid token"}}
-
-      :not_found ->
-        {:error, %{msg: "game not found"}}
-    end
+    GameHandler.join(game_id, token, socket)
   end
 
   @impl true
@@ -32,15 +21,9 @@ defmodule GenGameWeb.Channels.GameplayChannel do
   end
 
   @impl true
-  def handle_in("ping", payload, socket) do
-    {:reply, {:ok, payload}, socket}
-  end
+  def handle_in("ping", params, socket),
+    do: GameHandler.ping(params, socket)
 
-  # It is also common to receive messages from the client and
-  # broadcast to everyone in the current topic (room:lobby).
-  @impl true
-  def handle_in("shout", payload, socket) do
-    broadcast(socket, "shout", payload)
-    {:noreply, socket}
-  end
+  def handle_in("set_state", params, socket),
+    do: GameHandler.set_state(params, socket)
 end
