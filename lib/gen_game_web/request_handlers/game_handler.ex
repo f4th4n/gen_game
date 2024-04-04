@@ -4,11 +4,11 @@ defmodule GenGameWeb.RequestHandlers.GameHandler do
   alias GenGame.Game.Gameplay
   alias GenGame.PlayerSession
 
-  def join(game_id, token, socket) do
-    with :exist <- Gameplay.check(game_id),
+  def join(match_id, token, socket) do
+    with :exist <- Gameplay.check(match_id),
          {:ok, username} <- PlayerSession.verify(token) do
       send(self(), :update_presence)
-      {:ok, assign(socket, game_id: game_id, username: username)}
+      {:ok, assign(socket, match_id: match_id, username: username)}
     else
       {:error, _error} ->
         {:error, %{msg: "invalid token"}}
@@ -24,12 +24,12 @@ defmodule GenGameWeb.RequestHandlers.GameHandler do
 
   def create_game(_params, socket) do
     # TODO add option to auto start game
-    game_id = Gameplay.create_game()
-    {:reply, {:ok, game_id}, socket}
+    match_id = Gameplay.create_game()
+    {:reply, {:ok, match_id}, socket}
   end
 
-  def set_state(%{"game_id" => game_id, "key" => key, "value" => value}, socket) do
-    :ok = Gameplay.relay(game_id, key, value)
+  def set_state(%{"match_id" => match_id, "key" => key, "value" => value}, socket) do
+    :ok = Gameplay.relay(match_id, key, value)
     {:reply, :ok, socket}
   end
 end

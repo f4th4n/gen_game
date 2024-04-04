@@ -5,8 +5,8 @@ defmodule GenGameWeb.Channels.GameplayChannel do
   alias GenGameWeb.RequestHandlers.GameHandler
 
   @impl true
-  def join("game:" <> game_id, %{"token" => token}, socket) do
-    GameHandler.join(game_id, token, socket)
+  def join("game:" <> match_id, %{"token" => token}, socket) do
+    GameHandler.join(match_id, token, socket)
   end
 
   @impl true

@@ -35,8 +35,8 @@ defmodule GenGame.Storage do
       Check whether a game exist.
       """
       @spec get(binary()) :: term()
-      def get(game_id) do
-        GenServer.call(__MODULE__, {:get, game_id})
+      def get(match_id) do
+        GenServer.call(__MODULE__, {:get, match_id})
       end
 
       # ----------------------------------------------------------------------------------------------- server
