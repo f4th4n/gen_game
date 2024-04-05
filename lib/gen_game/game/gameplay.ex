@@ -3,7 +3,7 @@ defmodule GenGame.Game.Gameplay do
   Core module to manage a game state.
 
   Example create game, and then try to relay:
-  iex > GenGame.Game.Gameplay.create_game("p1", "game_100")
+  iex > GenGame.Game.Gameplay.create_match("p1", "game_100")
   iex > :ok = GenGame.Game.Gameplay.relay("game_100", %{"enemy_1": %{hp: 100}})
   iex > GenGame.Game.Gameplay.get(match_id)
   """
@@ -14,13 +14,14 @@ defmodule GenGame.Game.Gameplay do
   alias GenGame.Game.Gameplay
   alias GenGame.Game.Game
 
-  @spec create_example_game() :: :ok
-  def create_example_game() do
-    create_game("username", "example")
+  @spec create_example_match() :: :ok
+  def create_example_match() do
+    create_match("username", "example")
   end
 
-  @spec create_game(binary(), binary()) :: :ok
-  def create_game(owner_username, match_id) do
+  @spec create_match(binary(), binary()) :: :ok
+  def create_match(owner_username, match_id) do
+    # TODO add match query
     Gameplay.set(match_id, %Game{status: :started, players: [owner_username]})
   end
 

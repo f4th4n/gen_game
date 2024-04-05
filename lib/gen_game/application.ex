@@ -28,7 +28,7 @@ defmodule GenGame.Application do
     res = Supervisor.start_link(children, opts)
 
     if Application.get_env(:gen_game, :env) == :dev do
-      Gameplay.create_example_game()
+      Gameplay.create_example_match()
     end
 
     res

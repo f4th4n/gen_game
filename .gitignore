@@ -27,3 +27,4 @@ gen_game-*.tar
 
 client
 excluded
+.env

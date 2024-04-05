@@ -18,6 +18,6 @@ defmodule GenGameWeb.Channels.GenGameChannel do
   def handle_in("create_account", params, socket),
     do: AccountHandler.create_account(params, socket)
 
-  def handle_in("create_game", params, socket),
-    do: GameHandler.create_game(params, socket)
+  def handle_in("create_match", params, socket),
+    do: GameHandler.create_match(params, socket)
 end
