@@ -1,0 +1,38 @@
+x-app: &app
+  build: .
+  volumes:
+    - ./log/erlang-history:/log/erlang-history
+    - ./log/shell-history:/log/shell-history
+  environment:
+    ERL_AFLAGS: -kernel shell_history enabled -kernel shell_history_path '"/log/erlang-history"'
+    HISTSIZE: 10000
+    HISTFILE: /log/shell_history
+
+services:
+  gg_node1:
+    <<: *app
+    command: /bin/sh -c "mix setup && elixir --sname gg_node1 -S mix phx.server --no-halt"
+    working_dir: /app
+    volumes:
+      - ../..:/app
+    environment:
+      DATABASE_URL: ecto://postgres:postgres@postgres/gen_game_dev
+      SERVER_AUTHORITATIVE_MODULE: TicTacToe.Mod
+      SERVER_AUTHORITATIVE_EVENTS: rpc, on_create_match
+    ports:
+      - 4000:4000
+
+  postgres:
+    image: postgres:14-alpine
+    healthcheck:
+      test: "pg_isready -U postgres"
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    environment:
+      PSQL_HISTFILE: /root/log/.psql_history
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - 5433:5432
+
+volumes:
+  postgres:
