@@ -1,9 +1,13 @@
 import Config
 
+# `server_authoritative_module` is module name on the another node in the same cluster that will be called
+# when some events happened.
+# For example when a match is created, and `server_authoritative_module` set to `TicTacToe.Mod` then this node will call `TicTacToe.Mod.rpc`
 config :gen_game,
   ecto_repos: [GenGame.Repo],
-  generators: [timestamp_type: :utc_datetime],
-  env: config_env()
+  env: config_env(),
+  server_authoritative_module: {:system, :module, "SERVER_AUTHORITATIVE_MODULE", nil},
+  server_authoritative_events: {:system, :list, "SERVER_AUTHORITATIVE_EVENTS", []}
 
 config :gen_game, GenGameWeb.Endpoint,
   url: [host: "localhost"],
@@ -18,8 +22,6 @@ config :gen_game, GenGameWeb.Endpoint,
   live_view: [signing_salt: "MQtVmOzM"],
   secret_key_base: {:system, "SECRET_KEY_BASE"}
 
-config :gen_game, GenGame.Repo, url: {:system, "DATABASE_URL"}
-
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
@@ -28,3 +30,4 @@ config :logger, :console,
 config :phoenix, :json_library, Jason
 
 import_config "#{config_env()}.exs"
+import_config "user.exs"
