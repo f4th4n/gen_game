@@ -11,7 +11,7 @@ x-app: &app
 services:
   gen_game:
     <<: *app
-    command: /bin/sh -c "mix setup && elixir --sname gen_game -S mix phx.server --no-halt"
+    command: /bin/sh -c "mix deps.get && mix setup && elixir --sname gen_game --cookie g3ng4m3 -S mix phx.server --no-halt"
     container_name: gen_game
     working_dir: /app
     volumes:
@@ -22,6 +22,14 @@ services:
       SERVER_AUTHORITATIVE_EVENTS: rpc, on_create_match
     ports:
       - 4000:4000
+
+  tic_tac_toe:
+    <<: *app
+    command: /bin/sh -c "mix deps.get && elixir --no-halt --sname tic_tac_toe --cookie g3ng4m3 -S mix"
+    container_name: tic_tac_toe
+    working_dir: /app
+    volumes:
+      - ./tic_tac_toe/:/app
 
   postgres:
     image: postgres:14-alpine

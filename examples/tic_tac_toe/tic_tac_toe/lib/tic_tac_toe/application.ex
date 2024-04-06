@@ -1,6 +1,4 @@
 defmodule TicTacToe.Application do
-  # See https://hexdocs.pm/elixir/Application.html
-  # for more information on OTP Applications
   @moduledoc false
 
   use Application
@@ -8,13 +6,23 @@ defmodule TicTacToe.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      # Starts a worker by calling: TicTacToe.Worker.start_link(arg)
-      # {TicTacToe.Worker, arg}
+      {Cluster.Supervisor, [libcluster_topology(), [name: GenGame.ClusterSupervisor]]},
     ]
 
-    # See https://hexdocs.pm/elixir/Supervisor.html
-    # for other strategies and supported options
+    IO.puts("start TicTacToe.Application")
+
     opts = [strategy: :one_for_one, name: TicTacToe.Supervisor]
     Supervisor.start_link(children, opts)
+  end
+
+  defp libcluster_topology() do
+    [
+      gossip: [
+        strategy: Cluster.Strategy.Gossip,
+        config: [
+          secret: "gen_game_secret_1020"
+        ]
+      ]
+    ]
   end
 end

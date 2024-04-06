@@ -1,6 +1,4 @@
 defmodule GenGame.Application do
-  # See https://hexdocs.pm/elixir/Application.html
-  # for more information on OTP Applications
   @moduledoc false
 
   use Application
@@ -14,7 +12,7 @@ defmodule GenGame.Application do
     Confex.resolve_env!(:gen_game)
 
     children = [
-      {Cluster.Supervisor, libcluster_config()},
+      {Cluster.Supervisor, [libcluster_topology(), [name: GenGame.ClusterSupervisor]]},
       GenGameWeb.Telemetry,
       GenGame.Repo,
       {Phoenix.PubSub, name: GenGame.PubSub},
@@ -40,10 +38,14 @@ defmodule GenGame.Application do
     :ok
   end
 
-  defp libcluster_config() do
+  defp libcluster_topology() do
     [
-      [gen_game: [strategy: Cluster.Strategy.LocalEpmd]],
-      [name: GenGame.ClusterSupervisor]
+      gossip: [
+        strategy: Cluster.Strategy.Gossip,
+        config: [
+          secret: "gen_game_secret_1020"
+        ]
+      ]
     ]
   end
 end
