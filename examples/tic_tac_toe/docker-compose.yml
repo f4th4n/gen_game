@@ -9,9 +9,10 @@ x-app: &app
     HISTFILE: /log/shell_history
 
 services:
-  gg_node1:
+  gen_game:
     <<: *app
-    command: /bin/sh -c "mix setup && elixir --sname gg_node1 -S mix phx.server --no-halt"
+    command: /bin/sh -c "mix setup && elixir --sname gen_game -S mix phx.server --no-halt"
+    container_name: gen_game
     working_dir: /app
     volumes:
       - ../..:/app

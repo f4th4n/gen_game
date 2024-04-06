@@ -25,7 +25,7 @@ defmodule GenGame.Application do
     ]
 
     opts = [strategy: :one_for_one, name: GenGame.Supervisor]
-    res = Supervisor.start_link(children, opts)
+    {:ok, _pid} = res = Supervisor.start_link(children, opts)
 
     if Application.get_env(:gen_game, :env) == :dev do
       Gameplay.create_example_match()
