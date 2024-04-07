@@ -17,6 +17,7 @@ defmodule GenGame.Application do
       GenGame.Repo,
       {Phoenix.PubSub, name: GenGame.PubSub},
       GenGameWeb.Presence,
+      # GenGame.NodeStatusListener,
       Endpoint,
       PlayerSession,
       Gameplay

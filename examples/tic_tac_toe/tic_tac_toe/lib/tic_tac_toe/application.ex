@@ -9,8 +9,6 @@ defmodule TicTacToe.Application do
       {Cluster.Supervisor, [libcluster_topology(), [name: GenGame.ClusterSupervisor]]},
     ]
 
-    IO.puts("start TicTacToe.Application")
-
     opts = [strategy: :one_for_one, name: TicTacToe.Supervisor]
     Supervisor.start_link(children, opts)
   end

@@ -7,7 +7,8 @@ config :gen_game,
   ecto_repos: [GenGame.Repo],
   env: config_env(),
   server_authoritative_module: {:system, :module, "SERVER_AUTHORITATIVE_MODULE", nil},
-  server_authoritative_events: {:system, :list, "SERVER_AUTHORITATIVE_EVENTS", []}
+  # filled at runtime.exs
+  server_authoritative_functions: []
 
 config :gen_game, GenGameWeb.Endpoint,
   url: [host: "localhost"],

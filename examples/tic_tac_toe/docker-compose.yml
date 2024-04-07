@@ -19,7 +19,7 @@ services:
     environment:
       DATABASE_URL: ecto://postgres:postgres@postgres/gen_game_dev
       SERVER_AUTHORITATIVE_MODULE: TicTacToe.Mod
-      SERVER_AUTHORITATIVE_EVENTS: rpc, on_create_match
+      SERVER_AUTHORITATIVE_FUNCTIONS: rpc, on_create_match
     ports:
       - 4000:4000
 

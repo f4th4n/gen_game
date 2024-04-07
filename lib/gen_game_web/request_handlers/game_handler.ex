@@ -1,6 +1,8 @@
 defmodule GenGameWeb.RequestHandlers.GameHandler do
   use GenGameWeb, :channel
 
+  require Logger
+
   alias GenGame.Game.Gameplay
   alias GenGame.PlayerSession
 
@@ -31,7 +33,9 @@ defmodule GenGameWeb.RequestHandlers.GameHandler do
          _match_id <- Gameplay.create_match(username, match_id) do
       {:reply, {:ok, match_id}, socket}
     else
-      _e -> {:reply, {:error, "cannot create a game"}, socket}
+      e ->
+        Logger.error("[GameHandler] create_match error: #{inspect(e)}")
+        {:reply, {:error, "cannot create a game"}, socket}
     end
   end
 
@@ -50,8 +54,11 @@ defmodule GenGameWeb.RequestHandlers.GameHandler do
     {:reply, {:ok, game}, socket}
   end
 
-  def rpc(_payload, _socket) do
-    IO.puts("call rpc here")
-    # Mod.rpc(payload)
+  def rpc(payload, socket) do
+    server_authoritative = socket.assigns.server_authoritative
+    IO.inspect({"rpc", payload})
+    IO.inspect({"mfa", server_authoritative})
+
+    {:reply, {:ok, :ff}, socket}
   end
 end

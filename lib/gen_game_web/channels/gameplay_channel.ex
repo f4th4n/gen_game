@@ -1,4 +1,14 @@
 defmodule GenGameWeb.Channels.GameplayChannel do
+  @moduledoc """
+  assigns: %{
+    match_id: string, match id
+    username: string, username of connected user
+    server_authoritative: [
+      module: atom
+      functions: list of functions. If there is particular event in the game, it will call this function. Event and function will always be the same.
+    ]
+  }
+  """
   use GenGameWeb, :channel
 
   alias GenGameWeb.Presence
