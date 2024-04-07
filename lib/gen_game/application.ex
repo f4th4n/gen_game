@@ -17,7 +17,6 @@ defmodule GenGame.Application do
       GenGame.Repo,
       {Phoenix.PubSub, name: GenGame.PubSub},
       GenGameWeb.Presence,
-      # GenGame.NodeStatusListener,
       Endpoint,
       PlayerSession,
       Gameplay
@@ -29,6 +28,8 @@ defmodule GenGame.Application do
     if Application.get_env(:gen_game, :env) == :dev do
       Gameplay.create_example_match()
     end
+
+    :ok = GenGameMod.init()
 
     res
   end
