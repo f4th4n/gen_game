@@ -2,6 +2,7 @@ defmodule GenGameWeb.RequestHandlers.GameHandler do
   use GenGameWeb, :channel
 
   require Logger
+  import GenGame.Game.ServerAuthoritative
 
   alias GenGame.Game.Gameplay
   alias GenGame.PlayerSession
@@ -30,7 +31,19 @@ defmodule GenGameWeb.RequestHandlers.GameHandler do
 
     with {:ok, username} <- GenGame.PlayerSession.verify(token),
          match_id <- Ecto.UUID.generate(),
-         _match_id <- Gameplay.create_match(username, match_id) do
+         _ <-
+           dispatch_event(:before_create_match,
+             username: username,
+             match_id: match_id,
+             socket: socket
+           ),
+         _match_id <- Gameplay.create_match(username, match_id),
+         _ <-
+           dispatch_event(:after_create_match,
+             username: username,
+             match_id: match_id,
+             socket: socket
+           ) do
       {:reply, {:ok, match_id}, socket}
     else
       e ->
@@ -55,10 +68,8 @@ defmodule GenGameWeb.RequestHandlers.GameHandler do
   end
 
   def rpc(payload, socket) do
-    server_authoritative = socket.assigns.server_authoritative
-    IO.inspect({"rpc", payload})
-    IO.inspect({"mfa", server_authoritative})
+    {:ok, res} = dispatch_event(:rpc, payload: payload, socket: socket)
 
-    {:reply, {:ok, :ff}, socket}
+    {:reply, {:ok, res}, socket}
   end
 end

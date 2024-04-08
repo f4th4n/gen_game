@@ -29,7 +29,7 @@ defmodule GenGame.Application do
       Gameplay.create_example_match()
     end
 
-    :ok = GenGameMod.init()
+    :ok = GenGameMod.Mod.init()
 
     res
   end
