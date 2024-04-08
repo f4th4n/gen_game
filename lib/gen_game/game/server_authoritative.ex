@@ -13,7 +13,7 @@ defmodule GenGame.Game.ServerAuthoritative do
   RPC is custom action. Payload from user will be passed as-is. The function can either return a map that will be forwarded to the user or return error with reason.
   """
   @callback init() :: :ok
-  @callback rpc(map()) :: {:ok, map()} | {:error, error_reason()}
+  @callback rpc(list()) :: {:ok, map()} | {:error, error_reason()}
 
   # optionals
   @callback before_create_match(username: binary(), match_id: binary(), socket: socket()) ::
