@@ -10,9 +10,12 @@ defmodule GenGame.Game.ServerAuthoritative do
   @type error_reason() :: atom()
 
   @doc """
-  RPC is custom action. Payload from user will be passed as-is. The function can either return a map that will be forwarded to the user or return error with reason.
+  A function called after application started.
   """
   @callback init() :: :ok
+  @doc """
+  RPC is custom action. Payload from client will be passed as map to the function without modification. The function can either return a map or error with reason that will be forwarded to the client as reply.
+  """
   @callback rpc(list()) :: {:ok, map()} | {:error, error_reason()}
 
   # optionals
