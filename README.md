@@ -4,18 +4,18 @@
 
 GenGame is realtime and distributed game server, runs on Erlang VM.
 
-# Features
+## Features
 
 * **Users** - Register/login new users via device ID.
 * **Relay Multiplayer** - Sending a message or event in the match.
 * **Server Authoritative** - Run custom logic using Elixir, Rust and JavaScript.
 * **Matchmaker** - Let players finding fair match with expressive query.
 
-# Getting Started
+## Getting Started
 
 There are 2 ways to start GenGame, using docker or build yourself.
 
-## Using Docker
+### Using Docker
 
 ```bash
 docker compose up
@@ -23,7 +23,7 @@ docker compose up
 
 Test by visiting http://localhost:4000/, if you see `{"status":"ok","app":"gen_game"}` then it works
 
-## Build Yourself
+### Build Yourself
 
 Requirements
 
@@ -44,6 +44,6 @@ iex -S mix phx.server
 
 Test by visiting http://localhost:4000/, if you see `{"status":"ok","app":"gen_game"}` then it works
 
-# Deployment
+## Deployment
 
 See [this docs](https://hexdocs.pm/phoenix/deployment.html) to deploy. GenGame is built on top of Phoenix, so deployment method is basically the same.
