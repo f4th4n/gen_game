@@ -47,3 +47,9 @@ Test by visiting http://localhost:4000/, if you see `{"status":"ok","app":"gen_g
 ## Deployment
 
 See [this docs](https://hexdocs.pm/phoenix/deployment.html) to deploy. GenGame is built on top of Phoenix, so deployment method is basically the same.
+
+## Client Libraries
+
+1. Unity
+
+Visit [gen_game_unity](https://github.com/f4th4n/gen_game_unity) to connect GenGame from Unity.
