@@ -10,4 +10,8 @@ defmodule GenGameWeb.RequestHandlers.SessionHandler do
 
     {:reply, {:ok, %{token: token}}, socket}
   end
+
+  def ping(_, socket) do
+    {:reply, {:ok, "pong"}, socket}
+  end
 end

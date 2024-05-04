@@ -11,4 +11,8 @@ defmodule GenGameWeb.Channels.PublicChannel do
   @impl true
   def handle_in("create_session", params, socket),
     do: SessionHandler.create_session(params, socket)
+
+  @impl true
+  def handle_in("ping", params, socket),
+    do: SessionHandler.ping(params, socket)
 end
