@@ -48,6 +48,10 @@ Test by visiting http://localhost:4000/, if you see `{"status":"ok","app":"gen_g
 
 See [this docs](https://hexdocs.pm/phoenix/deployment.html) to deploy. GenGame is built on top of Phoenix, so deployment method is basically the same.
 
+## Server Authoritative
+
+See [this docs](/docs/server_authoritative.md) to implement server authoritative methods, including extending with Rust.
+
 ## Client Libraries
 
 1. Unity
