@@ -1,4 +1,4 @@
-defmodule GenGameMod.Mod do
+defmodule GenGame.Mod do
   @moduledoc """
   Implementation of server authoritative. You can edit this module freely. Function init/0 will be called after application initialized.
   """

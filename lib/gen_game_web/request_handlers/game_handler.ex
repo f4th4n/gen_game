@@ -31,12 +31,16 @@ defmodule GenGameWeb.RequestHandlers.GameHandler do
 
     with {:ok, username} <- GenGame.PlayerSession.verify(token),
          match_id <- Ecto.UUID.generate(),
-         _ <-
-           dispatch_event(:before_create_match,
+         %{
+           username: username,
+           match_id: match_id,
+           socket: socket
+         } <-
+           dispatch_event(:before_create_match, %{
              username: username,
              match_id: match_id,
              socket: socket
-           ),
+           }),
          _match_id <- Gameplay.create_match(username, match_id),
          _ <-
            dispatch_event(:after_create_match,

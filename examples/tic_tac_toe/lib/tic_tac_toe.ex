@@ -1,3 +1,2 @@
 defmodule TicTacToe do
-
 end

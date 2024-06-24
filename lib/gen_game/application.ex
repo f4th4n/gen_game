@@ -29,8 +29,6 @@ defmodule GenGame.Application do
       Gameplay.create_example_match()
     end
 
-    :ok = GenGameMod.Mod.init()
-
     res
   end
 
@@ -41,6 +39,7 @@ defmodule GenGame.Application do
   end
 
   defp libcluster_topology() do
+    # TODO configurable libcluster topology
     [
       gossip: [
         strategy: Cluster.Strategy.Gossip,

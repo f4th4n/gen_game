@@ -3,7 +3,7 @@ defmodule GenGame.Game.ServerAuthoritative do
   This is a behaviour that you can implement in `lib/gen_game_mod/mod.ex`. Every functions in this module will be called when there are particular event in `GenGame`.
   """
 
-  alias GenGameMod.Mod
+  alias GenGame.Mod
 
   @type socket() :: Phoenix.Socket.t()
   @type shared_opt() :: {:key_iterations, pos_integer()}
@@ -36,6 +36,8 @@ defmodule GenGame.Game.ServerAuthoritative do
 
   @spec dispatch_event(atom(), keyword()) :: term()
   def dispatch_event(:rpc, payload), do: Mod.rpc(payload)
+
+  def dispatch_event(:before_create_match, payload), do: Mod.rpc(payload)
 
   def dispatch_event(event, args) do
     is_exist = Mod.module_info(:exports) |> Keyword.get(event)
