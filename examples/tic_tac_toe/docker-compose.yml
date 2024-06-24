@@ -1,0 +1,13 @@
+include:
+  - ../../docker-compose.yml
+
+services:
+  tic_tac_toe:
+    build: .
+    container_name: tic_tac_toe
+    command: /bin/sh -c "mix deps.get && elixir --sname tic_tac_toe --cookie g3ng4m3 -S mix run --no-halt"
+    working_dir: /app
+    volumes:
+      - ./:/app
+    depends_on:
+      - gen_game
