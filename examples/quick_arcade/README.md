@@ -1,4 +1,4 @@
-# TicTacToe
+# QuickArcade
 
 This is demo of how to extend GenGame with Elixir.
 

@@ -1,4 +1,4 @@
-defmodule TicTacToe do
+defmodule QuickArcade do
   def hello() do
     :world
   end

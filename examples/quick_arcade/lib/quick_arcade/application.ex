@@ -1,4 +1,4 @@
-defmodule TicTacToe.Application do
+defmodule QuickArcade.Application do
   @moduledoc false
 
   use Application
@@ -7,13 +7,13 @@ defmodule TicTacToe.Application do
 
   @impl true
   def start(_type, _args) do
-    Logger.info("Tictactoe start")
+    Logger.info("QuickArcade start")
 
     children = [
       {Cluster.Supervisor, [libcluster_topology(), [name: GenGame.ClusterSupervisor]]},
     ]
 
-    opts = [strategy: :one_for_one, name: TicTacToe.Supervisor]
+    opts = [strategy: :one_for_one, name: QuickArcade.Supervisor]
     Supervisor.start_link(children, opts)
   end
 

@@ -1,9 +1,9 @@
-defmodule TicTacToe.MixProject do
+defmodule QuickArcade.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :tic_tac_toe,
+      app: :quick_arcade,
       version: "0.1.0",
       elixir: "~> 1.16",
       start_permanent: Mix.env() == :prod,
@@ -14,7 +14,7 @@ defmodule TicTacToe.MixProject do
   def application do
     [
       extra_applications: [:logger],
-      mod: {TicTacToe.Application, []}
+      mod: {QuickArcade.Application, []}
     ]
   end
 
