@@ -18,6 +18,7 @@ services:
       - .:/app
     environment:
       DATABASE_URL: ecto://postgres:postgres@postgres/gen_game_dev
+      PLUGIN_TYPE: none
     depends_on:
       - postgres
     ports:

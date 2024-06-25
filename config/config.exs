@@ -1,14 +1,9 @@
 import Config
 
-# `server_authoritative_module` is module name on the another node in the same cluster that will be called
-# when some events happened.
-# For example when a match is created, and `server_authoritative_module` set to `TicTacToe.Mod` then this node will call `TicTacToe.Mod.rpc`
 config :gen_game,
   ecto_repos: [GenGame.Repo],
   env: config_env(),
-  server_authoritative_module: {:system, :module, "SERVER_AUTHORITATIVE_MODULE", nil},
-  # filled at runtime.exs
-  server_authoritative_functions: []
+  plugin_type: {:system, "PLUGIN_TYPE", "none"}
 
 config :gen_game, GenGameWeb.Endpoint,
   url: [host: "localhost"],

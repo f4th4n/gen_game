@@ -6,10 +6,10 @@ GenGame is realtime and distributed game server, runs on Erlang VM.
 
 ## Features
 
-* **Users** - Register/login new users via device ID.
-* **Relay Multiplayer** - Sending a message or event in the match.
-* **Server Authoritative** - Run custom logic using Elixir, Rust and JavaScript.
-* **Matchmaker** - Let players finding fair match with expressive query.
+- **Users** - Register/login new users via device ID.
+- **Relay Multiplayer** - Sending a message or event in the match.
+- **Server Authoritative** - Run custom logic using Elixir, Rust and JavaScript.
+- **Matchmaker** - Let players finding fair match with expressive query.
 
 ## Getting Started
 
@@ -48,9 +48,14 @@ Test by visiting http://localhost:4000/, if you see `{"status":"ok","app":"gen_g
 
 See [this docs](https://hexdocs.pm/phoenix/deployment.html) to deploy. GenGame is built on top of Phoenix, so deployment method is basically the same.
 
-## Server Authoritative
+## Extend GenGame With Plugin
 
-See [this docs](/docs/server_authoritative.md) to implement server authoritative methods, including extending with Rust.
+GenGame Server can be extended using plugins. There are multiple ways to extend GenGame with various programming languages.
+
+1. Using Elixir, [see this](/docs/plugin_elixir.md) for the detail
+2. Using JavaScript, [see this](/docs/plugin_javascript.md) for the detail
+
+See [this documentation](/docs/server_authoritative.md) to implement server authoritative methods, including extending with Rust.
 
 ## Client Libraries
 

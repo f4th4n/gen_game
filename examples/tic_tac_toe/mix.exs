@@ -20,7 +20,8 @@ defmodule TicTacToe.MixProject do
 
   defp deps do
     [
-      {:gen_game_plugin, path: "/home/fathan/work/f/gen_game/gen_game_plugin_ex"}
+      {:gen_game_plugin, path: "/home/fathan/work/f/gen_game/gen_game_plugin_ex"},
+      {:libcluster, "~> 3.3"}
     ]
   end
 end
