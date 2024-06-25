@@ -19,7 +19,8 @@ defmodule GenGame.Application do
       GenGameWeb.Presence,
       Endpoint,
       PlayerSession,
-      Gameplay
+      Gameplay,
+      GenGame.PluginNodeListener
     ]
 
     opts = [strategy: :one_for_one, name: GenGame.Supervisor]
