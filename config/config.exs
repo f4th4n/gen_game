@@ -3,7 +3,7 @@ import Config
 config :gen_game,
   ecto_repos: [GenGame.Repo],
   env: config_env(),
-  plugin_type: {:system, "PLUGIN_TYPE", "none"}
+  plugin_mode: {:system, :atom, "PLUGIN_MODE", :none}
 
 config :gen_game, GenGameWeb.Endpoint,
   url: [host: "localhost"],
