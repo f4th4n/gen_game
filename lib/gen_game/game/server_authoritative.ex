@@ -3,16 +3,10 @@ defmodule GenGame.Game.ServerAuthoritative do
   This is a behaviour that you can implement in `lib/gen_game_mod/mod.ex`. Every functions in this module will be called when there are particular event in `GenGame`.
   """
 
-  alias GenGame.Mod
-
   @type socket() :: Phoenix.Socket.t()
   @type shared_opt() :: {:key_iterations, pos_integer()}
   @type error_reason() :: atom()
 
-  @doc """
-  A function called after application started.
-  """
-  @callback init() :: :ok
   @doc """
   RPC is custom action. Payload from client will be passed as map to the function without modification. The function can either return a map or error with reason that will be forwarded to the client as reply.
   """
@@ -34,16 +28,18 @@ defmodule GenGame.Game.ServerAuthoritative do
                       before_create_account: 1,
                       after_create_account: 1
 
-  @spec dispatch_event(atom(), keyword()) :: term()
-  def dispatch_event(:rpc, payload), do: Mod.rpc(payload)
-
-  def dispatch_event(:before_create_match, payload), do: Mod.rpc(payload)
-
-  def dispatch_event(event, args) do
-    is_exist = Mod.module_info(:exports) |> Keyword.get(event)
-
-    if is_exist != nil do
-      apply(Mod, event, [args])
+  def dispatch_event(event, payload) do
+    with {:ok, node} <- GenGame.PluginNodeListener.get(),
+         {:ok, plugin_actions} <- GenGame.PluginNodeListener.plugin_actions(),
+         {m, f} <- Keyword.get(plugin_actions, event) do
+      :rpc.call(node, m, f, [payload])
+    else
+      {:error, :no_node} -> skip(event, payload)
+      {:error, :no_plugin_actions} -> skip(event, payload)
+      nil -> skip(event, payload)
     end
   end
+
+  defp skip(:before_create_match, payload), do: payload
+  defp skip(_, payload), do: payload
 end
