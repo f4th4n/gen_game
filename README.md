@@ -1,3 +1,5 @@
+<img src=".github/logo.png?raw=true" width="180">
+
 [![Hex.pm](https://img.shields.io/hexpm/v/gen_game.svg)](https://hex.pm/packages/gen_game) [![Documentation](https://img.shields.io/badge/documentation-gray)](https://hexdocs.pm/gen_game)
 
 # GenGame
