@@ -40,7 +40,7 @@ Steps
 3. Run command below:
 
 ```bash
-. .env
+source .env
 iex -S mix phx.server
 ```
 
@@ -52,15 +52,17 @@ See [this docs](https://hexdocs.pm/phoenix/deployment.html) to deploy. GenGame i
 
 ## Extend GenGame With Plugin
 
-GenGame Server can be extended using plugins. There are multiple ways to extend GenGame with various programming languages.
+## Server Authoritative
+
+Server authoritative means server doing some calculation before sending it to the client. For example, your game need to spawn an enemy or calculating damage based on player's armor, then you use server authoritative method to achieve this.
+
+GenGame can run server authoritative codes using plugins. There are multiple ways to do this.
 
 1. Using Elixir, [see this](/docs/plugin_elixir.md) for the detail
-2. Using JavaScript, [see this](/docs/plugin_javascript.md) for the detail
-
-See [this documentation](/docs/server_authoritative.md) to implement server authoritative methods, including extending with Rust.
+2. Using WebSocket, [see this](/docs/plugin_javascript.md) for the detail
 
 ## Client Libraries
 
-1. Unity
+# 1. Unity
 
 Visit [gen_game_unity](https://github.com/f4th4n/gen_game_unity) to connect GenGame from Unity.
