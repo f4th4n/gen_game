@@ -4,6 +4,8 @@
 
 # GenGame
 
+[Read website documentation](https://gengame.rbs8.com)
+
 GenGame is realtime and distributed game server, runs on Erlang VM.
 
 Whether you're building a social network game, MMORPG, or TCG, GenGame helps you create a robust backend game server, offering clients for popular game platforms. It's also extensible with Elixir/Erlang or any HTTP server.
@@ -106,6 +108,7 @@ then it works.
 To update to the latest version of GenGame:
 
 If you are using Docker, change the tag to the newer version. You can see the full list of tags at [Docker Hub](https://hub.docker.com/r/f4th4n/gen_game).
+
 If you are building it yourself, pull the newer code from [the repository](https://github.com/f4th4n/gen_game) and then rebuild.
 
 ## Extend With Hooks
@@ -121,10 +124,16 @@ There are 2 ways to do this.
 
 ## Client Libraries
 
-# 1. Unity
+#### Unity
 
-Visit [gen_game_unity](https://github.com/f4th4n/gen_game_unity) to connect GenGame from Unity.
+If you're using Unity or any C# application then you should use [gen_game_unity](https://github.com/f4th4n/gen_game_unity) to connect to GenGame server.
 
-# 2. JavaScript
+#### JavaScript
 
-Visit [gen_game_js](https://github.com/f4th4n/gen_game_client_js) to connect GenGame from PhaserJS, Cocos2d-x, Construct3, Telegram Game, Facebook Instant Game, etc.
+If you're using PhaserJS, Cocos2d-x, Construct3, Telegram Game, Facebook Instant Game, or any JavaScript application then you should use [gen_game_js](https://github.com/f4th4n/gen_game_client_js) to connect to GenGame server.
+
+## Benchmark
+
+Is GenGame really fast? The main strength of GenGame is not raw speed but concurrent connection. They can handle ~20k concurrent connection with 2 CPU 4 GB memory easily. You can read the whole article how we did this [here](https://medium.com/p/c4e68ae2dc4e).
+
+<img src=".github/benchmark.webp?raw=true"  height="250">
