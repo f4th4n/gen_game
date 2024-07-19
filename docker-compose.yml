@@ -1,30 +1,16 @@
-x-app: &app
-  build: .
-  volumes:
-    - ./log/erlang-history:/log/erlang-history
-    - ./log/shell-history:/log/shell-history
-  environment:
-    ERL_AFLAGS: -kernel shell_history enabled -kernel shell_history_path '"/log/erlang-history"'
-    HISTSIZE: 10000
-    HISTFILE: /log/shell_history
-
 services:
   gen_game:
-    <<: *app
-    command: /bin/sh -c "mix deps.get && mix setup && elixir --sname gen_game --cookie g3ng4m3 -S mix phx.server --no-halt"
     container_name: gen_game
-    working_dir: /app
-    volumes:
-      - .:/app
+    image: f4th4n/gen_game:latest
     environment:
-      DATABASE_URL: ecto://postgres:postgres@postgres/gen_game_dev
-      PLUGIN_MODE: none
+      DATABASE_URL: ecto://postgres:postgres@postgres/gen_game_prod
     depends_on:
       - postgres
     ports:
       - 4000:4000
 
   postgres:
+    container_name: postgres
     image: postgres:14-alpine
     healthcheck:
       test: "pg_isready -U postgres"
@@ -33,6 +19,7 @@ services:
     environment:
       PSQL_HISTFILE: /root/log/.psql_history
       POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: gen_game_prod
     ports:
       - 5433:5432
 

@@ -33,18 +33,25 @@ defmodule GenGame.MixProject do
   #
   # Type `mix help deps` for examples and options.
   defp deps do
+    phoenix_deps() ++
+      [
+        {:telemetry_metrics, "~> 0.6"},
+        {:telemetry_poller, "~> 1.0"},
+        {:libcluster, "~> 3.3"},
+        {:confex, "~> 3.5"},
+        {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
+        {:req, "~> 0.5.4"}
+      ]
+  end
+
+  defp phoenix_deps() do
     [
       {:phoenix, "~> 1.7.11"},
       {:phoenix_ecto, "~> 4.4"},
       {:ecto_sql, "~> 3.10"},
       {:postgrex, "~> 0.17"},
-      {:telemetry_metrics, "~> 0.6"},
-      {:telemetry_poller, "~> 1.0"},
       {:jason, "~> 1.2"},
-      {:plug_cowboy, "~> 2.5"},
-      {:libcluster, "~> 3.3"},
-      {:confex, "~> 3.5"},
-      {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
+      {:plug_cowboy, "~> 2.7"}
     ]
   end
 

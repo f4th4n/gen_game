@@ -2,7 +2,7 @@
 
 # GenGame
 
-## Elixir Plugin
+## Extend GenGame Using Elixir
 
 Tutorial to implement server authoritative in GenGame using Elixir.
 

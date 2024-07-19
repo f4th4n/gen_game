@@ -28,16 +28,46 @@ defmodule GenGame.Game.ServerAuthoritative do
                       before_create_account: 1,
                       after_create_account: 1
 
+  alias GenGame.Hooks.NodeListener
+
   def dispatch_event(event, payload) do
-    with {:ok, node} <- GenGame.PluginNodeListener.get(),
-         {:ok, plugin_actions} <- GenGame.PluginNodeListener.plugin_actions(),
-         {m, f} <- Keyword.get(plugin_actions, event) do
+    case find_receiver() do
+      {:ok, {:erlang_rpc, node}} -> dispatch_to_erlang_rpc(event, payload, node)
+      {:ok, {:http_server, _node}} -> dispatch_to_http(event, payload)
+      _ -> "no receiver, skip"
+    end
+  end
+
+  defp dispatch_to_erlang_rpc(event, payload, node) do
+    with {:ok, hook_actions} <- NodeListener.hook_actions(),
+         {m, f} <- Keyword.get(hook_actions, event) do
       :rpc.call(node, m, f, [payload])
     else
-      {:error, :no_node} -> skip(event, payload)
-      {:error, :no_plugin_actions} -> skip(event, payload)
+      {:error, :no_hook_actions} -> skip(event, payload)
       nil -> skip(event, payload)
     end
+  end
+
+  defp dispatch_to_http(_event, _payload) do
+    {:ok, {:http_server, nil}}
+  end
+
+  def find_receiver() do
+    try_erlang_rpc = fn ->
+      case NodeListener.get() do
+        {:ok, node} -> {:ok, {:erlang_rpc, node}}
+        {:error, :no_node} -> nil
+      end
+    end
+
+    try_http_server = fn ->
+      case {:error, :no_node} do
+        {:ok, node} -> {:ok, {:phx_channel, node}}
+        {:error, :no_node} -> nil
+      end
+    end
+
+    try_erlang_rpc.() || try_http_server.() || {:error, :no_receiver}
   end
 
   defp skip(:before_create_match, payload), do: payload
