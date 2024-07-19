@@ -6,24 +6,69 @@
 
 GenGame is realtime and distributed game server, runs on Erlang VM.
 
+Whether you're building a social network game, MMORPG, or TCG, GenGame helps you create a robust backend game server, offering clients for popular game platforms. It's also extensible with Elixir/Erlang or any HTTP server.
+
 ## Features
 
-- **Users** - Register/login new users via device ID.
+- **Users** - Register/login new users.
 - **Relay Multiplayer** - Sending a message or event in the match.
-- **Server Authoritative** - Run custom logic using Elixir, Rust and JavaScript.
+- **Server Authoritative** - Execute custom logic using Elixir/Erlang or any programming language via HTTP server.
 - **Matchmaker** - Let players finding fair match with expressive query.
 
 ## Getting Started
 
-There are 2 ways to start GenGame, using docker or build yourself.
+Let's discover **GenGame** in less than 5 minutes.
 
-### Using Docker
+There are two ways to get GenGame up and running: using Docker or building it from source. We recommend using Docker, as it's easier to manage. Building from source is intended for those who want to develop GenGame further or are interested in understanding how it works under the hood.
+
+### Using Docker (Recommended)
+
+First, create a file `docker-compose.yml`.
+
+```yaml
+services:
+  gen_game:
+    container_name: gen_game
+    image: f4th4n/gen_game:latest
+    environment:
+      DATABASE_URL: ecto://postgres:postgres@postgres/gen_game_prod
+    depends_on:
+      - postgres
+    ports:
+      - 4000:4000
+
+  postgres:
+    container_name: postgres
+    image: postgres:14-alpine
+    healthcheck:
+      test: "pg_isready -U postgres"
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    environment:
+      PSQL_HISTFILE: /root/log/.psql_history
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: gen_game_prod
+    ports:
+      - 5433:5432
+
+volumes:
+  postgres:
+```
+
+Then run the command:
 
 ```bash
 docker compose up
 ```
 
-Test by visiting http://localhost:4000/, if you see `{"status":"ok","app":"gen_game"}` then it works
+Test by visiting http://localhost:4000/, if you see response below then congratulation, it works:
+
+```json
+{
+  "status": "ok",
+  "app": "gen_game"
+}
+```
 
 ### Build Yourself
 
@@ -35,34 +80,51 @@ Requirements
 
 Steps
 
-1. Copy .env.example to .env
-2. Update .env, fill DATABASE_URL
-3. Run command below:
+1. Clone the <u>[repo](https://github.com/f4th4n/gen_game)</u>
+2. Copy `.env.example` to `.env`
+3. Update `.env`, fill DATABASE_URL
+4. Run command below:
 
 ```bash
 source .env
-iex -S mix phx.server
+iex --sname gen_game --cookie g3ng4m3 -S mix phx.server
 ```
 
-Test by visiting http://localhost:4000/, if you see `{"status":"ok","app":"gen_game"}` then it works
+Test by visiting http://localhost:4000/, if you see:
 
-## Deployment
+```json
+{
+  "status": "ok",
+  "app": "gen_game"
+}
+```
 
-See [this docs](https://hexdocs.pm/phoenix/deployment.html) to deploy. GenGame is built on top of Phoenix, so deployment method is basically the same.
+then it works.
 
-## Extend GenGame With Plugin
+## Upgrade
 
-## Server Authoritative
+To update to the latest version of GenGame:
 
-Server authoritative means server doing some calculation before sending it to the client. For example, your game need to spawn an enemy or calculating damage based on player's armor, then you use server authoritative method to achieve this.
+If you are using Docker, change the tag to the newer version. You can see the full list of tags at [Docker Hub](https://hub.docker.com/r/f4th4n/gen_game).
+If you are building it yourself, pull the newer code from [the repository](https://github.com/f4th4n/gen_game) and then rebuild.
 
-GenGame can run server authoritative codes using plugins. There are multiple ways to do this.
+## Extend With Hooks
+
+You can extend GenGame functionality beyond its capability with **hooks**. Hooks let you run your own code in between events, so you can achieve thing like server authoritative actions.
+
+Server authoritative means server doing some calculation before sending it to the client. For example, your game need to spawn an enemy or calculating damage based on player's armor.
+
+There are 2 ways to do this.
 
 1. Using Elixir, [see this](/docs/plugin_elixir.md) for the detail
-2. Using WebSocket, [see this](/docs/plugin_javascript.md) for the detail
+2. Using any other programming language, [see this](/docs/plugin_http_server.md) for the detail
 
 ## Client Libraries
 
 # 1. Unity
 
 Visit [gen_game_unity](https://github.com/f4th4n/gen_game_unity) to connect GenGame from Unity.
+
+# 2. JavaScript
+
+Visit [gen_game_js](https://github.com/f4th4n/gen_game_client_js) to connect GenGame from PhaserJS, Cocos2d-x, Construct3, Telegram Game, Facebook Instant Game, etc.

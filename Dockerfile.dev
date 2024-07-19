@@ -19,12 +19,3 @@ ENV PATH="/root/.cargo/bin:${PATH}"
 RUN mix local.hex --force && mix local.rebar --force
 
 EXPOSE 4000
-
-##########################################
-
-WORKDIR /app
-COPY . /app
-
-RUN mix release
-
-CMD [ "./entrypoint.sh" ]

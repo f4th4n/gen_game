@@ -3,7 +3,11 @@ import Config
 config :gen_game,
   ecto_repos: [GenGame.Repo],
   env: config_env(),
-  plugin_mode: {:system, :atom, "PLUGIN_MODE", :none}
+  hook_http: [
+    port: {:system, :integer, "HOOK_HTTP_PORT", 9500},
+    host: {:system, :string, "HOOK_HTTP_HOST", "0.0.0.0"},
+    scheme: {:system, :string, "HOOK_HTTP_SCHEME", "http"}
+  ]
 
 config :gen_game, GenGameWeb.Endpoint,
   url: [host: "localhost"],

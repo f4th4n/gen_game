@@ -1,19 +1,19 @@
-defmodule GenGame.PluginNodeListener do
+defmodule GenGame.Hooks.NodeListener do
   @moduledoc """
   state = %{
-    nodes: list of valid plugin nodes
-    plugin_actions: a config fetched from remote node, it is list of actions that will be called when there is event fired
+    nodes: list of valid hook nodes
+    hook_actions: a config fetched from remote node, it is list of actions that will be called when there is event fired
   }
   """
 
   use GenServer
 
   def start_link(_opts) do
-    GenServer.start_link(__MODULE__, %{nodes: [], plugin_actions: []}, name: __MODULE__)
+    GenServer.start_link(__MODULE__, %{nodes: [], hook_actions: []}, name: __MODULE__)
   end
 
-  def plugin_actions() do
-    GenServer.call(__MODULE__, :plugin_actions)
+  def hook_actions() do
+    GenServer.call(__MODULE__, :hook_actions)
   end
 
   def get() do
@@ -34,12 +34,12 @@ defmodule GenGame.PluginNodeListener do
           args
 
         nodes ->
-          plugin_actions =
+          hook_actions =
             nodes
             |> List.first()
-            |> get_plugin_actions_config()
+            |> get_hook_actions_config()
 
-          %{nodes: nodes, plugin_actions: plugin_actions}
+          %{nodes: nodes, hook_actions: hook_actions}
       end
 
     {:ok, state}
@@ -60,10 +60,10 @@ defmodule GenGame.PluginNodeListener do
     {:reply, reply, state}
   end
 
-  def handle_call(:plugin_actions, _from, %{plugin_actions: plugin_actions} = state) do
+  def handle_call(:hook_actions, _from, %{hook_actions: hook_actions} = state) do
     reply =
-      case plugin_actions do
-        [] -> {:error, :no_plugin_actions}
+      case hook_actions do
+        [] -> {:error, :no_hook_actions}
         lst -> {:ok, lst}
       end
 
@@ -84,31 +84,31 @@ defmodule GenGame.PluginNodeListener do
 
   defp update_state(node, %{nodes: nodes} = state) do
     updated_nodes = node |> append_node(nodes) |> Enum.uniq()
-    plugin_actions = get_plugin_actions_config(node)
+    hook_actions = get_hook_actions_config(node)
 
     state
     |> Map.put(:nodes, updated_nodes)
-    |> Map.put(:plugin_actions, plugin_actions)
+    |> Map.put(:hook_actions, hook_actions)
   end
 
   defp append_node(node_name, nodes) do
-    if is_plugin_node?(node_name) do
+    if is_hook_node?(node_name) do
       Enum.uniq(nodes ++ [node_name])
     else
       nodes
     end
   end
 
-  defp is_plugin_node?(node_name) do
+  defp is_hook_node?(node_name) do
     case :rpc.call(node_name, Application, :get_env, [:gen_game, :mode]) do
-      :plugin -> true
+      :hook -> true
       nil -> false
     end
   end
 
-  defp get_plugin_actions_config(node_name) do
-    case :rpc.call(node_name, Application, :get_env, [:gen_game, :plugin_actions]) do
-      plugin_actions -> plugin_actions
+  defp get_hook_actions_config(node_name) do
+    case :rpc.call(node_name, Application, :get_env, [:gen_game, :hook_actions]) do
+      hook_actions -> hook_actions
     end
   end
 end

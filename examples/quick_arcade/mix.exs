@@ -20,7 +20,7 @@ defmodule QuickArcade.MixProject do
 
   defp deps do
     [
-      {:gen_game_plugin, path: "/home/fathan/work/f/gen_game/gen_game_plugin_ex"},
+      {:gen_game, "~> 0.1", runtime: false},
       {:libcluster, "~> 3.3"}
     ]
   end

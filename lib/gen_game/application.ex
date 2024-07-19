@@ -20,7 +20,8 @@ defmodule GenGame.Application do
       Endpoint,
       PlayerSession,
       Gameplay,
-      GenGame.PluginNodeListener
+      GenGame.Hooks.NodeListener,
+      GenGame.Hooks.HttpServerListener
     ]
 
     opts = [strategy: :one_for_one, name: GenGame.Supervisor]
