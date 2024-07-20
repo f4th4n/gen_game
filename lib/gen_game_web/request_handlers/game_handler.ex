@@ -2,7 +2,8 @@ defmodule GenGameWeb.RequestHandlers.GameHandler do
   use GenGameWeb, :channel
 
   require Logger
-  import GenGame.Game.ServerAuthoritative
+
+  import GenGame.ServerAuthoritative
 
   alias GenGame.Game.Gameplay
   alias GenGame.PlayerSession
@@ -43,11 +44,11 @@ defmodule GenGameWeb.RequestHandlers.GameHandler do
            }),
          _match_id <- Gameplay.create_match(username, match_id),
          _ <-
-           dispatch_event(:after_create_match,
+           dispatch_event(:after_create_match, %{
              username: username,
              match_id: match_id,
              socket: socket
-           ) do
+           }) do
       {:reply, {:ok, match_id}, socket}
     else
       e ->
@@ -72,8 +73,17 @@ defmodule GenGameWeb.RequestHandlers.GameHandler do
   end
 
   def rpc(payload, socket) do
-    {:ok, res} = dispatch_event(:rpc, payload: payload, socket: socket)
+    reply =
+      case dispatch_event(:rpc, %{payload: payload, socket: socket}) do
+        {:ok, res} ->
+          {:ok, res}
 
-    {:reply, {:ok, res}, socket}
+        {:error, error} ->
+          Logger.error("[rpc] error #{error}")
+
+          {:error, error}
+      end
+
+    {:reply, reply, socket}
   end
 end

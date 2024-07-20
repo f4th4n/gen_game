@@ -3,10 +3,11 @@ import Config
 config :gen_game,
   ecto_repos: [GenGame.Repo],
   env: config_env(),
-  hook_http: [
-    port: {:system, :integer, "HOOK_HTTP_PORT", 9500},
-    host: {:system, :string, "HOOK_HTTP_HOST", "0.0.0.0"},
-    scheme: {:system, :string, "HOOK_HTTP_SCHEME", "http"}
+  doc_url: "https://gengame.rbs8.com",
+  http_hook: [
+    port: {:system, :integer, "HTTP_HOOK_PORT", 9500},
+    host: {:system, :string, "HTTP_HOOK_HOST", "0.0.0.0"},
+    scheme: {:system, :string, "HTTP_HOOK_SCHEME", "http"}
   ]
 
 config :gen_game, GenGameWeb.Endpoint,
@@ -28,6 +29,7 @@ config :logger, :console,
   metadata: [:request_id]
 
 config :phoenix, :json_library, Jason
+config :phoenix, :logger, false
 
 import_config "#{config_env()}.exs"
 import_config "user.exs"

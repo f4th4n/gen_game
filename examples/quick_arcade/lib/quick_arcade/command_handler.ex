@@ -1,5 +1,5 @@
 defmodule QuickArcade.CommandHandler do
-  @behaviour GenGame.Game.ServerAuthoritative
+  @behaviour GenGame.ServerAuthoritative
 
   def before_create_match(args) do
     IO.inspect("before_create_match ---------->")

@@ -7,7 +7,7 @@ defmodule GenGameWeb.GameSocket do
   alias Benchmark.BenchmarkChannel
 
   channel "public", PublicChannel
-  channel "gg", GenGameChannel
+  channel "gen_game", GenGameChannel
   channel "game:*", GameplayChannel
   channel "benchmark:*", BenchmarkChannel
 

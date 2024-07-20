@@ -9,7 +9,7 @@ defmodule GenGameWeb.Channels.GenGameChannel do
   alias GenGameWeb.RequestHandlers.GameHandler
 
   @impl true
-  def join("gg", %{"token" => token}, socket) do
+  def join("gen_game", %{"token" => token}, socket) do
     {:ok, assign(socket, token: token)}
   end
 
@@ -20,4 +20,7 @@ defmodule GenGameWeb.Channels.GenGameChannel do
 
   def handle_in("create_match", params, socket),
     do: GameHandler.create_match(params, socket)
+
+  def handle_in("rpc", params, socket),
+    do: GameHandler.rpc(params, socket)
 end

@@ -28,3 +28,5 @@ gen_game-*.tar
 client
 excluded
 .env
+
+node_modules

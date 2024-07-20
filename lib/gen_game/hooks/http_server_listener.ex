@@ -1,70 +1,88 @@
 defmodule GenGame.Hooks.HttpServerListener do
+  defstruct server_url: nil, hook_actions: []
+
   @moduledoc false
   use GenServer
 
   require Logger
 
-  def start_link(_opts) do
-    GenServer.start_link(__MODULE__, %{server_node: nil, hook_actions: []}, name: __MODULE__)
-  end
+  alias GenGame.Hooks.HttpServerListener
+  alias GenGame.Hooks.HttpRequest
 
-  def hook_actions() do
-    GenServer.call(__MODULE__, :hook_actions)
-  end
-
-  def get() do
-    GenServer.call(__MODULE__, :get_node)
-  end
-
-  def get_state() do
-    GenServer.call(__MODULE__, :get_state)
-  end
+  def start_link(_opts), do: GenServer.start_link(__MODULE__, :ignore, name: __MODULE__)
+  def hook_actions(), do: GenServer.call(__MODULE__, :hook_actions)
+  def server_url(), do: GenServer.call(__MODULE__, :server_url)
+  def get_state(), do: GenServer.call(__MODULE__, :get_state)
 
   @impl true
   def init(_args) do
-    {:ok, %{server: nil, hook_actions: []}, {:continue, :find_server}}
+    {:ok, %HttpServerListener{}, {:continue, :find_server}}
   end
 
   @impl true
-  def handle_continue(:find_server, state) do
-    new_state =
+  def handle_continue(:find_server, %HttpServerListener{} = state) do
+    updated_state =
       case find_server() do
         nil ->
-          {:noreply, state}
+          state
 
-        _hook_actions ->
-          {:noreply, state}
+        hook_actions ->
+          updated_state =
+            state
+            |> Map.put(:server_url, HttpRequest.server_url_config())
+            |> Map.put(:hook_actions, hook_actions)
+
+          updated_state
       end
 
-    {:noreply, new_state}
+    {:noreply, updated_state}
+  end
+
+  @impl true
+  def handle_call(:get_state, _from, state) do
+    {:reply, state, state}
+  end
+
+  def handle_call(:server_url, _from, %HttpServerListener{server_url: server_url} = state) do
+    reply =
+      if is_nil(server_url) do
+        {:error, :no_server}
+      else
+        {:ok, server_url}
+      end
+
+    {:reply, reply, state}
+  end
+
+  def handle_call(:hook_actions, _from, %HttpServerListener{hook_actions: hook_actions} = state) do
+    {:reply, {:ok, hook_actions}, state}
   end
 
   defp find_server() do
-    req = get_request()
+    invalid_res =
+      "[hooks] response is invalid. To fix, see: #{GenGame.Documentation.path("/docs/features/users")}"
 
-    case Req.get(req) do
+    case HttpRequest.get_request() |> Req.get() do
       {:ok, %{status: 200, body: %{"hooks" => [_h | _t] = hook_actions}}} ->
-        IO.inspect({"hook_actions", hook_actions})
+        Logger.info("[hooks] enable HTTP hooks, actions: #{Enum.join(hook_actions, ", ")}")
+
         hook_actions
 
       {:ok, %{status: 200, body: _}} ->
-        Logger.warning(
-          "[GenGame.Hooks.HttpServerListener] can connect to #{server_url()}, but response structure is invalid"
-        )
+        Logger.error(invalid_res)
+        nil
+
+      {:ok, _} ->
+        Logger.error(invalid_res)
+        nil
 
       {:error, _error} ->
-        Logger.warning(
-          "[GenGame.Hooks.HttpServerListener] can't reach HTTP server for GenGame hooks, skipping"
-        )
-
+        Logger.error("[hooks] can't reach HTTP server for GenGame hooks, skipping")
         nil
     end
   end
 
-  def get_request() do
-    Req.new(retry_log_level: false, max_retries: 1, base_url: server_url())
-  end
-
+  # TODO implement health check
   # defp health_check(url) do
   #   case Req.head(url) do
   #     {:ok,
@@ -77,12 +95,6 @@ defmodule GenGame.Hooks.HttpServerListener do
   #       :not_healthy
   #   end
   # end
-
-  defp server_url() do
-    server_config = Application.get_env(:gen_game, :hook_http)
-
-    "#{Keyword.get(server_config, :scheme)}://#{Keyword.get(server_config, :host)}:#{Keyword.get(server_config, :port)}"
-  end
 
   # defp get_hook_actions_config() do
   # end

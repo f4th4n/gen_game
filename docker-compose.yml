@@ -4,10 +4,13 @@ services:
     image: f4th4n/gen_game:latest
     environment:
       DATABASE_URL: ecto://postgres:postgres@postgres/gen_game_prod
+      HTTP_HOOK_HOST: host.docker.internal
     depends_on:
       - postgres
     ports:
       - 4000:4000
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   postgres:
     container_name: postgres
