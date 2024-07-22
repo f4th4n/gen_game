@@ -31,19 +31,20 @@ defmodule GenGame.ServerAuthoritative do
   alias GenGame.Hooks.HttpServerListener
   alias GenGame.Hooks.HttpRequest
 
-  @spec dispatch_event(atom(), map()) :: any()
+  @spec dispatch_event(atom(), map()) :: {:ok, term()} | {:error, term()}
   def dispatch_event(event, payload) do
     case find_receiver() do
       {:ok, {:erlang_rpc, node}} -> dispatch_to_erlang_rpc(event, payload, node)
       {:ok, {:http_server, _server_url}} -> dispatch_to_http(event, payload)
-      _ -> {:error, "no receiver, skip"}
+      _ -> skip(event, payload)
     end
   end
 
   defp dispatch_to_erlang_rpc(event, payload, node) do
     with {:ok, hook_actions} <- NodeListener.hook_actions(),
          {m, f} <- Keyword.get(hook_actions, event) do
-      :rpc.call(node, m, f, [payload])
+      rpc_res = :rpc.call(node, m, f, [payload])
+      {:ok, rpc_res}
     else
       {:error, :no_hook_actions} -> skip(event, payload)
       nil -> skip(event, payload)
@@ -53,26 +54,12 @@ defmodule GenGame.ServerAuthoritative do
   defp dispatch_to_http(event, event_payload) do
     with {:ok, hook_actions} <- HttpServerListener.hook_actions(),
          :exist <- check_hook_actions(hook_actions, event),
-         request_body <- request_body(event, event_payload),
-         {:ok, res} <- HttpRequest.dispatch_to_server(event, request_body) do
-      {:ok, res}
+         {:ok, response_message} <- HttpRequest.dispatch_to_server(event, event_payload) do
+      {:ok, response_message}
     else
       :skip -> skip(event, event_payload)
     end
   end
-
-  defp request_body(:rpc, %{payload: payload}), do: payload
-
-  defp request_body(:before_create_match, %{username: username, match_id: match_id}),
-    do: %{username: username, match_id: match_id}
-
-  defp request_body(:after_create_match, %{username: username, match_id: match_id}),
-    do: %{username: username, match_id: match_id}
-
-  defp request_body(:before_create_session, %{username: username}), do: %{username: username}
-  defp request_body(:after_create_session, %{token: token}), do: %{token: token}
-  defp request_body(:before_create_account, %{payload: payload}), do: payload
-  defp request_body(:after_create_account, %{account: account}), do: account
 
   def find_receiver() do
     try_erlang_rpc = fn ->
@@ -97,5 +84,6 @@ defmodule GenGame.ServerAuthoritative do
     if event_str in hook_actions, do: :exist, else: :skip
   end
 
-  defp skip(_, payload), do: payload
+  defp skip(:rpc, _payload), do: {:error, "no receiver, skip"}
+  defp skip(_, payload), do: {:ok, payload}
 end
