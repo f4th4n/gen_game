@@ -6,20 +6,28 @@ app.use(express.json())
 
 app.get('/', (req, res) => {
   res.json({
-    hooks: ['rpc', 'before_create_game'],
+    hooks: ['rpc', 'before_create_match'],
   })
 })
 
 app.post('/', (req, res) => {
-  res.json({ status: 'ok', msg: 'update tile to bla bla' })
+  const { event, payload } = req.body
+  console.log('payload', payload)
 
-  if (req.body.event === 'rpc') {
-    res.json({ status: 'ok', msg: 'rpc executed' })
-  } else if (req.body.event === 'before_create_game') {
-    res.json({ status: 'ok', msg: 'before_create_game executed' })
-  } else {
-    res.json({ status: 'ok', msg: 'unknown event' })
+  if (event === 'rpc') {
+    return res.json({
+      status: 'ok',
+      msg: 'rpc executed',
+      your_payload: payload,
+    })
+  } else if (event === 'before_create_match') {
+    return res.json({
+      username: payload.username,
+      match_id: 'my_game_' + payload.match_id,
+    })
   }
+
+  return res.json({ status: 'ok', msg: 'unknown event' })
 })
 
 app.listen(port, () => {

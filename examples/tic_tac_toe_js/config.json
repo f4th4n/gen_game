@@ -1,6 +1,0 @@
-{
-    "mode": "ws",
-    "hooks": {
-        "after_create_match": "sync"
-    }
-}
