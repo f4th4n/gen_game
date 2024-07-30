@@ -22,7 +22,11 @@ defmodule GenGame.Game.Gameplay do
   @spec create_match(binary(), binary()) :: :ok
   def create_match(owner_username, match_id) do
     # TODO add match query
-    Gameplay.set(match_id, %Game{status: :started, players: [owner_username]})
+    Gameplay.set(match_id, %Game{
+      status: :started,
+      players: [owner_username],
+      created_at: :os.system_time(:millisecond)
+    })
   end
 
   @spec check(binary()) :: :exist | :not_found

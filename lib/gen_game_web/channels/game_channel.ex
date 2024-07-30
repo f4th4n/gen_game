@@ -1,4 +1,4 @@
-defmodule GenGameWeb.Channels.GameplayChannel do
+defmodule GenGameWeb.Channels.GameChannel do
   @moduledoc """
   assigns: %{
     match_id: string, match id

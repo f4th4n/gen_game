@@ -3,12 +3,12 @@ defmodule GenGameWeb.GameSocket do
 
   alias GenGameWeb.Channels.PublicChannel
   alias GenGameWeb.Channels.GenGameChannel
-  alias GenGameWeb.Channels.GameplayChannel
+  alias GenGameWeb.Channels.GameChannel
   alias Benchmark.BenchmarkChannel
 
   channel "public", PublicChannel
   channel "gen_game", GenGameChannel
-  channel "game:*", GameplayChannel
+  channel "game:*", GameChannel
   channel "benchmark:*", BenchmarkChannel
 
   @impl true

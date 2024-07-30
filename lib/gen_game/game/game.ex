@@ -15,6 +15,7 @@ defmodule GenGame.Game.Game do
             public_state: %{},
             private_state: %{},
             read_only_state: %{},
+            created_at: 0,
             status: :open
 
   @type t :: %__MODULE__{}

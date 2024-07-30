@@ -50,7 +50,8 @@ defmodule GenGameWeb.RequestHandlers.GameHandler do
              match_id: match_id,
              socket: socket
            }) do
-      {:reply, {:ok, match_id}, socket}
+      reply = %{match_id: match_id}
+      {:reply, {:ok, reply}, socket}
     else
       e ->
         Logger.error("[GameHandler] create_match error: #{inspect(e)}")
@@ -58,9 +59,16 @@ defmodule GenGameWeb.RequestHandlers.GameHandler do
     end
   end
 
+  def get_last_match_id(_params, socket) do
+    reply = Gameplay.get_last_match_id()
+    {:reply, {:ok, reply}, socket}
+  end
+
   def set_state(payload, socket) do
     match_id = socket.assigns.match_id
     Gameplay.relay(match_id, payload)
+
+    # TODO change relay to onChangeState
     broadcast(socket, "relay", payload)
 
     {:noreply, socket}

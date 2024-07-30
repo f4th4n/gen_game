@@ -38,11 +38,16 @@ defmodule GenGame.Storage do
         GenServer.call(__MODULE__, {:get, match_id})
       end
 
+      @spec get_last_match_id() :: term()
+      def get_last_match_id() do
+        GenServer.call(__MODULE__, :get_last_match_id)
+      end
+
       # ----------------------------------------------------------------------------------------------- server
 
       def init(init_arg) do
         Phoenix.PubSub.subscribe(@pubsub, topic())
-        :ets.new(@table, [:set, :public, :named_table])
+        :ets.new(@table, [:ordered_set, :public, :named_table])
         {:ok, init_arg}
       end
 
@@ -57,13 +62,30 @@ defmodule GenGame.Storage do
       end
 
       def handle_call({:get, key}, _from, state) do
+        {:reply, get_by_key(key), state}
+      end
+
+      def handle_call(:get_last_match_id, _from, state) do
         res =
-          case :ets.lookup(@table, key) do
-            [] -> nil
-            [{_key, value}] -> value
+          case :ets.match_object(@table, :_) do
+            [] ->
+              nil
+
+            entries ->
+              entries
+              |> Enum.max_by(fn {_, value} -> value.created_at end)
+              # Extract the key-value pair
+              |> elem(0)
           end
 
         {:reply, res, state}
+      end
+
+      defp get_by_key(key) do
+        case :ets.lookup(@table, key) do
+          [] -> nil
+          [{_key, value}] -> value
+        end
       end
 
       defp topic(), do: Atom.to_string(@table)
