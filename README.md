@@ -111,17 +111,6 @@ If you are using Docker, change the tag to the newer version. You can see the fu
 
 If you are building it yourself, pull the newer code from [the repository](https://github.com/f4th4n/gen_game) and then rebuild.
 
-## Extend With Hooks
-
-You can extend GenGame functionality beyond its capability with **hooks**. Hooks let you run your own code in between events, so you can achieve thing like server authoritative actions.
-
-Server authoritative means server doing some calculation before sending it to the client. For example, your game need to spawn an enemy or calculating damage based on player's armor.
-
-There are 2 ways to do this.
-
-1. Using Elixir, [see this](/docs/plugin_elixir.md) for the detail
-2. Using any other programming language, [see this](/docs/plugin_http_server.md) for the detail
-
 ## Client Libraries
 
 #### Unity
@@ -131,6 +120,17 @@ If you're using Unity or any C# application then you should use [gen_game_unity]
 #### JavaScript
 
 If you're using PhaserJS, Cocos2d-x, Construct3, Telegram Game, Facebook Instant Game, or any JavaScript application then you should use [gen_game_js](https://github.com/f4th4n/gen_game_client_js) to connect to GenGame server.
+
+## Extend With Hooks
+
+You can extend GenGame functionality beyond its capability with **hooks**. Hooks let you run your own function in between events, so you can achieve thing like server authoritative actions.
+
+Server authoritative means server doing some calculation before sending it to the client. For example, your game need to spawn an enemy or calculating damage based on player's armor.
+
+There are 2 ways to do this.
+
+1. Using Elixir, [see this](/docs/plugin_elixir.md) for the detail
+2. Using any other programming language, [see this](/docs/plugin_http_server.md) for the detail
 
 ## Benchmark
 

@@ -65,7 +65,9 @@ defmodule GenGame.Hooks.HttpServerListener do
     case HttpRequest.get_request() |> Req.get() do
       {:ok, %{status: 200, body: %{"hooks" => [_h | _t] = hook_actions}}} ->
         # TODO add validation here, remove unecessary hooks
-        Logger.info("[hooks] enable HTTP hooks, actions: #{Enum.join(hook_actions, ", ")}")
+        Logger.info("[hooks] HTTP hooks is enabled, actions: #{Enum.join(hook_actions, ", ")}",
+          ansi_color: :green
+        )
 
         hook_actions
 
@@ -78,7 +80,7 @@ defmodule GenGame.Hooks.HttpServerListener do
         nil
 
       {:error, _error} ->
-        Logger.error("[hooks] hooks is disabled")
+        Logger.error("[hooks] HTTP hooks is disabled")
         nil
     end
   end
