@@ -5,11 +5,15 @@ defmodule GenGameWeb.Channels.GenGameChannel do
 
   use GenGameWeb, :channel
 
+  require Logger
+
   alias GenGameWeb.RequestHandlers.AccountHandler
   alias GenGameWeb.RequestHandlers.GameHandler
 
   @impl true
   def join("gen_game", %{"token" => token}, socket) do
+    Logger.info("[GenGameChannel] join channel GenGame, token=#{inspect(token)}")
+
     {:ok, assign(socket, token: token)}
   end
 

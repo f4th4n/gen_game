@@ -1,6 +1,8 @@
 defmodule GenGameWeb.RequestHandlers.AccountHandler do
   import GenGame.ServerAuthoritative
 
+  require Logger
+
   alias GenGame.Account.Account
   alias GenGame.Account.Accounts
   alias GenGame.ChangesetHelper
@@ -10,6 +12,7 @@ defmodule GenGameWeb.RequestHandlers.AccountHandler do
 
     case Accounts.create_account(payload) do
       {:ok, %Account{} = account} ->
+        Logger.info("[AccountHandler] create account, account=#{account}")
         dispatch_event(:after_create_account, %{account: account, socket: socket})
 
         {:reply, {:ok, account}, socket}

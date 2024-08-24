@@ -1,6 +1,8 @@
 defmodule GenGameWeb.GameSocket do
   use Phoenix.Socket
 
+  require Logger
+
   alias GenGameWeb.Channels.PublicChannel
   alias GenGameWeb.Channels.GenGameChannel
   alias GenGameWeb.Channels.GameChannel
@@ -12,7 +14,8 @@ defmodule GenGameWeb.GameSocket do
   channel "benchmark:*", BenchmarkChannel
 
   @impl true
-  def connect(_params, socket, _connect_info) do
+  def connect(params, socket, _connect_info) do
+    Logger.info("[GameSocket] join socket, params=#{inspect(params)}")
     {:ok, socket}
   end
 

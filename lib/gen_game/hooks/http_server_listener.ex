@@ -78,7 +78,7 @@ defmodule GenGame.Hooks.HttpServerListener do
         nil
 
       {:error, _error} ->
-        Logger.error("[hooks] can't reach HTTP server for GenGame hooks, skipping")
+        Logger.error("[hooks] hooks is disabled")
         nil
     end
   end

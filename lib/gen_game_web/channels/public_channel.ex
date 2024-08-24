@@ -1,10 +1,13 @@
 defmodule GenGameWeb.Channels.PublicChannel do
   use GenGameWeb, :channel
 
+  require Logger
+
   alias GenGameWeb.RequestHandlers.SessionHandler
 
   @impl true
-  def join("public", _, socket) do
+  def join("public", params, socket) do
+    Logger.info("[PublicChannel] join channel Public, params=#{inspect(params)}")
     {:ok, socket}
   end
 

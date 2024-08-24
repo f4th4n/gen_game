@@ -9,6 +9,8 @@ defmodule GenGameWeb.RequestHandlers.GameHandler do
   alias GenGame.PlayerSession
 
   def join(match_id, token, socket) do
+    Logger.info("[GameHandler] join topic GameHandler, match_id=#{match_id}")
+
     with :exist <- Gameplay.check(match_id),
          {:ok, username} <- PlayerSession.verify(token) do
       send(self(), :update_presence)
@@ -50,17 +52,19 @@ defmodule GenGameWeb.RequestHandlers.GameHandler do
              match_id: match_id,
              socket: socket
            }) do
+      Logger.info("[GameHandler] create match, match_id=#{match_id}")
       reply = %{match_id: match_id}
       {:reply, {:ok, reply}, socket}
     else
       e ->
-        Logger.error("[GameHandler] create_match error: #{inspect(e)}")
+        Logger.error("[GameHandler] create match error: #{inspect(e)}")
         {:reply, {:error, "cannot create a game"}, socket}
     end
   end
 
   def get_last_match_id(_params, socket) do
     reply = Gameplay.get_last_match_id()
+    Logger.info("[GameHandler] get_last_match_id")
     {:reply, {:ok, reply}, socket}
   end
 
@@ -71,6 +75,8 @@ defmodule GenGameWeb.RequestHandlers.GameHandler do
     # TODO change relay to onChangeState
     broadcast(socket, "relay", payload)
 
+    Logger.info("[GameHandler] set state, match_id=#{match_id} payload=#{inspect(payload)}")
+
     {:noreply, socket}
   end
 
@@ -78,10 +84,14 @@ defmodule GenGameWeb.RequestHandlers.GameHandler do
     match_id = socket.assigns.match_id
     game = Gameplay.get(match_id)
 
+    Logger.info("[GameHandler] get state, match_id=#{match_id}")
+
     {:reply, {:ok, game}, socket}
   end
 
   def rpc(payload, socket) do
+    Logger.info("[GameHandler] call rpc, payload=#{inspect(payload)}")
+
     reply =
       case dispatch_event(:rpc, %{payload: payload, socket: socket}) do
         {:ok, res} ->
