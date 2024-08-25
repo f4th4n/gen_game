@@ -129,8 +129,10 @@ Server authoritative means server doing some calculation before sending it to th
 
 There are 2 ways to do this.
 
-1. Using Elixir, [see this](/docs/plugin_elixir.md) for the detail
-2. Using any other programming language, [see this](/docs/plugin_http_server.md) for the detail
+1. Using Elixir
+2. Using any other programming language
+
+See the documentation [here](https://gengame.rbs8.com/docs/category/hooks).
 
 ## Benchmark
 
