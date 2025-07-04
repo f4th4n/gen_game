@@ -2,6 +2,7 @@ import Config
 
 # Configure your database
 config :gen_game, GenGame.Repo,
+  url: "ecto://postgres:postgres@localhost/gen_game_dev",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10

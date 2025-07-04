@@ -14,8 +14,8 @@ defmodule GenGame.PlayerSession do
 
   @spec create(binary()) :: binary()
   def create(username) do
-    # expired at 100 years
-    Token.sign(Endpoint, @salt, username, max_age: 86400 * 30 * 12 * 1000)
+    # expired at 1000 years
+    Token.sign(Endpoint, @salt, username, max_age: 86400 * 30 * 12 * 10000)
   end
 
   @spec verify(binary()) :: {:ok, binary()} | {:error, :expired | :invalid | :missing}
