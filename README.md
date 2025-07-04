@@ -4,7 +4,7 @@
 
 # GenGame
 
-[Visit GenGame Official Site](https://gengame.rhinobytes.id)
+Visit GenGame [Official Site](https://gengame.rhinobytes.id)
 
 GenGame is realtime and distributed game server, runs on Erlang VM.
 
@@ -132,7 +132,9 @@ There are 2 ways to do this.
 1. Using Elixir
 2. Using any other programming language
 
-See the documentation [here](/docs/hooks).
+## Documentation
+
+See how to use GenGame in the documentation [here](/docs). Elixir and Erlang developers can find the API documentation [here](https://hexdocs.pm/gen_game).
 
 ## Benchmark
 
