@@ -3,7 +3,7 @@ import Config
 config :gen_game,
   ecto_repos: [GenGame.Repo],
   env: config_env(),
-  doc_url: "https://gengame.rbs8.com",
+  doc_url: "https://gengame.rhinobytes.id",
   http_hook: [
     port: {:system, :integer, "HTTP_HOOK_PORT", 9500},
     host: {:system, :string, "HTTP_HOOK_HOST", "0.0.0.0"},

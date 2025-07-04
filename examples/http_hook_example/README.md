@@ -6,7 +6,7 @@
 
 Simple NodeJS project to demonstrate how to run your own logic via HTTP hook.
 
-Read full documentation about HTTP hook [here](https://gengame.rbs8.com/docs/hooks/http_server_hook).
+Read full documentation about HTTP hook [here](https://gengame.rhinobytes.id/docs/hooks/http_server_hook).
 
 ## Up and Running
 
