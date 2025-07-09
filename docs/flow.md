@@ -208,7 +208,6 @@ sequenceDiagram
 ### Authentication
 
 - **JWT Tokens**: Phoenix.Token for session management
-- **Long-lived**: Tokens expire after 1000 years (effectively permanent)
 - **Username-based**: Tokens contain username as payload
 
 ### Server Authoritative Hooks
