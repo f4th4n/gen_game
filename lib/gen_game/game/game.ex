@@ -4,7 +4,7 @@ defmodule GenGame.Game.Game do
 
   ## Fields
 
-  * `:players` - list of player
+  * `:players` - list of player's username, e.g. `["player1", "player2"]`
   * `:public_state` - public state that can be changed by client via relay method
   * `:private_state` - private state that can only be changed by authoritative server method, client can't read any of this state
   * `:read_only_state` - read only state that can be read by anyone including client
