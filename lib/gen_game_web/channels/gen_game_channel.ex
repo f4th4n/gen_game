@@ -25,6 +25,11 @@ defmodule GenGameWeb.Channels.GenGameChannel do
   def handle_in("create_match", params, socket),
     do: GameHandler.create_match(params, socket)
 
+  def handle_in("request_match", params, socket),
+    do: GameHandler.request_match(params, socket)
+
+  # TODO: add other CRUD for request match (- update),
+
   def handle_in("get_last_match_id", params, socket),
     do: GameHandler.get_last_match_id(params, socket)
 
