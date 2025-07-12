@@ -37,6 +37,20 @@ defmodule GenGame.Game.Gameplay do
     end
   end
 
+  @spec get_last_match_id() :: term()
+  def get_last_match_id() do
+    case Gameplay.lists() do
+      [] ->
+        nil
+
+      entries ->
+        entries
+        |> Enum.max_by(fn {_, value} -> value.created_at end)
+        # Extract the key-value pair
+        |> elem(0)
+    end
+  end
+
   @doc """
   set_authoritative/3 can only be called by server.
   """

@@ -6,14 +6,19 @@ defmodule GenGame.MatchRequests do
   use GenGame.Storage, table: @table
 
   @doc """
-  Set a match request by ID.
+  List all match requests.
   """
-  def set_request(request_id, data), do: set(request_id, data)
+  def list_requests(), do: lists(:undefined)
 
   @doc """
   Get a match request by ID.
   """
   def get_request(request_id), do: get(request_id)
+
+  @doc """
+  Set a match request by ID.
+  """
+  def set_request(request_id, data), do: set(request_id, data)
 
 
   @doc """
@@ -21,11 +26,4 @@ defmodule GenGame.MatchRequests do
   """
   def delete_request(request_id), do: delete(request_id)
 
-  @doc """
-  List all match requests.
-  """
-  def list_requests() do
-    :ets.tab2list(@table)
-    |> Enum.map(fn {id, req} -> {id, req} end)
-  end
 end

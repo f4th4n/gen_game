@@ -23,7 +23,25 @@ defmodule GenGame.Storage do
       end
 
       @doc """
-      set a game, distributed to all nodes.
+      List all entries in the storage.
+      with query pattern to filter results.
+      query is :ets:match_object query pattern.
+      """
+      @spec lists(term()) :: [term()]
+      def lists(query \\ :undefined) do
+        GenServer.call(__MODULE__, {:lists, query})
+      end
+
+      @doc """
+      get data by id
+      """
+      @spec get(binary()) :: term()
+      def get(id) do
+        GenServer.call(__MODULE__, {:get, id})
+      end
+
+      @doc """
+      set a data, distributed to all nodes.
       """
       @spec set(binary(), term()) :: term()
       def set(key, value) when is_binary(key) do
@@ -31,24 +49,11 @@ defmodule GenGame.Storage do
       end
 
       @doc """
-      Check whether a game exist.
-      """
-      @spec get(binary()) :: term()
-      def get(match_id) do
-        GenServer.call(__MODULE__, {:get, match_id})
-      end
-
-      @doc """
-      Delete a game.
+      Delete a data.
       """
       @spec delete(binary()) :: :ok
-      def delete(match_id) do
-        GenServer.call(__MODULE__, {:get, match_id})
-      end
-
-      @spec get_last_match_id() :: term()
-      def get_last_match_id() do
-        GenServer.call(__MODULE__, :get_last_match_id)
+      def delete(id) do
+        GenServer.call(__MODULE__, {:delete, id})
       end
 
       # ----------------------------------------------------------------------------------------------- server
@@ -69,34 +74,26 @@ defmodule GenGame.Storage do
         {:noreply, state}
       end
 
-      def handle_call({:set, key, value}, _from, state) do
-        PubSub.broadcast(@pubsub, topic(), {:set, key, value})
-        {:reply, :ok, state}
+      def handle_call({:lists, query}, _from, state) do
+        entries = case query do
+          :undefined -> :ets.match_object(@table, :_)
+          _ -> :ets.match_object(@table, query)
+        end
+        {:reply, entries, state}
       end
 
       def handle_call({:get, key}, _from, state) do
         {:reply, get_by_key(key), state}
       end
 
-      def handle_call({:delete, key}, _from, state) do
-        PubSub.broadcast(@pubsub, topic(), {:delete, key})
+      def handle_call({:set, key, value}, _from, state) do
+        PubSub.broadcast(@pubsub, topic(), {:set, key, value})
         {:reply, :ok, state}
       end
 
-      def handle_call(:get_last_match_id, _from, state) do
-        res =
-          case :ets.match_object(@table, :_) do
-            [] ->
-              nil
-
-            entries ->
-              entries
-              |> Enum.max_by(fn {_, value} -> value.created_at end)
-              # Extract the key-value pair
-              |> elem(0)
-          end
-
-        {:reply, res, state}
+      def handle_call({:delete, key}, _from, state) do
+        PubSub.broadcast(@pubsub, topic(), {:delete, key})
+        {:reply, :ok, state}
       end
 
       defp get_by_key(key) do
