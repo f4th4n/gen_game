@@ -38,6 +38,14 @@ defmodule GenGame.Storage do
         GenServer.call(__MODULE__, {:get, match_id})
       end
 
+      @doc """
+      Delete a game.
+      """
+      @spec delete(binary()) :: :ok
+      def delete(match_id) do
+        GenServer.call(__MODULE__, {:get, match_id})
+      end
+
       @spec get_last_match_id() :: term()
       def get_last_match_id() do
         GenServer.call(__MODULE__, :get_last_match_id)
@@ -51,18 +59,28 @@ defmodule GenGame.Storage do
         {:ok, init_arg}
       end
 
-      def handle_info({key, value}, state) when is_binary(key) do
+      def handle_info({:set, key, value}, state) when is_binary(key) do
         :ets.insert(@table, {key, value})
         {:noreply, state}
       end
 
+      def handle_info({:delete, key}, state) when is_binary(key) do
+        :ets.delete(@table, key)
+        {:noreply, state}
+      end
+
       def handle_call({:set, key, value}, _from, state) do
-        PubSub.broadcast(@pubsub, topic(), {key, value})
+        PubSub.broadcast(@pubsub, topic(), {:set, key, value})
         {:reply, :ok, state}
       end
 
       def handle_call({:get, key}, _from, state) do
         {:reply, get_by_key(key), state}
+      end
+
+      def handle_call({:delete, key}, _from, state) do
+        PubSub.broadcast(@pubsub, topic(), {:delete, key})
+        {:reply, :ok, state}
       end
 
       def handle_call(:get_last_match_id, _from, state) do

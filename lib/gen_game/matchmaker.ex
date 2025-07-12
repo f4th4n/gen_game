@@ -1,13 +1,17 @@
+
 defmodule GenGame.Matchmaker do
   @moduledoc """
   Simple matchmaker process that groups compatible match requests and creates matches.
+  Now uses Phoenix.PubSub to react to new requests in real time.
   """
   use GenServer
 
   require Logger
 
+  import GenGame.ServerAuthoritative
+
   @table :match_requests
-  @interval 1_000 # 1 second
+  alias GenGame.MatchRequests
   @min_players 2  # Example: minimum players to form a match
 
   def start_link(_opts) do
@@ -15,28 +19,61 @@ defmodule GenGame.Matchmaker do
   end
 
   def init(state) do
-    schedule_tick()
     {:ok, state}
   end
 
-  def handle_info(:tick, state) do
-    # TODO: refine how we process the matchmaking requests / queue
-    process_matchmaking()
-    schedule_tick()
+  # Handle request to set up expiration timers for a match request
+  def handle_cast({:setup_expiration, request_id, soft_exp, hard_exp}, state) do
+    Process.send_after(self(), {:soft_expire, request_id}, soft_exp)
+    Process.send_after(self(), {:hard_expire, request_id}, hard_exp)
     {:noreply, state}
   end
 
-  defp schedule_tick() do
-    Process.send_after(self(), :tick, @interval)
+  # React to new match request events
+  def handle_info({:new_match_request, _request_id}, state) do
+    process_matchmaking()
+    {:noreply, state}
+  end
+
+  # Handle soft/hard expiration events
+  def handle_info({:soft_expire, request_id}, socket) do
+    case MatchRequests.get_request(request_id) do
+      nil -> {:noreply, socket}
+      req ->
+        updated = Map.put(req, :expiration_status, :soft_expired)
+        MatchRequests.set_request(request_id, updated)
+        dispatch_event(:matchmaker_soft_expiration, %{payload: updated, socket: socket})
+        {:noreply, socket}
+    end
+  end
+
+  def handle_info({:hard_expire, request_id}, socket) do
+    case MatchRequests.get_request(request_id) do
+      nil -> {:noreply, socket}
+      req ->
+        updated = Map.put(req, :expiration_status, :hard_expired)
+        MatchRequests.set_request(request_id, Map.put(updated, :status, :discarded))
+        dispatch_event(:matchmaker_hard_expiration, %{payload: updated, socket: socket})
+        MatchRequests.delete_request(request_id)
+        {:noreply, socket}
+    end
+  end
+
+  # Fallback: still support :tick for manual/legacy triggers
+  def handle_info(:tick, state) do
+    process_matchmaking()
+    {:noreply, state}
   end
 
   defp process_matchmaking() do
+    IO.puts("[Matchmaker] Processing matchmaking...")
     if :ets.whereis(@table) == :undefined, do: :ok, else: do_matchmaking()
   end
 
   defp do_matchmaking() do
+    IO.puts("[Matchmaker] Doing matchmaking...")
     requests =
-      :ets.tab2list(@table)
+      MatchRequests.list_requests()
       |> Enum.map(fn {_id, req} -> req end)
       |> Enum.filter(fn req -> req.status == :open and req.expiration_status == :none end)
 
@@ -49,7 +86,7 @@ defmodule GenGame.Matchmaker do
       Logger.info("[Matchmaker] Creating match #{match_id} for users #{inspect(usernames)}")
       GenGame.Game.Gameplay.create_match(Enum.join(usernames, ","), match_id)
       Enum.each(group, fn req ->
-        :ets.insert(@table, {req.request_id, Map.put(req, :status, :match)})
+        MatchRequests.set_request(req.request_id, Map.put(req, :status, :match))
       end)
       # Optionally: notify users, dispatch event, etc.
     end)
