@@ -137,8 +137,8 @@ defmodule GenGameWeb.RequestHandlers.GameHandler do
       # Dispatch new request hook
       dispatch_event(:matchmaker_new_request, Map.put(match_request, :socket, socket))
 
-      # Ask Matchmaker to set up expiration timers
-      GenServer.cast(GenGame.Matchmaker, {:setup_expiration, request_id, soft_exp, hard_exp})
+      # Ask Matchmaker to set up expiration timers and trigger matchmaking
+      GenServer.cast(GenGame.Matchmaker, {:new_match_request, request_id, soft_exp, hard_exp})
 
       {:reply, {:ok, match_request}, socket}
     else

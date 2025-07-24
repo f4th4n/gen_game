@@ -22,15 +22,11 @@ defmodule GenGame.Matchmaker do
     {:ok, state}
   end
 
-  # Handle request to set up expiration timers for a match request
-  def handle_cast({:setup_expiration, request_id, soft_exp, hard_exp}, state) do
+  # React to new match request events
+  def handle_info({:new_match_request, request_id, soft_exp, hard_exp}, state) do
     Process.send_after(self(), {:soft_expire, request_id}, soft_exp)
     Process.send_after(self(), {:hard_expire, request_id}, hard_exp)
-    {:noreply, state}
-  end
 
-  # React to new match request events
-  def handle_info({:new_match_request, _request_id}, state) do
     process_matchmaking()
     {:noreply, state}
   end
