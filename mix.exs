@@ -43,8 +43,7 @@ defmodule GenGame.MixProject do
         {:req, "~> 0.5"},
         # Social login dependencies
         {:ueberauth, "~> 0.10"},
-        {:ueberauth_google, "~> 0.12"},
-        {:ueberauth_github, "~> 0.8"}
+        {:ueberauth_google, "~> 0.12"}
       ]
   end
 
