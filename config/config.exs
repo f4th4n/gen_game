@@ -31,5 +31,10 @@ config :logger, :console,
 config :phoenix, :json_library, Jason
 config :phoenix, :logger, false
 
+config :ueberauth, Ueberauth,
+  providers: [
+    google: {Ueberauth.Strategy.Google, []}
+  ]
+
 import_config "#{config_env()}.exs"
 import_config "user.exs"
