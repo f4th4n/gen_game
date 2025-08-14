@@ -14,14 +14,18 @@ defmodule GenGameWeb.AuthController do
   """
   def callback(%{assigns: %{ueberauth_auth: auth}} = conn, _params) do
     Logger.info("[AuthController] OAuth callback received: #{auth.provider}")
-    token = case get_session(conn, :oauth_link_token) do
-      nil -> nil
-      token when is_binary(token) -> token
-    end
-    link_mode = case get_session(conn, :oauth_link_mode) do
-      nil -> false
-      mode when is_boolean(mode) -> mode
-    end
+
+    token =
+      case get_session(conn, :oauth_link_token) do
+        nil -> nil
+        token when is_binary(token) -> token
+      end
+
+    link_mode =
+      case get_session(conn, :oauth_link_mode) do
+        nil -> false
+        mode when is_boolean(mode) -> mode
+      end
 
     # Clean up session data regardless of success/failure
     conn = cleanup_oauth_session(conn)
@@ -177,13 +181,14 @@ defmodule GenGameWeb.AuthController do
   defp do_account_linking(auth, token) do
     with {:ok, username} <- PlayerSession.verify(token),
          account when not is_nil(account) <- Accounts.get_by_username(username) do
-
       if Accounts.can_use_social_login?(account) do
         case Accounts.link_oauth_provider(account, auth) do
           {:ok, updated_account} ->
             {:ok, updated_account}
+
           {:error, :provider_already_linked} ->
             {:error, :provider_already_linked}
+
           {:error, _changeset} ->
             {:error, :linking_failed}
         end

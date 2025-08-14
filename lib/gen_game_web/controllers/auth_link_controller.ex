@@ -131,13 +131,14 @@ defmodule GenGameWeb.AuthLinkController do
   defp do_account_linking(auth, token) do
     with {:ok, username} <- PlayerSession.verify(token),
          account when not is_nil(account) <- Accounts.get_by_username(username) do
-
       if Accounts.can_use_social_login?(account) do
         case Accounts.link_oauth_provider(account, auth) do
           {:ok, updated_account} ->
             {:ok, updated_account}
+
           {:error, :provider_already_linked} ->
             {:error, :provider_already_linked}
+
           {:error, _changeset} ->
             {:error, :linking_failed}
         end

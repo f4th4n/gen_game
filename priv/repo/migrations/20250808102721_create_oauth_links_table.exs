@@ -11,10 +11,14 @@ defmodule GenGame.Repo.Migrations.CreateOauthLinksTable do
     end
 
     # Ensure one account can't have duplicate providers with same UID
-    create unique_index(:oauth_links, [:provider, :provider_uid], name: :oauth_links_provider_uid_index)
+    create unique_index(:oauth_links, [:provider, :provider_uid],
+             name: :oauth_links_provider_uid_index
+           )
 
     # Ensure one account can't link same provider multiple times
-    create unique_index(:oauth_links, [:account_id, :provider], name: :oauth_links_account_provider_index)
+    create unique_index(:oauth_links, [:account_id, :provider],
+             name: :oauth_links_account_provider_index
+           )
 
     # Index for fast lookups
     create index(:oauth_links, [:account_id])

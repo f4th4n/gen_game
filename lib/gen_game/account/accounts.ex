@@ -21,11 +21,13 @@ defmodule GenGame.Account.Accounts do
   Get account by OAuth provider UID
   """
   def get_by_oauth_provider(provider, uid) when is_binary(provider) and is_binary(uid) do
-    query = from a in Account,
-          join: ol in OauthLink, on: ol.account_id == a.id,
-          where: ol.provider == ^provider and ol.provider_uid == ^uid,
-          select: a,
-          preload: [:oauth_links]
+    query =
+      from a in Account,
+        join: ol in OauthLink,
+        on: ol.account_id == a.id,
+        where: ol.provider == ^provider and ol.provider_uid == ^uid,
+        select: a,
+        preload: [:oauth_links]
 
     Repo.one(query)
   end
@@ -41,8 +43,9 @@ defmodule GenGame.Account.Accounts do
   Check if account has specific OAuth provider linked
   """
   def has_oauth_provider?(%Account{id: account_id}, provider) do
-    query = from ol in OauthLink,
-            where: ol.account_id == ^account_id and ol.provider == ^provider
+    query =
+      from ol in OauthLink,
+        where: ol.account_id == ^account_id and ol.provider == ^provider
 
     Repo.exists?(query)
   end
@@ -76,6 +79,7 @@ defmodule GenGame.Account.Accounts do
         {:ok, _oauth_link} ->
           # Return updated account with OAuth links preloaded
           {:ok, Repo.preload(account, :oauth_links, force: true)}
+
         {:error, changeset} ->
           {:error, changeset}
       end
@@ -86,8 +90,9 @@ defmodule GenGame.Account.Accounts do
   Unlink OAuth provider from account
   """
   def unlink_oauth_provider(%Account{id: account_id}, provider) do
-    query = from ol in OauthLink,
-            where: ol.account_id == ^account_id and ol.provider == ^provider
+    query =
+      from ol in OauthLink,
+        where: ol.account_id == ^account_id and ol.provider == ^provider
 
     case Repo.delete_all(query) do
       {1, _} -> :ok
@@ -103,15 +108,17 @@ defmodule GenGame.Account.Accounts do
     # Later we can add logic to check if it's not a temporary account
     true
   end
+
   def can_use_social_login?(_), do: false
 
   @doc """
   List all providers linked to an account
   """
   def list_linked_providers(%Account{id: account_id}) do
-    query = from ol in OauthLink,
-            where: ol.account_id == ^account_id,
-            select: ol.provider
+    query =
+      from ol in OauthLink,
+        where: ol.account_id == ^account_id,
+        select: ol.provider
 
     Repo.all(query)
   end
