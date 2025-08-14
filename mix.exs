@@ -40,7 +40,10 @@ defmodule GenGame.MixProject do
         {:libcluster, "~> 3.4"},
         {:confex, "~> 3.5"},
         {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
-        {:req, "~> 0.5"}
+        {:req, "~> 0.5"},
+        # Social login dependencies
+        {:ueberauth, "~> 0.10"},
+        {:ueberauth_google, "~> 0.12"}
       ]
   end
 

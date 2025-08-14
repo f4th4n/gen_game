@@ -20,7 +20,7 @@ defmodule QuickArcade.MixProject do
 
   defp deps do
     [
-      {:gen_game, path: "/home/fathan/work/f/gen_game/gen_game", runtime: false},
+      {:gen_game, path: "/home/candra/personal/coding/rbs/elixir/gen_game", runtime: false},
       {:libcluster, "~> 3.3"}
     ]
   end

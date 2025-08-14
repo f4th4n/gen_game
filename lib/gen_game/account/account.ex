@@ -2,6 +2,7 @@ defmodule GenGame.Account.Account do
   use Ecto.Schema
 
   import Ecto.Changeset
+  alias GenGame.Account.OauthLink
 
   @fields [
     :username,
@@ -24,6 +25,9 @@ defmodule GenGame.Account.Account do
     field :metadata, :string
     field :email, :string
     field :wallet, :string
+
+    # Relationship to OAuth links
+    has_many :oauth_links, OauthLink, on_delete: :delete_all
 
     timestamps(type: :utc_datetime)
   end
