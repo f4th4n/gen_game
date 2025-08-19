@@ -9,6 +9,7 @@ defmodule GenGameWeb.Channels.GenGameChannel do
 
   alias GenGameWeb.RequestHandlers.AccountHandler
   alias GenGameWeb.RequestHandlers.GameHandler
+  alias GenGameWeb.RequestHandlers.OauthLinkHandler
 
   @impl true
   def join("gen_game", %{"token" => token}, socket) do
@@ -30,4 +31,11 @@ defmodule GenGameWeb.Channels.GenGameChannel do
 
   def handle_in("rpc", params, socket),
     do: GameHandler.rpc(params, socket)
+
+  # OAuth link management
+  def handle_in("list_oauth_links", params, socket),
+    do: OauthLinkHandler.list_oauth_links(params, socket)
+
+  def handle_in("unlink_oauth_provider", params, socket),
+    do: OauthLinkHandler.unlink_oauth_provider(params, socket)
 end
