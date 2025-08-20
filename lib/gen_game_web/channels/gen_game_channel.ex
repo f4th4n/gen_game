@@ -15,6 +15,11 @@ defmodule GenGameWeb.Channels.GenGameChannel do
   def join("gen_game", %{"token" => token}, socket) do
     Logger.info("[GenGameChannel] join channel GenGame, token=#{inspect(token)}")
 
+    # Subscribe to OAuth result events for this token
+    topic = "oauth_result:#{token}"
+    Phoenix.PubSub.subscribe(GenGame.PubSub, topic)
+    Logger.debug("[GenGameChannel] Subscribed to OAuth result topic: #{topic}")
+
     {:ok, assign(socket, token: token)}
   end
 
@@ -38,4 +43,20 @@ defmodule GenGameWeb.Channels.GenGameChannel do
 
   def handle_in("unlink_oauth_provider", params, socket),
     do: OauthLinkHandler.unlink_oauth_provider(params, socket)
+
+  # Handle OAuth result broadcasts from PubSub
+  @impl true
+  def handle_info({:oauth_result, result}, socket) do
+    Logger.debug("[GenGameChannel] Received OAuth result via PubSub, pushing to client")
+    Logger.debug("[GenGameChannel] OAuth result data: #{inspect(result)}")
+    push(socket, "oauth_result", result)
+    {:noreply, socket}
+  end
+
+  # Catch-all for other messages to debug what's being received
+  @impl true
+  def handle_info(message, socket) do
+    Logger.warning("[GenGameChannel] Received unhandled message: #{inspect(message)}")
+    {:noreply, socket}
+  end
 end
