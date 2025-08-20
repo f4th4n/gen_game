@@ -50,6 +50,17 @@ defmodule GenGame.Account.Accounts do
     Repo.exists?(query)
   end
 
+  @doc """
+  Check if a provider_uid is already linked to any account
+  """
+  def provider_uid_exists?(provider, provider_uid) when is_binary(provider) and is_binary(provider_uid) do
+    query =
+      from ol in OauthLink,
+        where: ol.provider == ^provider and ol.provider_uid == ^provider_uid
+
+    Repo.exists?(query)
+  end
+
   @spec create_account(map()) :: {:ok, Ecto.Schema.t()} | {:error, Ecto.Changeset.t()}
   def create_account(attrs) do
     %Account{}
@@ -68,21 +79,29 @@ defmodule GenGame.Account.Accounts do
   Link OAuth provider to existing account
   """
   def link_oauth_provider(%Account{id: account_id} = account, auth_data) do
-    # Check if already linked to this provider
-    if has_oauth_provider?(account, to_string(auth_data.provider)) do
-      {:error, :provider_already_linked}
-    else
-      %OauthLink{}
-      |> OauthLink.from_oauth_changeset(account_id, auth_data)
-      |> Repo.insert()
-      |> case do
-        {:ok, _oauth_link} ->
-          # Return updated account with OAuth links preloaded
-          {:ok, Repo.preload(account, :oauth_links, force: true)}
+    provider = to_string(auth_data.provider)
+    provider_uid = auth_data.uid
 
-        {:error, changeset} ->
-          {:error, changeset}
-      end
+    # Check if already linked to this provider
+    cond do
+      has_oauth_provider?(account, provider) ->
+        {:error, :provider_already_linked}
+
+      provider_uid_exists?(provider, provider_uid) ->
+        {:error, :provider_uid_already_exists}
+
+      true ->
+        %OauthLink{}
+        |> OauthLink.from_oauth_changeset(account_id, auth_data)
+        |> Repo.insert()
+        |> case do
+          {:ok, _oauth_link} ->
+            # Return updated account with OAuth links preloaded
+            {:ok, Repo.preload(account, :oauth_links, force: true)}
+
+          {:error, changeset} ->
+            {:error, changeset}
+        end
     end
   end
 
