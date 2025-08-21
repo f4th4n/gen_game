@@ -8,6 +8,7 @@ defmodule GenGameWeb.RequestHandlers.GameHandler do
   alias GenGame.Game.Gameplay
   alias GenGame.PlayerSession
 
+
   def join(match_id, token, socket) do
     Logger.info("[GameHandler] join topic GameHandler, match_id=#{match_id}")
 
@@ -105,4 +106,46 @@ defmodule GenGameWeb.RequestHandlers.GameHandler do
 
     {:reply, reply, socket}
   end
+
+  # In-memory store for match requests (for demo, replace with persistent store in production)
+  defp now(), do: :os.system_time(:millisecond)
+
+  defp default_soft_expiration(), do: 5_000
+  defp default_hard_expiration(), do: 10_000
+
+
+  def request_match(params, socket) do
+    token = socket.assigns.token
+    with {:ok, user_id} <- PlayerSession.verify(token) do
+      started_at = now()
+      soft_exp = Map.get(params, "soft_expiration", default_soft_expiration())
+      hard_exp = Map.get(params, "hard_expiration", default_hard_expiration())
+      filters = Map.get(params, "filters", [])
+      request_id = Ecto.UUID.generate()
+      match_request = %{
+        request_id: request_id,
+        user_id: user_id,
+        filters: filters,
+        started_at: started_at,
+        status: :open,
+        expiration_status: :none,
+        soft_expiration: soft_exp,
+        hard_expiration: hard_exp
+      }
+      GenGame.MatchRequests.set_request(request_id, match_request)
+
+      # Dispatch new request hook
+      dispatch_event(:matchmaker_new_request, Map.put(match_request, :socket, socket))
+
+      # Ask Matchmaker to set up expiration timers and trigger matchmaking
+      GenServer.cast(GenGame.Matchmaker, {:new_match_request, request_id, soft_exp, hard_exp})
+
+      {:reply, {:ok, match_request}, socket}
+    else
+      e ->
+        Logger.error("[GameHandler] request_match error: #{inspect(e)}")
+        {:reply, {:error, "cannot request match"}, socket}
+    end
+  end
+
 end

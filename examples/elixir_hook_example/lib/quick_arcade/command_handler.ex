@@ -9,6 +9,18 @@ defmodule QuickArcade.CommandHandler do
 
   def rpc(payload) do
     IO.inspect({"rpc", payload})
-    {:ok, "ffffffffffffff"}
+    %{msg: "ffffffffffffff"}
+  end
+
+  def matchmaker_soft_expiration(payload) do
+    IO.puts("[Example CommandHandler] matchmaker_soft_expiration")
+    IO.inspect({"matchmaker_soft_expiration", payload})
+    payload
+  end
+
+  def matchmaker_hard_expiration(payload) do
+    IO.puts("[Example CommandHandler] matchmaker_hard_expiration")
+    IO.inspect({"matchmaker_hard_expiration", payload})
+    payload
   end
 end
