@@ -1,6 +1,6 @@
 # Flow
 
-This document describes the core flows in GenGame for game creation and player management.
+This document describes the core flows in GenGame for game creation, player management, and OAuth social login.
 
 ## 1. How Games Are Created
 
@@ -197,6 +197,166 @@ sequenceDiagram
     end
 ```
 
+## 3. OAuth Social Login Flow
+
+OAuth social login allows users to authenticate using their existing social media accounts while maintaining session state via WebSocket.
+
+### Social Login Flow
+
+```mermaid
+sequenceDiagram
+    participant C as Client
+    participant WS as WebSocket
+    participant GC as GenGameChannel
+    participant B as Browser
+    participant OP as OAuthProvider
+    participant AC as AuthController
+    participant OLM as OAuthLinkMiddleware
+    participant A as Accounts
+    participant PS as PlayerSession
+    participant PubSub as PubSub
+
+    Note over C: Client has WebSocket token
+    C->>B: Open OAuth URL with token
+    B->>AC: GET /auth/google?token=ws_token
+    AC->>OLM: Middleware processes request
+    OLM->>OLM: Store token in session
+    OLM->>OP: Redirect to OAuth provider
+    OP-->>B: OAuth consent screen
+    B->>OP: User authorizes
+    OP->>AC: Callback with auth data
+    
+    Note over AC: Process OAuth callback
+    AC->>A: get_by_oauth_provider(provider, uid)
+    
+    alt Account found (existing link)
+        A-->>AC: account
+        AC->>PS: create(username)
+        PS-->>AC: new_jwt_token
+        AC->>PubSub: broadcast oauth_result
+        AC-->>B: Success HTML page
+        PubSub->>WS: {:oauth_result, result}
+        WS->>C: oauth_result event with new token
+    else Account not found
+        A-->>AC: nil
+        AC->>PubSub: broadcast oauth_result
+        AC-->>B: Error HTML page
+        PubSub->>WS: {:oauth_result, error}
+        WS->>C: oauth_result event with error
+    end
+```
+
+### Account Linking Flow
+
+```mermaid
+sequenceDiagram
+    participant C as Client
+    participant WS as WebSocket
+    participant GC as GenGameChannel
+    participant B as Browser
+    participant OP as OAuthProvider
+    participant AC as AuthController
+    participant OLM as OAuthLinkMiddleware
+    participant A as Accounts
+    participant PS as PlayerSession
+    participant PubSub as PubSub
+
+    Note over C: Client has existing account + token
+    C->>B: Open OAuth URL with token + link_mode=true
+    B->>AC: GET /auth/google?token=ws_token&link_mode=true
+    AC->>OLM: Middleware processes request
+    OLM->>OLM: Store token + link_mode in session
+    OLM->>OP: Redirect to OAuth provider
+    OP-->>B: OAuth consent screen
+    B->>OP: User authorizes
+    OP->>AC: Callback with auth data
+    
+    Note over AC: Process linking callback
+    AC->>PS: verify(token)
+    PS-->>AC: {:ok, username}
+    AC->>A: get_by_username(username)
+    A-->>AC: account
+    
+    alt Valid account and can use social login
+        AC->>A: link_oauth_provider(account, auth)
+        A-->>AC: {:ok, updated_account}
+        AC->>PubSub: broadcast oauth_result
+        AC-->>B: Success HTML page
+        PubSub->>WS: {:oauth_result, success}
+        WS->>C: oauth_result event with success
+    else Cannot link (already linked, etc.)
+        A-->>AC: {:error, reason}
+        AC->>PubSub: broadcast oauth_result
+        AC-->>B: Error HTML page
+        PubSub->>WS: {:oauth_result, error}
+        WS->>C: oauth_result event with error
+    end
+```
+
+### OAuth Link Management Flow
+
+```mermaid
+sequenceDiagram
+    participant C as Client
+    participant GC as GenGameChannel
+    participant OLH as OauthLinkHandler
+    participant PS as PlayerSession
+    participant A as Accounts
+
+    Note over C: List linked providers
+    C->>GC: list_oauth_links({})
+    GC->>OLH: list_oauth_links(params, socket)
+    OLH->>PS: verify(token)
+    PS-->>OLH: {:ok, username}
+    OLH->>A: get_by_username(username)
+    A-->>OLH: account
+    OLH->>A: list_linked_providers(account)
+    A-->>OLH: ["google", "github"]
+    OLH-->>GC: {:reply, {:ok, %{linked_providers: providers}}, socket}
+    GC-->>C: linked_providers
+
+    Note over C: Unlink provider
+    C->>GC: unlink_oauth_provider({"provider" => "google"})
+    GC->>OLH: unlink_oauth_provider(params, socket)
+    OLH->>PS: verify(token)
+    PS-->>OLH: {:ok, username}
+    OLH->>A: get_by_username(username)
+    A-->>OLH: account
+    OLH->>A: unlink_oauth_provider(account, "google")
+    A-->>OLH: :ok
+    OLH-->>GC: {:reply, {:ok, %{msg: "Provider unlinked successfully"}}, socket}
+    GC-->>C: success_message
+```
+### Detailed Social Login Steps
+
+#### Social Login
+
+1. **OAuth URL Generation**: Client requests an OAuth login URL, passing the current WebSocket token.
+2. **OAuth Redirect**: Browser navigates to the OAuth provider's consent screen via the generated URL.
+3. **User Authorization**: User authenticates and authorizes the app with the OAuth provider.
+4. **Callback Handling**: OAuth provider redirects back to the server's callback endpoint with authentication data.
+5. **Session Association**: Server middleware stores the original WebSocket token and processes the OAuth data.
+6. **Account Lookup**: Server checks if an account is already linked to the OAuth provider and user ID.
+7. **Token Issuance**: If account exists, a new JWT session token is generated for the user.
+8. **Result Broadcast**: Server broadcasts the OAuth result (success or error) to the client via PubSub and WebSocket.
+9. **Client Receives Token**: Client receives the new session token or error message and updates authentication state.
+
+#### Account Linking
+
+1. **Link Mode Initiation**: Client requests OAuth login with `link_mode=true` and current session token.
+2. **OAuth Consent**: User authorizes the app with the OAuth provider.
+3. **Callback Handling**: Server receives OAuth callback and verifies the session token.
+4. **Account Verification**: Server fetches the account associated with the token.
+5. **Provider Linking**: Server links the OAuth provider to the account if not already linked.
+6. **Result Broadcast**: Server broadcasts the linking result (success or error) to the client via PubSub and WebSocket.
+7. **Client Updates State**: Client updates linked providers list or displays error.
+
+#### OAuth Link Management
+
+1. **List Linked Providers**: Client requests a list of linked OAuth providers; server verifies token and returns provider list.
+2. **Unlink Provider**: Client requests to unlink a provider; server verifies token, unlinks provider, and returns success message.
+
+
 ## Key Components
 
 ### Storage System
@@ -204,11 +364,14 @@ sequenceDiagram
 - **Distributed ETS**: Games stored in memory across cluster nodes
 - **Auto-sync**: Changes automatically synchronized between nodes
 - **PubSub**: Real-time updates via Phoenix PubSub
+- **PostgreSQL**: Persistent storage for accounts and OAuth links
 
 ### Authentication
 
 - **JWT Tokens**: Phoenix.Token for session management
 - **Username-based**: Tokens contain username as payload
+- **OAuth Integration**: Social login tokens replace existing session tokens
+- **Multi-session Support**: Users can have multiple active sessions
 
 ### Server Authoritative Hooks
 

@@ -13,7 +13,7 @@ defmodule GenGameWeb.RequestHandlers.OauthLinkHandler do
          account when not is_nil(account) <- Accounts.get_by_username(username),
          :ok <- Accounts.unlink_oauth_provider(account, provider) do
       Logger.info("[OauthLinkHandler] Unlinked #{provider} from account #{username}")
-      {:reply, {:ok, %{message: "Provider unlinked successfully"}}, socket}
+      {:reply, {:ok, %{msg: "Provider unlinked successfully"}}, socket}
     else
       nil ->
         {:reply, {:error, %{msg: "Account not found"}}, socket}
@@ -32,6 +32,7 @@ defmodule GenGameWeb.RequestHandlers.OauthLinkHandler do
   """
   def list_oauth_links(_params, socket) do
     token = socket.assigns.token
+    Logger.debug("[OauthLinkHandler] Listing OAuth links for token: #{token}")
 
     with {:ok, username} <- GenGame.PlayerSession.verify(token),
          account when not is_nil(account) <- Accounts.get_by_username(username) do

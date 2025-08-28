@@ -8,7 +8,7 @@ GenGame is an application with million of processes running at the same time. Th
 
 ## Authorization
 
-Currently we only support authentication with custom device ID. We authorize the user via JWT.
+Authentication is supported via custom device ID and social login (Google, etc.), authorized via JWT.
 
 # Cluster
 

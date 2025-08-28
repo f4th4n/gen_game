@@ -17,24 +17,27 @@ defmodule GenGameWeb.Plugs.OAuthLinkMiddleware do
         # Store linking data in session for the callback
         conn
         |> put_session(:oauth_link_mode, true)
-        |> put_session(:oauth_link_token, token)
+        |> put_session(:oauth_token, token)
 
-      %{"link_mode" => "true"} ->
-        Logger.warning("[OAuthLinkMiddleware] Link mode enabled but no token provided")
+      %{"token" => token} when is_binary(token) ->
+        Logger.debug("[OAuthLinkMiddleware] OAuth token provided for social login")
 
-        # Link mode without token - return error
+        # Store token for social login (no link_mode)
+        conn
+        |> put_session(:oauth_token, token)
+
+      _ ->
+        Logger.warning("[OAuthLinkMiddleware] No token provided for OAuth flow")
+
+        # No token provided - return error since we need it for WebSocket notification
         conn
         |> put_status(:bad_request)
         |> Phoenix.Controller.json(%{
           success: false,
           error: "missing_token",
-          message: "Token is required when link_mode=true"
+          msg: "Token is required for OAuth authentication"
         })
         |> halt()
-
-      %{} ->
-        # Normal OAuth login flow - no special handling needed
-        conn
     end
   end
 end
