@@ -21,7 +21,9 @@ defmodule GenGame.Application do
       PlayerSession,
       Gameplay,
       GenGame.Hooks.NodeListener,
-      GenGame.Hooks.HttpServerListener
+      GenGame.Hooks.HttpServerListener,
+      GenGame.Matchmaker,
+      GenGame.MatchRequests
     ]
 
     opts = [strategy: :one_for_one, name: GenGame.Supervisor]
